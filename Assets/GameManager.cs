@@ -20,7 +20,7 @@ public class GameManager : MonoBehaviour {
         this._charactor = GameObject.Find("Satellite");
         this._charactor2 = GameObject.Find("Satellite2");
         this._charactor3 = GameObject.Find("Satellite3");
-
+		// aaa
         double M1 = 1.002744;    //平均運動
         double M2 = 0.0; //平均運動変化係数
         double M0 = 30.0;   //平均近点角
