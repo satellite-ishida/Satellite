@@ -12,7 +12,7 @@ public class GameManager : MonoBehaviour {
     private List<Satellite> sat_list = new List<Satellite>();
     //打ち上げ時間(軌道要素の元期より後の時間にすること)
     private DateTime observe_time = new DateTime(2008, 3, 15, 2, 0, 0);
-
+	// aaaaa
     // Use this for initialization
     void Start()
     {
