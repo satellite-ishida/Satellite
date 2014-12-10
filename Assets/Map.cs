@@ -26,7 +26,6 @@ using System.Collections;
         private List<SatelliteComponent> satellite = new List<SatelliteComponent>();
 
 
-       //衛星の削除を考えないと・・・
         /// <summary>
         /// 衛星クラスのリスト管理
         /// </summary>
@@ -34,7 +33,9 @@ using System.Collections;
         {
              set { satellite.Add(value);}
         }
-        
+
+        //乱数(故障判定用)
+        System.Random rnd = new System.Random(Environment.TickCount);
         
         /*
           コンストラクタ
@@ -218,12 +219,35 @@ using System.Collections;
             }
         }
 
+
+
+        /// <summary>
+        /// 故障率から故障判定
+        /// </summary>
+        /// <return>true:故障，false:回避</return>>
+        private Boolean breakjudg(SatelliteComponent s)
+        {
+
+            if (rnd.Next(0, 1000) < s.Fail * 1000)
+            {
+                return true;
+            }
+            else
+            {
+                return false;
+            }
+        }
+
+
         /// <summary>
         /// 全衛星の位置更新
         /// </summary>
         /// 
         public void Satellite_Updata()
         {
+
+           
+             
             for (int i = 0; i < satellite.Count; i++)
             {
                 satellite[i].update_locate(satellite[i].TIME);
@@ -231,15 +255,31 @@ using System.Collections;
                 satellite[i].TIME = satellite[i].TIME.AddMinutes(10);
            //     print(satellite[i].X + "," + satellite[i].Y);
 
-
+                //セル情報表示関係
+                /*
                    String name = Current_Country(satellite[i]);
                    if (string.Compare(name, null) != 0 && i == 0) 
                    {
                        print(name);
-                   }
-            }
-        }
+                   }*/
 
+
+                if (breakjudg(satellite[i])) 
+                {
+                    satellite.RemoveAt(i);
+                }
+            }
+            
+            /*
+            foreach (SatelliteComponent s in satellite) 
+            {
+                s.update_locate(s.TIME);
+                s.transform.position = new Vector3(s.X, s.Y, 0);
+                s.TIME = s.TIME.AddMinutes(10);
+            }
+            */
+        }
+           
 
 
     }

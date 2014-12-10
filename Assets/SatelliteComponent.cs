@@ -97,6 +97,24 @@ public class SatelliteComponent : MonoBehaviour {
         this.locate_y = new_locate[1];
     }
 
+
+
+    //とりあえず一律0.1％で
+    /// <summary>
+    /// 故障率
+    /// </summary>
+    private double fail = 0.001;
+
+    /// <summary>
+    /// 故障率
+    /// </summary>
+    public double Fail
+    {
+        get { return fail; }
+    }
+
+
+
     /// <summary>
     /// 衛星軌道の計算
     /// </summary>
