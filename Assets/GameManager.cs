@@ -24,45 +24,54 @@ public class GameManager : MonoBehaviour {
 
         GameObject prefab = (GameObject)Resources.Load("Prefabs/QZS");
 
-
-        GameObject satellite = Instantiate(prefab) as GameObject;
-        SatelliteComponent component = satellite.GetComponent<SatelliteComponent>();
-        component.TIME = observe_time;
-
         // 緯度
         double latitude = _charactor3.transform.localPosition.y;
 
         // 経度
         double longitude = _charactor3.transform.localPosition.x;
 
+        // 衛星の個数
+        int n = 5;
 
-        // ////真の衛星軌道
-        //component.M1 = 1.002935;
-        //component.i = 40.6301;
-        //component.e = 0.0756537;
-        //component.s_omg0 = 269.8983;
-        //component.M0 = 236.1610;
-        //component.ET = 13155.82828148;
-        //component.L_omg0 = 180.7852;
+        for (int i = 0; i < 360; i += (360 / n))
+        {
+            GameObject satellite = Instantiate(prefab) as GameObject;
+            SatelliteComponent component = satellite.GetComponent<SatelliteComponent>();
+            component.TIME = observe_time;
 
-        //真の真ののの衛星軌道
-        //component.M1 = 1.00287879;
-        component.i = 40.5968;
-        component.e = 0.0746703;
-        component.s_omg0 = 269.9725;
-        component.M0 = 309.9023;
-        component.ET = 14343.49492826;
-        component.L_omg0 = 172.75;
+            // ////真の衛星軌道
+            //component.M1 = 1.002935;
+            //component.i = 40.6301;
+            //component.e = 0.0756537;
+            //component.s_omg0 = 269.8983;
+            //component.M0 = 236.1610;
+            //component.ET = 13155.82828148;
+            //component.L_omg0 = 180.7852;
 
-        // ズレ修正
-        component.M1 = 1.002737;
-        // 位相?
-        component.L_omg0 = 36 + longitude;
-        // 経度
-        component.i = latitude;
-        component.e = Math.Abs((0.0746703 / 40.5968) * latitude);
+            ////真の真ののの衛星軌道
+            ////component.M1 = 1.00287879;
+            //component.i = 40.5968;
+            //component.e = 0.0746703;
+            //component.s_omg0 = 269.9725;
+            //component.M0 = 309.9023;
+            //component.ET = 14343.49492826;
+            //component.L_omg0 = 172.75;
 
-        
+            component.i = 40.5968;
+            component.e = 0.0746703;
+            component.s_omg0 = 269.9725;
+            component.M0 = 309.9023 + i;
+            component.ET = 14343.49492826;
+            component.L_omg0 = 172.75;
+            // ズレ修正
+            component.M1 = 1.002737;
+            // 位相?
+            component.L_omg0 = (36 + longitude) - i;
+            // 経度
+            component.i = latitude;
+            component.e = Math.Abs((0.0746703 / 40.5968) * latitude);
+
+        }
 
         // 古の愉快なパラメータ達
 
