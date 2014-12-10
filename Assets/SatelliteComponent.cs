@@ -215,7 +215,7 @@ public class SatelliteComponent : MonoBehaviour {
         double day_decimal = ((double)observe_time.Hour + (double)observe_time.Minute / 60 + (double)observe_time.Second / 60 / 10) / 24;
         double day = double.Parse(span.Days.ToString());
         double num_day = day + day_decimal;
-
+        
         return num_day;
     }
 
