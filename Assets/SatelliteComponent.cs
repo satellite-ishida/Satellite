@@ -167,6 +167,7 @@ public class SatelliteComponent : MonoBehaviour {
         double Ei;
         Ei = M + e_d * Math.Sin(M / 180 * Math.PI);
 
+        
         while (true)
         {
             double Mi = Ei - e_d * Math.Sin(Ei / 180 * Math.PI);
@@ -222,6 +223,7 @@ public class SatelliteComponent : MonoBehaviour {
     // Update is called once per frame
     void Update()
     {
+        /*
         if (observe_time.Year > 1900)
         {
             update_locate(observe_time);
@@ -231,5 +233,6 @@ public class SatelliteComponent : MonoBehaviour {
             observe_time = observe_time.AddMinutes(10);
             print(observe_time + " x=" + locate_x + " y=" + locate_y);
         }
+         */
     }
 }

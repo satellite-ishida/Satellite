@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
+using System.IO;
 using UnityEngine;
 using System.Collections;
 
@@ -9,7 +10,7 @@ using System.Collections;
     /// 地図のセル情報を扱うクラス
     /// </summary>
 
-    class Map
+       class Map : MonoBehaviour
     {
 
         /// <summary>
@@ -22,14 +23,23 @@ using System.Collections;
         /// <summary>
         /// 衛星クラスのリスト管理
         /// </summary>
-        private List<Satellite> satellite = new List<Satellite>();
-        
+        private List<SatelliteComponent> satellite = new List<SatelliteComponent>();
 
-        
 
+       //衛星の削除を考えないと・・・
+        /// <summary>
+        /// 衛星クラスのリスト管理
+        /// </summary>
+        public SatelliteComponent Satellite
+        {
+             set { satellite.Add(value);}
+        }
+        
+        
         /*
           コンストラクタ
            */
+           
         public Map() 
         {
             
@@ -47,31 +57,31 @@ using System.Collections;
                 /*
                     csvファイルから地図にデータを埋め込む
                  */
+            
+            TextAsset citydata = Resources.Load("csv/city") as TextAsset;
+            StringReader reader = new StringReader(citydata.text);
 
-                using (System.IO.StreamReader sr = new System.IO.StreamReader("../../city.csv", System.Text.Encoding.GetEncoding("shift_jis")))
-                {
-                    while (!sr.EndOfStream)
+                    while (reader.Peek() > -1)
                     {
-                        string line = sr.ReadLine();
+                        string line = reader.ReadLine();
 
                         string[] values = line.Split(',');
 
                         this.cd[int.Parse(values[2]) + 180, int.Parse(values[3]) * (-1) + 90].Country = values[0];
                         this.cd[int.Parse(values[2]) + 180, int.Parse(values[3]) * (-1) + 90].City = values[1];
                     }
-
-                }
-
+           
              /*
                 csvファイルから陸か海を埋め込む
              */
 
-            using (System.IO.StreamReader sr = new System.IO.StreamReader("../../map.csv", System.Text.Encoding.GetEncoding("shift_jis")))
-            {
-                int j = 0;
-                while (!sr.EndOfStream)
+                    TextAsset mapdata = Resources.Load("csv/map") as TextAsset;
+                     reader = new StringReader(mapdata.text);
+
+              int k = 0;
+                while (reader.Peek() > -1)
                 {
-                    string line = sr.ReadLine();
+                    string line = reader.ReadLine();
 
                     string[] values = line.Split(',');
 
@@ -79,18 +89,16 @@ using System.Collections;
                     {
                         if (int.Parse(values[i]) == 1)
                         {
-                            this.cd[i, j].Land = true;
+                            this.cd[i, k].Land = true;
 
                         }
                         else
                         {
-                            this.cd[i, j].Land = false;
+                            this.cd[i, k].Land = false;
                         }
                     }
-                    j++;
+                    k++;
                 }
-            }
-
         }
 
 
@@ -162,19 +170,68 @@ using System.Collections;
         }
 
 
-        /// <summary>
-        /// 新しい衛星を追加する
-        /// </summary>
+           //現在いるセルしか見ていない
 
-        public void Satellite_Add() 
+        /// <summary>
+        /// 衛星のいる都市を取得
+        /// </summary>
+        /// <param name="sa">衛星クラス</param>
+        /// <return>現在地の都市</return>
+        /// 
+
+        private String Current_City(SatelliteComponent sa) 
         {
 
-//            Satellite st = new Satellite();
-
- //           this.satellite.Add(st);
-
+            if(string.Compare(cd[(int)sa.X + 180, (int)sa.Y + 90].City, null) != 0)
+            {
+                print(cd[(int)sa.X + 180, (int)sa.Y + 90].City);
+                return cd[(int)sa.X + 180, (int)sa.Y + 90].City;
+            }
+            else
+            {
+                return null;
+            }
         }
 
+        /// <summary>
+        /// 衛星のいる国を取得
+        /// </summary>
+        /// <param name="sa">衛星クラス</param>
+        /// <return>現在地の都市</return>
+        /// 
+
+        private String Current_Country(SatelliteComponent sa)
+        {
+
+            if (string.Compare(cd[(int)sa.X + 180, (int)sa.Y + 90].Country, null) != 0)
+            {
+                return cd[(int)sa.X + 180, (int)sa.Y + 90].Country;
+            }
+            else
+            {
+                return null;
+            }
+        }
+
+        /// <summary>
+        /// 全衛星の位置更新
+        /// </summary>
+        /// 
+        public void Satellite_Updata()
+        {
+            for (int i = 0; i < satellite.Count; i++)
+            {
+                satellite[i].update_locate(satellite[i].TIME);
+                satellite[i].transform.position = new Vector3(satellite[i].X, satellite[i].Y, 0);
+                satellite[i].TIME = satellite[i].TIME.AddMinutes(10);
+           //     print(satellite[i].X + "," + satellite[i].Y);
+             String name = Current_Country(satellite[i]);
+                   if (string.Compare(name, null) != 0 && i == 0) 
+                   {
+                       print(name);
+                   }
+            }
+        }
 
 
 

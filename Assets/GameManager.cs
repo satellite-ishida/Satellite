@@ -11,6 +11,8 @@ public class GameManager : MonoBehaviour {
 
     private DateTime observe_time = new DateTime(2014, 12, 31, 23, 55, 28);
 
+    private Map map;
+
     //private DateTime observe_time = new DateTime(2009, 1, 1, 0, 0, 0);
 
     // Use this for initialization
@@ -32,10 +34,14 @@ public class GameManager : MonoBehaviour {
         // 衛星の個数
         int n = 5;
 
+        map = new Map();
+
         for (int i = 0; i < 360; i += (360 / n))
         {
             GameObject satellite = Instantiate(prefab) as GameObject;
             SatelliteComponent component = satellite.GetComponent<SatelliteComponent>();
+
+            map.Satellite = component;
             component.TIME = observe_time;
 
             // ////真の衛星軌道
@@ -112,5 +118,7 @@ public class GameManager : MonoBehaviour {
     // Update is called once per frame
     void Update()
     {
+        map.Satellite_Updata();
+
     }
 }
