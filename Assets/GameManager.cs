@@ -9,7 +9,6 @@ public class GameManager : MonoBehaviour {
     private GameObject _charactor2;
     private GameObject _charactor3;
 
-
     private DateTime observe_time = new DateTime(2014, 12, 31, 23, 55, 28);
 
     //private DateTime observe_time = new DateTime(2009, 1, 1, 0, 0, 0);
@@ -70,7 +69,7 @@ public class GameManager : MonoBehaviour {
             // 経度
             component.i = latitude;
             component.e = Math.Abs((0.0746703 / 40.5968) * latitude);
-
+            
         }
 
         // 古の愉快なパラメータ達
