@@ -60,12 +60,18 @@ public class GameManager : MonoBehaviour {
 
         sat_list.Add(test_sat3);
 
-
+        DkLogEditor.Open();
     }
 
     // Update is called once per frame
     void Update()
     {
+         DkLog.V("verbose log",false);
+         DkLog.D("debug log", false);
+         DkLog.I("information log", false);
+         DkLog.W("warning log", false);
+         DkLog.E("error log", false);
+
         // 描画
         int count = 0;
         foreach (Satellite sat in sat_list)
@@ -76,6 +82,7 @@ public class GameManager : MonoBehaviour {
             else if (count == 2) _charactor3.transform.localPosition = new Vector3(sat.get_locate_x() , sat.get_locate_y() , 0.0f);
             count++;
         }
-        observe_time = observe_time.AddMinutes(10);
+        observe_time = observe_time.AddHours(24);
+
     }
 }
