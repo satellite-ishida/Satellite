@@ -41,7 +41,9 @@ public class GameManager : MonoBehaviour {
             GameObject satellite = Instantiate(prefab) as GameObject;
             SatelliteComponent component = satellite.GetComponent<SatelliteComponent>();
 
+            map.SatelliteObject = satellite;
             map.Satellite = component;
+  
             component.TIME = observe_time;
 
             // ////真の衛星軌道

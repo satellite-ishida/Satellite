@@ -34,6 +34,14 @@ using System.Collections;
              set { satellite.Add(value);}
         }
 
+
+        private List<GameObject> satelliteobject = new List<GameObject>();
+
+        public GameObject SatelliteObject 
+        {
+            set { satelliteobject.Add(value); }
+        }
+
         //乱数(故障判定用)
         System.Random rnd = new System.Random(Environment.TickCount);
         
@@ -263,10 +271,11 @@ using System.Collections;
                        print(name);
                    }*/
 
-
+                
                 if (breakjudg(satellite[i])) 
                 {
                     satellite.RemoveAt(i);
+                    Destroy(satelliteobject[i]);
                 }
             }
             
