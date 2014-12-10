@@ -229,7 +229,7 @@ public class SatelliteComponent : MonoBehaviour {
            // observe_time = observe_time.AddSeconds(1);
            //observe_time = observe_time.AddDays(10);
             observe_time = observe_time.AddMinutes(10);
-            print(observe_time + " x=" + locate_x + " y=" + locate_y);
+            //print(observe_time + " x=" + locate_x + " y=" + locate_y);
         }
     }
 }

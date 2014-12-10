@@ -108,7 +108,7 @@ public class GameManager : MonoBehaviour {
         //component3.ET = 08075.0;
         //component3.TIME = observe_time;
     }
-
+    System.Random rnd = new System.Random(1);
     // Update is called once per frame
     void Update()
     {
@@ -116,19 +116,35 @@ public class GameManager : MonoBehaviour {
         {
             GameObject prefab = (GameObject)Resources.Load("Prefabs/QZS");
 
+            // マウス位置
+            Vector3 mousePos = Camera.main.ScreenToWorldPoint(Input.mousePosition);
             // 緯度
-            double latitude = Input.mousePosition.y;
-
+            double latitude = mousePos.y;
             // 経度
-            double longitude = Input.mousePosition.x;
+            double longitude = mousePos.x;
 
+           // print("aaa" + mousePos);
+            
             // 衛星の個数
-            int n = 7;
+            int n = 20;
 
+            // 衛星の色
+
+            rnd.Next(0, 255);
+            
+            //Color randomColor = new Color(rnd.Next(0,255),rnd.Next(0,255),rnd.Next(0,255));
+            Color randomColor = new Color(55, 255, 172);
+            print(randomColor);
             for (int i = 0; i < 360; i += (360 / n))
             {
                 GameObject satellite = Instantiate(prefab) as GameObject;
                 SatelliteComponent component = satellite.GetComponent<SatelliteComponent>();
+
+          
+                //print(satellite.renderer.material.GetColor());
+
+                satellite.renderer.material.color = randomColor;
+                print(satellite.renderer.material.color);
                 component.TIME = observe_time;
 
                 component.i = 40.5968;
@@ -140,7 +156,7 @@ public class GameManager : MonoBehaviour {
                 // ズレ修正
                 component.M1 = 1.002737;
                 // 位相?
-                component.L_omg0 = (36 + longitude) - i;
+                component.L_omg0 = (40 + longitude) - i;
                 // 経度
                 component.i = latitude;
                 component.e = Math.Abs((0.0746703 / 40.5968) * latitude);
