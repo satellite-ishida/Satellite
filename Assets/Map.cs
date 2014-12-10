@@ -57,7 +57,7 @@ using System.Collections;
                 /*
                     csvファイルから地図にデータを埋め込む
                  */
-            
+            //文字コードはUTF-8じゃないと文字化けする
             TextAsset citydata = Resources.Load("csv/city") as TextAsset;
             StringReader reader = new StringReader(citydata.text);
 
@@ -75,6 +75,7 @@ using System.Collections;
                 csvファイルから陸か海を埋め込む
              */
 
+            //1が陸、0が海として書いてある
                     TextAsset mapdata = Resources.Load("csv/map") as TextAsset;
                      reader = new StringReader(mapdata.text);
 
@@ -170,7 +171,7 @@ using System.Collections;
         }
 
 
-           //現在いるセルしか見ていない
+       //現在いるセル(一マス)しか見ていない
 
         /// <summary>
         /// 衛星のいる都市を取得
@@ -178,10 +179,13 @@ using System.Collections;
         /// <param name="sa">衛星クラス</param>
         /// <return>現在地の都市</return>
         /// 
-
+           
         private String Current_City(SatelliteComponent sa) 
         {
-
+            /*
+             *  セルはx軸方向は経度‐180を0として、東方向に360マスある
+             *        y軸方向は緯度-90？(北極)を0として、南方向に180マスある
+             */
             if(string.Compare(cd[(int)sa.X + 180, (int)sa.Y + 90].City, null) != 0)
             {
                 print(cd[(int)sa.X + 180, (int)sa.Y + 90].City);
@@ -225,7 +229,9 @@ using System.Collections;
                 satellite[i].transform.position = new Vector3(satellite[i].X, satellite[i].Y, 0);
                 satellite[i].TIME = satellite[i].TIME.AddMinutes(10);
            //     print(satellite[i].X + "," + satellite[i].Y);
-             String name = Current_Country(satellite[i]);
+
+
+                   String name = Current_Country(satellite[i]);
                    if (string.Compare(name, null) != 0 && i == 0) 
                    {
                        print(name);
