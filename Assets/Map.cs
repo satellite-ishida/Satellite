@@ -186,6 +186,7 @@ using System.Collections;
              *  セルはx軸方向は経度‐180を0として、東方向に360マスある
              *        y軸方向は緯度-90？(北極)を0として、南方向に180マスある
              */
+
             if(string.Compare(cd[(int)sa.X + 180, (int)sa.Y + 90].City, null) != 0)
             {
                 print(cd[(int)sa.X + 180, (int)sa.Y + 90].City);
