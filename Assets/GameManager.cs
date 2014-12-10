@@ -30,7 +30,7 @@ public class GameManager : MonoBehaviour {
         double longitude = _charactor3.transform.localPosition.x;
 
         // 衛星の個数
-        int n = 5;
+        int n = 7;
 
         for (int i = 0; i < 360; i += (360 / n))
         {
