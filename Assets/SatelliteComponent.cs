@@ -5,42 +5,108 @@ using System.Text;
 using UnityEngine;
 using System.Collections;
 
-class Satellite
-{
+public class SatelliteComponent : MonoBehaviour {
+    /// <summary>
+    /// 平均近点角
+    /// </summary>
+    public double M0;
 
-    private double M1;    //平均運動
-    private double M2; //平均運動変化係数
-    private double M0;   //平均近点角
-    private double e;   //離心率
-    private double i; //軌道傾斜角
-    private double s_omg0;    //近地点引数
-    private double L_omg0;   //昇交点赤経
-    private double ET;    //元期
+    /// <summary>
+    /// 平均運動
+    /// </summary>
+    public double M1;
 
-    private float locate_x;    //現在位置_x軸
-    private float locate_y;    //現在位置_y軸
+    /// <summary>
+    /// 平均運動変化係数
+    /// </summary>
+    public double M2;
 
+    /// <summary>
+    /// 離心率
+    /// </summary>
+    public double e;
 
+    /// <summary>
+    /// 軌道傾斜角
+    /// </summary>
+    public double i;
 
+    /// <summary>
+    /// 近地点引数
+    /// </summary>
+    public double s_omg0;
 
-    public Satellite(float init_x,float init_y,double M0,double M1,double M2,double e,double i,double s_omg0,double L_omg0,double ET)
+    /// <summary>
+    /// 昇交点赤経
+    /// </summary>
+    public double L_omg0;
+
+    /// <summary>
+    /// 元期
+    /// </summary>
+    public double ET;
+
+    /// <summary>
+    /// 現在時刻
+    /// </summary>
+    private DateTime observe_time = new DateTime(1800, 5, 15, 2, 0, 0);
+
+    /// <summary>
+    /// 現在位置_x軸
+    /// </summary>
+    private float locate_x;
+
+    /// <summary>
+    /// 現在位置_y軸
+    /// </summary>
+    private float locate_y;
+
+    /// <summary>
+    /// ID
+    /// </summary>
+    private int id = 0;
+
+    /// <summary>
+    /// IDのプロパティ
+    /// </summary>
+    public int ID
     {
-        this.M0 = M0;
-        this.M1 = M1;
-        this.M2 = M2;
-        this.e = e;
-        this.i = i;
-        this.s_omg0 = s_omg0;
-        this.L_omg0 = L_omg0;
-        this.ET = ET;
-
-        this.locate_x = init_x;
-        this.locate_y = init_y;
+        get { return id;  }
+        set{
+            id = value;
+            rnd = new System.Random(id * Environment.TickCount);
+        }
     }
 
+    /// <summary>
+    /// 現在時刻
+    /// </summary>
+    public DateTime TIME
+    {
+        get { return observe_time; }
+        set { observe_time = value; }
+    }
 
+    /// <summary>
+    /// 現在位置X
+    /// </summary>
+    public float X
+    {
+        get { return locate_x; }
+    }
 
-    //位置の更新
+    /// <summary>
+    /// 現在位置Y
+    /// </summary>
+    public float Y
+    {
+        get { return locate_y; }
+    }
+
+    /// <summary>
+    /// 位置の更新
+    /// </summary>
+    /// <param name="ob_time"></param>
     public void update_locate(DateTime ob_time)
     {
         float[] new_locate = calc_orbit(ob_time);
@@ -48,19 +114,40 @@ class Satellite
         this.locate_y = new_locate[1];
     }
 
-    //xの値を返す
-    public float get_locate_x()
+    /// <summary>
+    /// 乱数
+    /// </summary>
+    private System.Random rnd;
+
+    //とりあえず一律0.1％で
+    /// <summary>
+    /// 故障率
+    /// </summary>
+    private double fail = 0.001;
+
+    /// <summary>
+    /// 故障判定
+    /// </summary>
+    public Boolean Fail
     {
-        return locate_x;
+        get {
+            if (rnd.Next(0, 1000) < fail * 1000)
+            {
+                Destroy(gameObject);
+                return true;
+            }
+            else
+            {
+                return false;
+            }
+        }
     }
 
-    //yの値を返す
-    public float get_locate_y()
-    {
-        return locate_y;
-    }
-
-    //衛星軌道の計算
+    /// <summary>
+    /// 衛星軌道の計算
+    /// </summary>
+    /// <param name="ob_time"></param>
+    /// <returns></returns>
     private float[] calc_orbit(DateTime ob_time)
     {
 
@@ -105,7 +192,16 @@ class Satellite
     private double calc_time_diff(DateTime ob_time)
     {
         double diff = ((double)ob_time.Year - 2000) * 1000 + calc_num_day(ob_time) + 1;
-        double time_diff = Math.Abs(ET - diff);
+        double year_diff = ((double)ob_time.Year - 2000) - Math.Floor(ET/1000);
+        double day_diff = calc_num_day(ob_time) + 1 - (ET -  Math.Floor(ET/1000)*1000);
+        //double time_diff = year_diff * 365 + day_diff;
+
+        // 軌道修正
+        double time_diff = day_diff;
+        if (day_diff < 0)
+        {
+            day_diff += 365;
+        }
 
         return time_diff;
     }
@@ -117,6 +213,7 @@ class Satellite
         double Ei;
         Ei = M + e_d * Math.Sin(M / 180 * Math.PI);
 
+        
         while (true)
         {
             double Mi = Ei - e_d * Math.Sin(Ei / 180 * Math.PI);
@@ -169,6 +266,20 @@ class Satellite
         return num_day;
     }
 
+    // Update is called once per frame
+    void Update()
+    {
+        
+        if (observe_time.Year > 1900)
+        {
+            update_locate(observe_time);
+            transform.position = new Vector3(locate_x, locate_y, 0);
+           // observe_time = observe_time.AddSeconds(1);
+           //observe_time = observe_time.AddDays(10);
+            observe_time = observe_time.AddMinutes(10);
+            //print(observe_time + " x=" + locate_x + " y=" + locate_y);
+        }
+         
 
-
+    }
 }

@@ -9,73 +9,118 @@ public class GameManager : MonoBehaviour {
     private GameObject _charactor2;
     private GameObject _charactor3;
 
-    private List<Satellite> sat_list = new List<Satellite>();
-    //打ち上げ時間(軌道要素の元期より後の時間にすること)
-    private DateTime observe_time = new DateTime(2008, 3, 15, 2, 0, 0);
+    private DateTime observe_time = new DateTime(2014, 12, 31, 23, 55, 28);
+
+    private Map map;
+
+    //private DateTime observe_time = new DateTime(2009, 1, 1, 0, 0, 0);
 
     // Use this for initialization
     void Start()
     {
         // キャラクターを取得する
-        this._charactor = GameObject.Find("Satellite");
+        this._charactor = GameObject.Find("Sattellite");
         this._charactor2 = GameObject.Find("Satellite2");
         this._charactor3 = GameObject.Find("Satellite3");
 
-        double M1 = 1.002744;    //平均運動
-        double M2 = 0.0; //平均運動変化係数
-        double M0 = 30.0;   //平均近点角
-        double e = 0.075;   //離心率
-        double i = 43.0; //軌道傾斜角
-        double s_omg0 = 270.0;    //近地点引数
-        double L_omg0 = 15.0;   //昇交点赤経
-        double ET = 08075.0;    //元期
+        GameObject prefab = (GameObject)Resources.Load("Prefabs/QZS");
 
-        Satellite test_sat = new Satellite(0.0f,0.0f,M0,M1,M2,e,i,s_omg0,L_omg0,ET);
-        sat_list.Add(test_sat);
+        // 緯度
+        double latitude = _charactor3.transform.localPosition.y;
 
+        // 経度
+        double longitude = _charactor3.transform.localPosition.x;
 
-        M1 = 1.002744;    //平均運動
-         M2 = 0.0; //平均運動変化係数
-         M0 = 150.0;   //平均近点角
-         e = 0.075;   //離心率
-         i = 43.0; //軌道傾斜角
-         s_omg0 = 270.0;    //近地点引数
-         L_omg0 = 255.0;   //昇交点赤経
-         ET = 08075.0;    //元期
+        // 衛星の個数
+        int n = 5;
 
-        Satellite test_sat2 = new Satellite(0.0f, 0.0f, M0, M1, M2, e, i, s_omg0, L_omg0, ET);
-        sat_list.Add(test_sat2);
+        map = new Map();
 
-        
-         M1 = 1.002744;    //平均運動
-         M2 = 0.0; //平均運動変化係数
-         M0 = 270.0;   //平均近点角
-         e = 0.075;   //離心率
-         i = 43.0; //軌道傾斜角
-         s_omg0 = 270.0;    //近地点引数
-         L_omg0 = 135.0;   //昇交点赤経
-         ET = 08075.0;    //元期
+        for (int i = 0; i < 360; i += (360 / n))
+        {
+            GameObject satellite = Instantiate(prefab) as GameObject;
+            SatelliteComponent component = satellite.GetComponent<SatelliteComponent>();
 
-        Satellite test_sat3 = new Satellite(0.0f, 0.0f, M0, M1, M2, e, i, s_omg0, L_omg0, ET);
+            map.SatelliteObject = satellite;
+            //map.Satellite = component;
+  
+            component.TIME = observe_time;
+            component.ID = i;
+            // ////真の衛星軌道
+            //component.M1 = 1.002935;
+            //component.i = 40.6301;
+            //component.e = 0.0756537;
+            //component.s_omg0 = 269.8983;
+            //component.M0 = 236.1610;
+            //component.ET = 13155.82828148;
+            //component.L_omg0 = 180.7852;
 
-        sat_list.Add(test_sat3);
+            ////真の真ののの衛星軌道
+            ////component.M1 = 1.00287879;
+            //component.i = 40.5968;
+            //component.e = 0.0746703;
+            //component.s_omg0 = 269.9725;
+            //component.M0 = 309.9023;
+            //component.ET = 14343.49492826;
+            //component.L_omg0 = 172.75;
 
+            component.i = 40.5968;
+            component.e = 0.0746703;
+            component.s_omg0 = 269.9725;
+            component.M0 = 309.9023 + i;
+            component.ET = 14343.49492826;
+            component.L_omg0 = 172.75;
+            // ズレ修正
+            component.M1 = 1.002737;
+            // 位相?
+            component.L_omg0 = (36 + longitude) - i;
+            // 経度
+            component.i = latitude;
+            component.e = Math.Abs((0.0746703 / 40.5968) * latitude);
+            
+        }
 
+        // 古の愉快なパラメータ達
+
+        //SatelliteComponent component = this._charactor.AddComponent<SatelliteComponent>();
+        //component.M0 = 30.0;
+        //component.M1 = 1.002744;
+        //component.M2 = 0.0;
+        //component.e = 0.075;
+        //component.i = 43.0;
+        //component.s_omg0 = 270.0;
+        //component.L_omg0 = 15.0;
+        //component.ET = 08075.0;
+        //SatelliteComponent component = this._charactor.GetComponent<SatelliteComponent>();
+        //component.TIME = observe_time;
+
+        //SatelliteComponent component2 = this._charactor2.AddComponent<SatelliteComponent>();
+        //component2.M0 = 150.0;
+        //component2.M1 = 1.002744;
+        //component2.M2 = 0.0;
+        //component2.e = 0.075;
+        //component2.i = 43.0;
+        //component2.s_omg0 = 270.0;
+        //component2.L_omg0 = 255.0;
+        //component2.ET = 08075.0;
+        //component2.TIME = observe_time;
+
+        //SatelliteComponent component3 = this._charactor3.AddComponent<SatelliteComponent>();
+        //component3.M0 = 270.0;
+        //component3.M1 = 1.002744;
+        //component3.M2 = 0.0;
+        //component3.e = 0.075;
+        //component3.i = 43.0;
+        //component3.s_omg0 = 270.0;
+        //component3.L_omg0 = 135.0;
+        //component3.ET = 08075.0;
+        //component3.TIME = observe_time;
     }
 
     // Update is called once per frame
     void Update()
     {
-        // 描画
-        int count = 0;
-        foreach (Satellite sat in sat_list)
-        {
-            sat.update_locate(observe_time);
-            if(count == 0)_charactor.transform.localPosition = new Vector3(sat.get_locate_x(), sat.get_locate_y(), 0.0f);
-            else if (count == 1) _charactor2.transform.localPosition = new Vector3(sat.get_locate_x() , sat.get_locate_y() , 0.0f);
-            else if (count == 2) _charactor3.transform.localPosition = new Vector3(sat.get_locate_x() , sat.get_locate_y() , 0.0f);
-            count++;
-        }
-        observe_time = observe_time.AddMinutes(10);
+        map.Satellite_Updata();
+
     }
 }
