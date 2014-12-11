@@ -180,53 +180,21 @@ class Map
     //現在いるセル(一マス)しか見ていない
 
     /// <summary>
-    /// 衛星のいる都市を取得
+    /// セルの情報を取得
     /// </summary>
     /// <param name="sa">衛星クラス</param>
-    /// <return>現在地の都市</return>
+    /// <return>セルデータ</return>
     /// 
 
-    private String Current_City(SatelliteComponent sa)
+    private Cell_Data Get_CellData(GameObject g)
     {
         /*
          *  セルはx軸方向は経度‐180を0として、東方向に360マスある
          *        y軸方向は緯度-90？(北極)を0として、南方向に180マスある
          */
 
-        if (string.Compare(cd[(int)sa.X + 180, (int)sa.Y + 90].City, null) != 0)
-        {
-            //print(cd[(int)sa.X + 180, (int)sa.Y + 90].City);
-            return cd[(int)sa.X + 180, (int)sa.Y + 90].City;
-        }
-        else
-        {
-            return null;
-        }
+        return cd[(int)g.GetComponent<SatelliteComponent>().X + 180, (int)g.GetComponent<SatelliteComponent>().Y * (-1) + 90];
     }
-
-    /// <summary>
-    /// 衛星のいる国を取得
-    /// </summary>
-    /// <param name="sa">衛星クラス</param>
-    /// <return>現在地の都市</return>
-    /// 
-
-    private String Current_Country(SatelliteComponent sa)
-    {
-
-        if (string.Compare(cd[(int)sa.X + 180, (int)sa.Y + 90].Country, null) != 0)
-        {
-            return cd[(int)sa.X + 180, (int)sa.Y + 90].Country;
-        }
-        else
-        {
-            return null;
-        }
-    }
-
-
-
-
 
 
 
@@ -234,7 +202,7 @@ class Map
     /// 全衛星の位置更新
     /// </summary>
     /// 
-    public void Satellite_Updata()
+    public void Satellite_Update()
     {
         //foreach (GameObject g in satelliteobject)
         //{

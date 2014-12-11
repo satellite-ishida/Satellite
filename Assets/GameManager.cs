@@ -120,7 +120,7 @@ public class GameManager : MonoBehaviour {
     // Update is called once per frame
     void Update()
     {
-        map.Satellite_Updata();
+        map.Satellite_Update();
 
     }
 }
