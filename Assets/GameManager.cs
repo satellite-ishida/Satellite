@@ -11,66 +11,74 @@ public class GameManager : MonoBehaviour {
 
     private DateTime observe_time = new DateTime(2014, 12, 31, 23, 55, 28);
 
+    private Map map;
+
     //private DateTime observe_time = new DateTime(2009, 1, 1, 0, 0, 0);
 
     // Use this for initialization
     void Start()
     {
-        //// キャラクターを取得する
-        //this._charactor = GameObject.Find("Sattellite");
-        //this._charactor2 = GameObject.Find("Satellite2");
-        //this._charactor3 = GameObject.Find("Satellite3");
+        // キャラクターを取得する
+        this._charactor = GameObject.Find("Sattellite");
+        this._charactor2 = GameObject.Find("Satellite2");
+        this._charactor3 = GameObject.Find("Satellite3");
 
-        //GameObject prefab = (GameObject)Resources.Load("Prefabs/QZS");
+        GameObject prefab = (GameObject)Resources.Load("Prefabs/QZS");
 
-        //// 緯度
-        //double latitude = _charactor3.transform.localPosition.y;
+        // 緯度
+        double latitude = _charactor3.transform.localPosition.y;
 
-        //// 経度
-        //double longitude = _charactor3.transform.localPosition.x;
+        // 経度
+        double longitude = _charactor3.transform.localPosition.x;
 
-        //// 衛星の個数
-        //int n = 7;
+        // 衛星の個数
+        int n = 5;
 
-        //for (int i = 0; i < 360; i += (360 / n))
-        //{
-        //    GameObject satellite = Instantiate(prefab) as GameObject;
-        //    SatelliteComponent component = satellite.GetComponent<SatelliteComponent>();
-        //    component.TIME = observe_time;
+        map = new Map();
 
-        //    // ////真の衛星軌道
-        //    //component.M1 = 1.002935;
-        //    //component.i = 40.6301;
-        //    //component.e = 0.0756537;
-        //    //component.s_omg0 = 269.8983;
-        //    //component.M0 = 236.1610;
-        //    //component.ET = 13155.82828148;
-        //    //component.L_omg0 = 180.7852;
+        for (int i = 0; i < 360; i += (360 / n))
+        {
+            GameObject satellite = Instantiate(prefab) as GameObject;
+            SatelliteComponent component = satellite.GetComponent<SatelliteComponent>();
 
-        //    ////真の真ののの衛星軌道
-        //    ////component.M1 = 1.00287879;
-        //    //component.i = 40.5968;
-        //    //component.e = 0.0746703;
-        //    //component.s_omg0 = 269.9725;
-        //    //component.M0 = 309.9023;
-        //    //component.ET = 14343.49492826;
-        //    //component.L_omg0 = 172.75;
+            map.SatelliteObject = satellite;
+            //map.Satellite = component;
+  
+            component.TIME = observe_time;
+            component.ID = i;
+            // ////真の衛星軌道
+            //component.M1 = 1.002935;
+            //component.i = 40.6301;
+            //component.e = 0.0756537;
+            //component.s_omg0 = 269.8983;
+            //component.M0 = 236.1610;
+            //component.ET = 13155.82828148;
+            //component.L_omg0 = 180.7852;
 
-        //    component.i = 40.5968;
-        //    component.e = 0.0746703;
-        //    component.s_omg0 = 269.9725;
-        //    component.M0 = 309.9023 + i;
-        //    component.ET = 14343.49492826;
-        //    component.L_omg0 = 172.75;
-        //    // ズレ修正
-        //    component.M1 = 1.002737;
-        //    // 位相?
-        //    component.L_omg0 = (36 + longitude) - i;
-        //    // 経度
-        //    component.i = latitude;
-        //    component.e = Math.Abs((0.0746703 / 40.5968) * latitude);
+            ////真の真ののの衛星軌道
+            ////component.M1 = 1.00287879;
+            //component.i = 40.5968;
+            //component.e = 0.0746703;
+            //component.s_omg0 = 269.9725;
+            //component.M0 = 309.9023;
+            //component.ET = 14343.49492826;
+            //component.L_omg0 = 172.75;
+
+            component.i = 40.5968;
+            component.e = 0.0746703;
+            component.s_omg0 = 269.9725;
+            component.M0 = 309.9023 + i;
+            component.ET = 14343.49492826;
+            component.L_omg0 = 172.75;
+            // ズレ修正
+            component.M1 = 1.002737;
+            // 位相?
+            component.L_omg0 = (36 + longitude) - i;
+            // 経度
+            component.i = latitude;
+            component.e = Math.Abs((0.0746703 / 40.5968) * latitude);
             
-        //}
+        }
 
         // 古の愉快なパラメータ達
 
@@ -108,60 +116,11 @@ public class GameManager : MonoBehaviour {
         //component3.ET = 08075.0;
         //component3.TIME = observe_time;
     }
-    System.Random rnd = new System.Random(1);
+
     // Update is called once per frame
     void Update()
     {
-        if (Input.GetMouseButtonDown(0))
-        {
-            GameObject prefab = (GameObject)Resources.Load("Prefabs/QZS");
+        map.Satellite_Updata();
 
-            // マウス位置
-            Vector3 mousePos = Camera.main.ScreenToWorldPoint(Input.mousePosition);
-            // 緯度
-            double latitude = mousePos.y;
-            // 経度
-            double longitude = mousePos.x;
-
-           // print("aaa" + mousePos);
-            
-            // 衛星の個数
-            int n = 20;
-
-            // 衛星の色
-
-            rnd.Next(0, 255);
-            
-            //Color randomColor = new Color(rnd.Next(0,255),rnd.Next(0,255),rnd.Next(0,255));
-            Color randomColor = new Color(55, 255, 172);
-            print(randomColor);
-            for (int i = 0; i < 360; i += (360 / n))
-            {
-                GameObject satellite = Instantiate(prefab) as GameObject;
-                SatelliteComponent component = satellite.GetComponent<SatelliteComponent>();
-
-          
-                //print(satellite.renderer.material.GetColor());
-
-                satellite.renderer.material.color = randomColor;
-                print(satellite.renderer.material.color);
-                component.TIME = observe_time;
-
-                component.i = 40.5968;
-                component.e = 0.0746703;
-                component.s_omg0 = 269.9725;
-                component.M0 = 309.9023 + i;
-                component.ET = 14343.49492826;
-                component.L_omg0 = 172.75;
-                // ズレ修正
-                component.M1 = 1.002737;
-                // 位相?
-                component.L_omg0 = (40 + longitude) - i;
-                // 経度
-                component.i = latitude;
-                component.e = Math.Abs((0.0746703 / 40.5968) * latitude);
-
-            }
-        }
     }
 }
