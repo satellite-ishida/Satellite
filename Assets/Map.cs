@@ -225,7 +225,7 @@ class Map
     }
 
 
-<<<<<<< HEAD
+
 
 
 
@@ -239,37 +239,37 @@ class Map
         //foreach (GameObject g in satelliteobject)
         //{
         //    // GameObjectのSatelliteComponentを取得
-=======
-        /// <summary>
-        /// 全衛星の位置更新
-        /// </summary>
-        /// 
-        public void Satellite_Updata()
-        {
-             
-            for (int i = 0; i < satellite.Count; i++)
-            {
-                satellite[i].update_locate(satellite[i].TIME);
-                satellite[i].transform.position = new Vector3(satellite[i].X, satellite[i].Y, 0);
-                satellite[i].TIME = satellite[i].TIME.AddMinutes(10);
-           //     print(satellite[i].X + "," + satellite[i].Y);
 
-                //セル情報表示関係
-                /*
-                   String name = Current_Country(satellite[i]);
-                   if (string.Compare(name, null) != 0 && i == 0) 
-                   {
-                       print(name);
-                   }*/
+        ///// <summary>
+        ///// 全衛星の位置更新
+        ///// </summary>
+        ///// 
+        //public void Satellite_Updata()
+        //{
+             
+        //    for (int i = 0; i < satellite.Count; i++)
+        //    {
+        //        satellite[i].update_locate(satellite[i].TIME);
+        //        satellite[i].transform.position = new Vector3(satellite[i].X, satellite[i].Y, 0);
+        //        satellite[i].TIME = satellite[i].TIME.AddMinutes(10);
+        //   //     print(satellite[i].X + "," + satellite[i].Y);
+
+        //        //セル情報表示関係
+        //        /*
+        //           String name = Current_Country(satellite[i]);
+        //           if (string.Compare(name, null) != 0 && i == 0) 
+        //           {
+        //               print(name);
+        //           }*/
 
                 
-                if (breakjudg(satellite[i])) 
-                {
-                    satellite.RemoveAt(i);
-                    Destroy(satelliteobject[i]);
-                }
-            }
->>>>>>> origin/ikeno
+        //        if (breakjudg(satellite[i])) 
+        //        {
+        //            satellite.RemoveAt(i);
+        //            Destroy(satelliteobject[i]);
+        //        }
+        //    }
+
             
         //    SatelliteComponent component = g.GetComponent<SatelliteComponent>();
         //    //
