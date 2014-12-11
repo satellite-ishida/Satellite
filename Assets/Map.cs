@@ -253,8 +253,6 @@ using System.Collections;
         /// 
         public void Satellite_Updata()
         {
-
-           
              
             for (int i = 0; i < satellite.Count; i++)
             {
