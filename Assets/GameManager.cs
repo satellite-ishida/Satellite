@@ -42,10 +42,10 @@ public class GameManager : MonoBehaviour {
             SatelliteComponent component = satellite.GetComponent<SatelliteComponent>();
 
             map.SatelliteObject = satellite;
-            map.Satellite = component;
+            //map.Satellite = component;
   
             component.TIME = observe_time;
-
+            component.ID = i;
             // ////真の衛星軌道
             //component.M1 = 1.002935;
             //component.i = 40.6301;

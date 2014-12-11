@@ -6,291 +6,282 @@ using System.IO;
 using UnityEngine;
 using System.Collections;
 
-    /// <summary>
-    /// 地図のセル情報を扱うクラス
-    /// </summary>
+/// <summary>
+/// 地図のセル情報を扱うクラス
+/// </summary>
 
-       class Map : MonoBehaviour
+class Map
+{
+    /// <summary>
+    /// セル情報を格納する配列
+    /// </summary>
+    private Cell_Data[,] cd;
+    
+    ///// <summary>
+    ///// 衛星クラスのリスト管理
+    ///// </summary>
+    //private List<SatelliteComponent> satellite = new List<SatelliteComponent>();
+
+
+    ///// <summary>
+    ///// 衛星クラスのリスト管理
+    ///// </summary>
+    //public SatelliteComponent Satellite
+    //{
+    //    set { satellite.Add(value); }
+    //}
+
+
+    private List<GameObject> satelliteobject = new List<GameObject>();
+
+    public GameObject SatelliteObject
+    {
+        set { satelliteobject.Add(value); }
+    }
+
+
+
+   /// <summary>
+   /// コンストラクタ
+   /// </summary>
+    public Map()
     {
 
-        /// <summary>
-        /// セル情報を格納する配列
-        /// </summary>
-        private Cell_Data[,] cd;
+        this.cd = new Cell_Data[360, 180];
 
 
-
-        /// <summary>
-        /// 衛星クラスのリスト管理
-        /// </summary>
-        private List<SatelliteComponent> satellite = new List<SatelliteComponent>();
-
-
-        /// <summary>
-        /// 衛星クラスのリスト管理
-        /// </summary>
-        public SatelliteComponent Satellite
+        for (int i = 0; i < 180; i++)
         {
-             set { satellite.Add(value);}
+            for (int j = 0; j < 360; j++)
+            {
+                this.cd[j, i] = new Cell_Data();
+            }
         }
 
-
-        private List<GameObject> satelliteobject = new List<GameObject>();
-
-        public GameObject SatelliteObject 
-        {
-            set { satelliteobject.Add(value); }
-        }
-
-        //乱数(故障判定用)
-        System.Random rnd = new System.Random(Environment.TickCount);
-        
         /*
-          コンストラクタ
-           */
-           
-        public Map() 
+            csvファイルから地図にデータを埋め込む
+         */
+        //文字コードはUTF-8じゃないと文字化けする
+        TextAsset citydata = Resources.Load("csv/city") as TextAsset;
+        StringReader reader = new StringReader(citydata.text);
+
+        while (reader.Peek() > -1)
         {
-            
-            this.cd = new Cell_Data[360,180];
+            string line = reader.ReadLine();
 
+            string[] values = line.Split(',');
 
-            for (int i = 0; i < 180; i++) 
+            this.cd[int.Parse(values[2]) + 180, int.Parse(values[3]) * (-1) + 90].Country = values[0];
+            this.cd[int.Parse(values[2]) + 180, int.Parse(values[3]) * (-1) + 90].City = values[1];
+        }
+
+        /*
+           csvファイルから陸か海を埋め込む
+        */
+
+        //1が陸、0が海として書いてある
+        TextAsset mapdata = Resources.Load("csv/map") as TextAsset;
+        reader = new StringReader(mapdata.text);
+
+        int k = 0;
+        while (reader.Peek() > -1)
+        {
+            string line = reader.ReadLine();
+
+            string[] values = line.Split(',');
+
+            for (int i = 0; i < 360; i++)
             {
-                for (int j = 0; j < 360; j++) 
+                if (int.Parse(values[i]) == 1)
                 {
-                    this.cd[j, i] = new Cell_Data();
+                    this.cd[i, k].Land = true;
+
+                }
+                else
+                {
+                    this.cd[i, k].Land = false;
                 }
             }
+            k++;
+        }
+    }
 
-                /*
-                    csvファイルから地図にデータを埋め込む
-                 */
-            //文字コードはUTF-8じゃないと文字化けする
-            TextAsset citydata = Resources.Load("csv/city") as TextAsset;
-            StringReader reader = new StringReader(citydata.text);
 
-                    while (reader.Peek() > -1)
+    /// <summary>
+    /// 都市データの再読み込み
+    /// </summary>
+    /// <param name="filename">都市データのファイル名</param> 
+
+    public void City_Input(string filename)
+    {
+
+        for (int i = 0; i < 180; i++)
+        {
+            for (int j = 0; j < 360; j++)
+            {
+                this.cd[j, i].Country = null;
+                this.cd[j, i].City = null;
+            }
+        }
+
+
+        using (System.IO.StreamReader sr = new System.IO.StreamReader(filename, System.Text.Encoding.GetEncoding("shift_jis")))
+        {
+            while (!sr.EndOfStream)
+            {
+                string line = sr.ReadLine();
+
+                string[] values = line.Split(',');
+
+                this.cd[int.Parse(values[2]) + 180, int.Parse(values[3]) * (-1) + 90].Country = values[0];
+                this.cd[int.Parse(values[2]) + 180, int.Parse(values[3]) * (-1) + 90].City = values[1];
+            }
+
+        }
+    }
+
+
+    /// <summary>
+    /// 地図データの再読み込み
+    /// </summary>
+    /// <param name="filename">地図データのファイル名</param>
+    /// 
+    public void Map_Input(string filename)
+    {
+
+        using (System.IO.StreamReader sr = new System.IO.StreamReader(filename, System.Text.Encoding.GetEncoding("shift_jis")))
+        {
+            int j = 0;
+            while (!sr.EndOfStream)
+            {
+                string line = sr.ReadLine();
+
+                string[] values = line.Split(',');
+
+                for (int i = 0; i < 360; i++)
+                {
+                    if (int.Parse(values[i]) == 1)
                     {
-                        string line = reader.ReadLine();
+                        this.cd[i, j].Land = true;
 
-                        string[] values = line.Split(',');
-
-                        this.cd[int.Parse(values[2]) + 180, int.Parse(values[3]) * (-1) + 90].Country = values[0];
-                        this.cd[int.Parse(values[2]) + 180, int.Parse(values[3]) * (-1) + 90].City = values[1];
                     }
-           
-             /*
-                csvファイルから陸か海を埋め込む
-             */
-
-            //1が陸、0が海として書いてある
-                    TextAsset mapdata = Resources.Load("csv/map") as TextAsset;
-                     reader = new StringReader(mapdata.text);
-
-              int k = 0;
-                while (reader.Peek() > -1)
-                {
-                    string line = reader.ReadLine();
-
-                    string[] values = line.Split(',');
-
-                    for (int i = 0; i < 360; i++)
+                    else
                     {
-                        if (int.Parse(values[i]) == 1)
-                        {
-                            this.cd[i, k].Land = true;
-
-                        }
-                        else
-                        {
-                            this.cd[i, k].Land = false;
-                        }
+                        this.cd[i, j].Land = false;
                     }
-                    k++;
                 }
-        }
-
-
-        /// <summary>
-        /// 都市データの再読み込み
-        /// </summary>
-        /// <param name="filename">都市データのファイル名</param> 
-
-        public void City_Input(string filename) 
-        {
-
-            for (int i = 0; i < 180; i++) {
-                for (int j = 0; j < 360; j++) {
-                    this.cd[j, i].Country = null;
-                    this.cd[j, i].City = null;
-                }
-            }
-            
-                        
-            using (System.IO.StreamReader sr = new System.IO.StreamReader(filename, System.Text.Encoding.GetEncoding("shift_jis")))
-            {
-                while (!sr.EndOfStream)
-                {
-                    string line = sr.ReadLine();
-
-                    string[] values = line.Split(',');
-
-                    this.cd[int.Parse(values[2]) + 180, int.Parse(values[3]) * (-1) + 90].Country = values[0];
-                    this.cd[int.Parse(values[2]) + 180, int.Parse(values[3]) * (-1) + 90].City = values[1];
-                }
-
+                j++;
             }
         }
-
-
-        /// <summary>
-        /// 地図データの再読み込み
-        /// </summary>
-        /// <param name="filename">地図データのファイル名</param>
-        /// 
-        public void Map_Input(string filename)
-        {
-
-            using (System.IO.StreamReader sr = new System.IO.StreamReader(filename, System.Text.Encoding.GetEncoding("shift_jis")))
-            {
-                int j=0;
-                while (!sr.EndOfStream)
-                {
-                    string line = sr.ReadLine();
-
-                    string[] values = line.Split(',');
-
-                    for (int i = 0; i < 360; i++)
-                    {
-                        if (int.Parse(values[i]) == 1)
-                        {
-                            this.cd[i, j].Land = true;
-
-                        }
-                        else 
-                        {
-                            this.cd[i, j].Land = false;
-                        }
-                    }
-                    j++;
-                }
-            }
-        
-        }
-
-
-       //現在いるセル(一マス)しか見ていない
-
-        /// <summary>
-        /// 衛星のいる都市を取得
-        /// </summary>
-        /// <param name="sa">衛星クラス</param>
-        /// <return>現在地の都市</return>
-        /// 
-           
-        private String Current_City(SatelliteComponent sa) 
-        {
-            /*
-             *  セルはx軸方向は経度‐180を0として、東方向に360マスある
-             *        y軸方向は緯度-90？(北極)を0として、南方向に180マスある
-             */
-
-            if(string.Compare(cd[(int)sa.X + 180, (int)sa.Y + 90].City, null) != 0)
-            {
-                print(cd[(int)sa.X + 180, (int)sa.Y + 90].City);
-                return cd[(int)sa.X + 180, (int)sa.Y + 90].City;
-            }
-            else
-            {
-                return null;
-            }
-        }
-
-        /// <summary>
-        /// 衛星のいる国を取得
-        /// </summary>
-        /// <param name="sa">衛星クラス</param>
-        /// <return>現在地の都市</return>
-        /// 
-
-        private String Current_Country(SatelliteComponent sa)
-        {
-
-            if (string.Compare(cd[(int)sa.X + 180, (int)sa.Y + 90].Country, null) != 0)
-            {
-                return cd[(int)sa.X + 180, (int)sa.Y + 90].Country;
-            }
-            else
-            {
-                return null;
-            }
-        }
-
-
-
-        /// <summary>
-        /// 故障率から故障判定
-        /// </summary>
-        /// <return>true:故障，false:回避</return>>
-        private Boolean breakjudg(SatelliteComponent s)
-        {
-
-            if (rnd.Next(0, 1000) < s.Fail * 1000)
-            {
-                return true;
-            }
-            else
-            {
-                return false;
-            }
-        }
-
-
-        /// <summary>
-        /// 全衛星の位置更新
-        /// </summary>
-        /// 
-        public void Satellite_Updata()
-        {
-
-           
-             
-            for (int i = 0; i < satellite.Count; i++)
-            {
-                satellite[i].update_locate(satellite[i].TIME);
-                satellite[i].transform.position = new Vector3(satellite[i].X, satellite[i].Y, 0);
-                satellite[i].TIME = satellite[i].TIME.AddMinutes(10);
-           //     print(satellite[i].X + "," + satellite[i].Y);
-
-                //セル情報表示関係
-                /*
-                   String name = Current_Country(satellite[i]);
-                   if (string.Compare(name, null) != 0 && i == 0) 
-                   {
-                       print(name);
-                   }*/
-
-                
-                if (breakjudg(satellite[i])) 
-                {
-                    satellite.RemoveAt(i);
-                    Destroy(satelliteobject[i]);
-                }
-            }
-            
-            /*
-            foreach (SatelliteComponent s in satellite) 
-            {
-                s.update_locate(s.TIME);
-                s.transform.position = new Vector3(s.X, s.Y, 0);
-                s.TIME = s.TIME.AddMinutes(10);
-            }
-            */
-        }
-           
-
 
     }
+
+
+    //現在いるセル(一マス)しか見ていない
+
+    /// <summary>
+    /// 衛星のいる都市を取得
+    /// </summary>
+    /// <param name="sa">衛星クラス</param>
+    /// <return>現在地の都市</return>
+    /// 
+
+    private String Current_City(SatelliteComponent sa)
+    {
+        /*
+         *  セルはx軸方向は経度‐180を0として、東方向に360マスある
+         *        y軸方向は緯度-90？(北極)を0として、南方向に180マスある
+         */
+
+        if (string.Compare(cd[(int)sa.X + 180, (int)sa.Y + 90].City, null) != 0)
+        {
+            //print(cd[(int)sa.X + 180, (int)sa.Y + 90].City);
+            return cd[(int)sa.X + 180, (int)sa.Y + 90].City;
+        }
+        else
+        {
+            return null;
+        }
+    }
+
+    /// <summary>
+    /// 衛星のいる国を取得
+    /// </summary>
+    /// <param name="sa">衛星クラス</param>
+    /// <return>現在地の都市</return>
+    /// 
+
+    private String Current_Country(SatelliteComponent sa)
+    {
+
+        if (string.Compare(cd[(int)sa.X + 180, (int)sa.Y + 90].Country, null) != 0)
+        {
+            return cd[(int)sa.X + 180, (int)sa.Y + 90].Country;
+        }
+        else
+        {
+            return null;
+        }
+    }
+
+
+
+
+
+
+    /// <summary>
+    /// 全衛星の位置更新
+    /// </summary>
+    /// 
+    public void Satellite_Updata()
+    {
+        //foreach (GameObject g in satelliteobject)
+        //{
+        //    // GameObjectのSatelliteComponentを取得
+            
+        //    SatelliteComponent component = g.GetComponent<SatelliteComponent>();
+        //    //
+        //    if (component.breakjudg())
+        //    {
+        //        satelliteobject.Remove(g);
+        //        Destroy(g);
+        //    }
+        //}
+        satelliteobject.RemoveAll(x => x.GetComponent<SatelliteComponent>().Fail);
+        
+
+
+        //for (int i = 0; i < satellite.Count; i++)
+        //{
+        //    //satellite[i].update_locate(satellite[i].TIME);
+        //    //satellite[i].transform.position = new Vector3(satellite[i].X, satellite[i].Y, 0);
+        //    //satellite[i].TIME = satellite[i].TIME.AddMinutes(10);
+        //    //     print(satellite[i].X + "," + satellite[i].Y);
+
+        //    //セル情報表示関係
+        //    /*
+        //       String name = Current_Country(satellite[i]);
+        //       if (string.Compare(name, null) != 0 && i == 0) 
+        //       {
+        //           print(name);
+        //       }*/
+
+
+
+        //}
+
+        /*
+        foreach (SatelliteComponent s in satellite) 
+        {
+            s.update_locate(s.TIME);
+            s.transform.position = new Vector3(s.X, s.Y, 0);
+            s.TIME = s.TIME.AddMinutes(10);
+        }
+        */
+    }
+
+
+
+}
 
 

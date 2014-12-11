@@ -62,6 +62,23 @@ public class SatelliteComponent : MonoBehaviour {
     private float locate_y;
 
     /// <summary>
+    /// ID
+    /// </summary>
+    private int id = 0;
+
+    /// <summary>
+    /// IDのプロパティ
+    /// </summary>
+    public int ID
+    {
+        get { return id;  }
+        set{
+            id = value;
+            rnd = new System.Random(id * Environment.TickCount);
+        }
+    }
+
+    /// <summary>
     /// 現在時刻
     /// </summary>
     public DateTime TIME
@@ -97,7 +114,10 @@ public class SatelliteComponent : MonoBehaviour {
         this.locate_y = new_locate[1];
     }
 
-
+    /// <summary>
+    /// 乱数
+    /// </summary>
+    private System.Random rnd;
 
     //とりあえず一律0.1％で
     /// <summary>
@@ -106,14 +126,22 @@ public class SatelliteComponent : MonoBehaviour {
     private double fail = 0.001;
 
     /// <summary>
-    /// 故障率
+    /// 故障判定
     /// </summary>
-    public double Fail
+    public Boolean Fail
     {
-        get { return fail; }
+        get {
+            if (rnd.Next(0, 1000) < fail * 1000)
+            {
+                Destroy(gameObject);
+                return true;
+            }
+            else
+            {
+                return false;
+            }
+        }
     }
-
-
 
     /// <summary>
     /// 衛星軌道の計算
@@ -241,7 +269,7 @@ public class SatelliteComponent : MonoBehaviour {
     // Update is called once per frame
     void Update()
     {
-        /*
+        
         if (observe_time.Year > 1900)
         {
             update_locate(observe_time);
@@ -249,8 +277,9 @@ public class SatelliteComponent : MonoBehaviour {
            // observe_time = observe_time.AddSeconds(1);
            //observe_time = observe_time.AddDays(10);
             observe_time = observe_time.AddMinutes(10);
-            print(observe_time + " x=" + locate_x + " y=" + locate_y);
+            //print(observe_time + " x=" + locate_x + " y=" + locate_y);
         }
-         */
+         
+
     }
 }
