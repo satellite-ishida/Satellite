@@ -40,7 +40,7 @@ public class DkLogEditor : EditorWindow
     /// </summary>
     void OnGUI()
     {
-        GUI.color = Color.black;
+        GUI.backgroundColor = Color.black;
         BeginWindows();
         DkLog.DrawLogWindow(new Rect(0, 0, position.width, position.height), true);
         EndWindows();
