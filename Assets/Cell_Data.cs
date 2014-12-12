@@ -42,5 +42,16 @@ using System.Collections;
             set { city = value; }
 
         }
+
+        private bool ground_station = false;
+        /// <summary>
+        /// 基地局
+        /// </summary>
+        public bool GS
+        {
+            get { return ground_station; }
+            set { ground_station = value; }
+
+        }
     }
 

@@ -15,23 +15,17 @@ class Map
     /// <summary>
     /// セル情報を格納する配列
     /// </summary>
+    /// 
     private Cell_Data[,] cd;
-    
-    ///// <summary>
-    ///// 衛星クラスのリスト管理
-    ///// </summary>
-    //private List<SatelliteComponent> satellite = new List<SatelliteComponent>();
 
+    public Cell_Data this[double x,double y]  {
+        get {  return this.cd[(int)x + 180, (int)y * (-1) + 90]; }
+    }
 
-    ///// <summary>
-    ///// 衛星クラスのリスト管理
-    ///// </summary>
-    //public SatelliteComponent Satellite
-    //{
-    //    set { satellite.Add(value); }
-    //}
-
-
+    /// <summary>
+    /// 衛星オブジェクト
+    /// </summary>
+    /// 
     private List<GameObject> satelliteobject = new List<GameObject>();
 
     public GameObject SatelliteObject
@@ -177,6 +171,29 @@ class Map
     }
 
 
+    /// <summary>
+    /// 基地局を追加
+    /// </summary>
+    /// <param name="x">経度</param>
+    /// <param name="y">緯度</param>>
+    /// <return>基地建設の成功判定</return>
+    /// 
+    public bool Set_BaseStation(double x, double y) 
+    {
+        if (this.cd[(int)x + 180, (int)y * (-1) + 90].Land)
+        {
+
+            this.cd[(int)x + 180, (int)y * (-1) + 90].GS = true;
+            return true;
+
+        }
+        else 
+        {
+            return false;
+        }
+    }
+
+
     //現在いるセル(一マス)しか見ていない
 
     /// <summary>
@@ -195,8 +212,6 @@ class Map
 
         return cd[(int)g.GetComponent<SatelliteComponent>().X + 180, (int)g.GetComponent<SatelliteComponent>().Y * (-1) + 90];
     }
-
-
 
     /// <summary>
     /// 全衛星の位置更新
