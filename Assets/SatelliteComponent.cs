@@ -42,14 +42,29 @@ public class SatelliteComponent : MonoBehaviour {
     public double L_omg0;
 
     /// <summary>
-    /// 元期
-    /// </summary>
-    public double ET;
-
-    /// <summary>
     /// 現在時刻
     /// </summary>
-    private DateTime observe_time = new DateTime(1800, 5, 15, 2, 0, 0);
+    private DateTime observe_time = new DateTime(1800,1,1,0,0,0);
+
+
+    /// <summary>
+    /// 元期
+    /// </summary>
+    public double double_et;
+    private DateTime date_et;
+    public double ET
+    {
+        get { return double_et; }
+        set {
+            double_et = value;
+            int year = (int)(double_et / 1000);
+            date_et = new DateTime(year+2000, 1, 1);
+            double diff_day = (double)(double_et - year * 1000) - 1;
+            date_et = date_et.AddDays(diff_day);
+            observe_time = date_et;
+        }
+    }
+   
 
     /// <summary>
     /// 現在位置_x軸
@@ -192,8 +207,8 @@ public class SatelliteComponent : MonoBehaviour {
     private double calc_time_diff(DateTime ob_time)
     {
         double diff = ((double)ob_time.Year - 2000) * 1000 + calc_num_day(ob_time) + 1;
-        double year_diff = ((double)ob_time.Year - 2000) - Math.Floor(ET/1000);
-        double day_diff = calc_num_day(ob_time) + 1 - (ET -  Math.Floor(ET/1000)*1000);
+        double year_diff = ((double)ob_time.Year - 2000) - Math.Floor(double_et/1000);
+        double day_diff = calc_num_day(ob_time) + 1 - (double_et -  Math.Floor(double_et/1000)*1000);
         //double time_diff = year_diff * 365 + day_diff;
 
         // 軌道修正
@@ -272,12 +287,15 @@ public class SatelliteComponent : MonoBehaviour {
         
         if (observe_time.Year > 1900)
         {
-            update_locate(observe_time);
-            transform.position = new Vector3(locate_x, locate_y, 0);
-           // observe_time = observe_time.AddSeconds(1);
-           //observe_time = observe_time.AddDays(10);
-            observe_time = observe_time.AddMinutes(10);
-            //print(observe_time + " x=" + locate_x + " y=" + locate_y);
+            for (int i = 0; i < 1; i++)
+            {
+                update_locate(observe_time);
+                transform.position = new Vector3(locate_x, locate_y, 0);
+                // observe_time = observe_time.AddSeconds(1);
+                //observe_time = observe_time.AddDays(10);
+                observe_time = observe_time.AddMinutes(1);
+                //print(observe_time + " x=" + locate_x + " y=" + locate_y);
+            }
         }
          
 
