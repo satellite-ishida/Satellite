@@ -287,6 +287,7 @@ public class SatelliteComponent : MonoBehaviour {
         
         if (observe_time.Year > 1900)
         {
+            //倍速モード対応にしたい（）
             for (int i = 0; i < 1; i++)
             {
                 update_locate(observe_time);
