@@ -123,4 +123,15 @@ public class GameManager : MonoBehaviour {
         map.Satellite_Updata();
 
     }
+
+
+    void OnMouseDown()
+    {
+        // マウス位置
+        Vector3 mousePos = Camera.main.ScreenToWorldPoint(Input.mousePosition);
+        // 緯度
+        double latitude = mousePos.y;
+        // 経度
+        double longitude = mousePos.x;
+    }
 }

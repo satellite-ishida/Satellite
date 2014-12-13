@@ -253,7 +253,7 @@ public class SatelliteComponent : MonoBehaviour {
         return st_decimal;
     }
 
-    //その年の1/1 00:00からどれだけの日数が経っているか計算する
+    // その年の1/1 00:00からどれだけの日数が経っているか計算する
     private double calc_num_day(DateTime observe_time)
     {
         //もしJST(日本時刻)ならUSTに直す。(時間から９時間引く)
@@ -264,6 +264,12 @@ public class SatelliteComponent : MonoBehaviour {
         double num_day = day + day_decimal;
 
         return num_day;
+    }
+
+    //
+    private void makeSatellite()
+    {
+
     }
 
     // Update is called once per frame
