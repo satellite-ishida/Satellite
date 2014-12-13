@@ -1,0 +1,11 @@
+C:\Users\pp\Documents\Satellite_Gamge\Temp\UnityVS_bin\Debug\Assembly-CSharp.dll
+C:\Users\pp\Documents\Satellite_Gamge\Temp\UnityVS_bin\Debug\Assembly-CSharp.pdb
+C:\Users\pp\Documents\Satellite_Gamge\Temp\UnityVS_bin\Debug\UnityEditor.dll
+C:\Users\pp\Documents\Satellite_Gamge\Temp\UnityVS_bin\Debug\UnityEngine.dll
+C:\Users\pp\Documents\Satellite_Gamge\Temp\UnityVS_bin\Debug\UnityEngine.UI.dll
+C:\Users\pp\Documents\Satellite_Gamge\Temp\UnityVS_bin\Debug\UnityEngine.xml
+C:\Users\pp\Documents\Satellite_Gamge\Temp\UnityVS_bin\Debug\UnityEditor.xml
+C:\Users\pp\Documents\Satellite_Gamge\Temp\UnityVS_bin\Debug\UnityEngine.UI.xml
+C:\Users\pp\Documents\Satellite_Gamge\obj\Debug\UnityVS.Satellite_Gamge.CSharp.csprojResolveAssemblyReference.cache
+C:\Users\pp\Documents\Satellite_Gamge\obj\Debug\Assembly-CSharp.dll
+C:\Users\pp\Documents\Satellite_Gamge\obj\Debug\Assembly-CSharp.pdb
