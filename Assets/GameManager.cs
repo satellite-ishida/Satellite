@@ -30,6 +30,8 @@ public class GameManager : MonoBehaviour {
         // 経度
         double longitude = _charactor3.transform.localPosition.x;
 
+        map = new Map();
+
         // 衛星の個数
         int n = 5;
 
@@ -75,6 +77,19 @@ public class GameManager : MonoBehaviour {
             //component.e = Math.Abs((0.0746703 / 40.5968) * latitude);
             
         }
+        GameObject prefab2 = (GameObject)Resources.Load("Prefabs/point");
+
+        for (int i = -180; i < 180; i++)
+        {
+            for (int j = -89; j < 90; j++)
+            {
+                if (string.Compare(map[i, j].City, null) != 0)
+                {
+                    GameObject point = Instantiate(prefab2) as GameObject;
+                    point.transform.position = new Vector3(i, j, 1);
+                }
+            }
+        }
 
         // 古の愉快なパラメータ達
 
@@ -118,7 +133,7 @@ public class GameManager : MonoBehaviour {
     // Update is called once per frame
     void Update()
     {
-        map.Satellite_Updata();
+        map.Satellite_Update();
     }
 
     public static void CreateNewSat(String M0, String M1, String M2, String e, String i, String s_omg, String L_omg, String ET)
@@ -166,13 +181,82 @@ public class GameManager : MonoBehaviour {
     }
 
 
+    private Vector3 start;
+
+
     void OnMouseDown()
     {
-        // マウス位置
-        Vector3 mousePos = Camera.main.ScreenToWorldPoint(Input.mousePosition);
-        // 緯度
-        double latitude = mousePos.y;
-        // 経度
-        double longitude = mousePos.x;
+        //GameObject prefab3 = (GameObject)Resources.Load("Prefabs/base_station");
+
+    
+        float x = Input.mousePosition.x;
+        float y = Input.mousePosition.y;
+
+        start = new Vector3(x, y, 0);
+        
+
+        //double longitude = Math.Round(.x);
+        //double latitude = Math.Round(mousePos.y);
+
+        //if (!map[longitude, latitude].GS && map.Set_BaseStation((int)longitude, (int)latitude))
+        //{
+        //    GameObject base_sation = Instantiate(prefab3) as GameObject;
+        //    base_sation.transform.position = new Vector3((int)longitude, (int)latitude, 1);
+        //}
+
+        //print(map[longitude,latitude].GS);
+        //print((int)longitude + "," + (int)latitude);
+
+      //  print(map[(int)longitude,(int)latitude].City);
+    }
+
+    void OnMouseUp()
+    {
+        float x = Input.mousePosition.x;
+        float y = Input.mousePosition.y;
+
+        Vector3 currentPosition = new Vector3(x, y, 1);
+
+
+        GameObject prefab3 = (GameObject)Resources.Load("Prefabs/base_station");
+
+        GameObject aa = Instantiate(prefab3) as GameObject;
+        aa.transform.position = Camera.main.ScreenToWorldPoint(currentPosition / 2 + start / 2);
+        aa.transform.localScale = (currentPosition - start) * 2;
+
+        print(currentPosition.x - start.x);
+
+        double a = (currentPosition.x - start.x) / 4;
+        double b = (currentPosition.y - start.y) / 4;
+        Vector3 O = Camera.main.ScreenToWorldPoint(currentPosition / 2 + start / 2);
+
+        int citynum = 0;
+        int landnum = 0;
+        int seanum = 0;
+
+        for (int i = (int)O.x - (int)Math.Abs(currentPosition.x - start.x) / 4; i < (int)O.x + (int)Math.Abs(currentPosition.x - start.x); i++)
+        {
+            for (int j = (int)O.y - (int)Math.Abs(currentPosition.y - start.y) / 4; j < (int)O.y + (int)Math.Abs(currentPosition.y - start.y) / 4; j++)
+            {
+                if (((i - O.x) * (i - O.x)) / (a * a) + ((j - O.y) * (j - O.y)) / (b * b) <= 1)
+                {
+                    if (string.Compare(map[i, j].City, null) != 0)
+                    {
+                        citynum++;
+                    }
+                    if (map[i, j].Land)
+                    {
+                        landnum++;
+                    }
+                    else
+                    {
+                        seanum++;
+                    }
+                }
+            }
+
+        }
+
+        print(citynum + "," + landnum + "," + seanum);
     }
 }

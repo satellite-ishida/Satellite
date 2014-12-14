@@ -15,23 +15,18 @@ class Map
     /// <summary>
     /// セル情報を格納する配列
     /// </summary>
+    /// 
     private Cell_Data[,] cd;
-    
-    ///// <summary>
-    ///// 衛星クラスのリスト管理
-    ///// </summary>
-    //private List<SatelliteComponent> satellite = new List<SatelliteComponent>();
 
+    public Cell_Data this[double x, double y]
+    {
+        get { return this.cd[(int)x + 180, (int)y * (-1) + 90]; }
+    }
 
-    ///// <summary>
-    ///// 衛星クラスのリスト管理
-    ///// </summary>
-    //public SatelliteComponent Satellite
-    //{
-    //    set { satellite.Add(value); }
-    //}
-
-
+    /// <summary>
+    /// 衛星オブジェクト
+    /// </summary>
+    /// 
     private List<GameObject> satelliteobject = new List<GameObject>();
 
     public GameObject SatelliteObject
@@ -41,9 +36,9 @@ class Map
 
 
 
-   /// <summary>
-   /// コンストラクタ
-   /// </summary>
+    /// <summary>
+    /// コンストラクタ
+    /// </summary>
     public Map()
     {
 
@@ -177,64 +172,53 @@ class Map
     }
 
 
+    /// <summary>
+    /// 基地局を追加
+    /// </summary>
+    /// <param name="x">経度</param>
+    /// <param name="y">緯度</param>>
+    /// <return>基地建設の成功判定</return>
+    /// 
+    public bool Set_BaseStation(double x, double y)
+    {
+        if (this.cd[(int)x + 180, (int)y * (-1) + 90].Land)
+        {
+
+            this.cd[(int)x + 180, (int)y * (-1) + 90].GS = true;
+            return true;
+
+        }
+        else
+        {
+            return false;
+        }
+    }
+
+
     //現在いるセル(一マス)しか見ていない
 
     /// <summary>
-    /// 衛星のいる都市を取得
+    /// セルの情報を取得
     /// </summary>
     /// <param name="sa">衛星クラス</param>
-    /// <return>現在地の都市</return>
+    /// <return>セルデータ</return>
     /// 
 
-    private String Current_City(SatelliteComponent sa)
+    private Cell_Data Get_CellData(GameObject g)
     {
         /*
          *  セルはx軸方向は経度‐180を0として、東方向に360マスある
          *        y軸方向は緯度-90？(北極)を0として、南方向に180マスある
          */
 
-        if (string.Compare(cd[(int)sa.X + 180, (int)sa.Y + 90].City, null) != 0)
-        {
-            //print(cd[(int)sa.X + 180, (int)sa.Y + 90].City);
-            return cd[(int)sa.X + 180, (int)sa.Y + 90].City;
-        }
-        else
-        {
-            return null;
-        }
+        return cd[(int)g.GetComponent<SatelliteComponent>().X + 180, (int)g.GetComponent<SatelliteComponent>().Y * (-1) + 90];
     }
-
-    /// <summary>
-    /// 衛星のいる国を取得
-    /// </summary>
-    /// <param name="sa">衛星クラス</param>
-    /// <return>現在地の都市</return>
-    /// 
-
-    private String Current_Country(SatelliteComponent sa)
-    {
-
-        if (string.Compare(cd[(int)sa.X + 180, (int)sa.Y + 90].Country, null) != 0)
-        {
-            return cd[(int)sa.X + 180, (int)sa.Y + 90].Country;
-        }
-        else
-        {
-            return null;
-        }
-    }
-
-
-
-
-
-
 
     /// <summary>
     /// 全衛星の位置更新
     /// </summary>
     /// 
-    public void Satellite_Updata()
+    public void Satellite_Update()
     {
         //foreach (GameObject g in satelliteobject)
         //{
@@ -246,7 +230,7 @@ class Map
         ///// 
         //public void Satellite_Updata()
         //{
-             
+
         //    for (int i = 0; i < satellite.Count; i++)
         //    {
         //        satellite[i].update_locate(satellite[i].TIME);
@@ -262,7 +246,7 @@ class Map
         //               print(name);
         //           }*/
 
-                
+
         //        if (breakjudg(satellite[i])) 
         //        {
         //            satellite.RemoveAt(i);
@@ -270,7 +254,7 @@ class Map
         //        }
         //    }
 
-            
+
         //    SatelliteComponent component = g.GetComponent<SatelliteComponent>();
         //    //
         //    if (component.breakjudg())
@@ -280,7 +264,7 @@ class Map
         //    }
         //}
         satelliteobject.RemoveAll(x => x.GetComponent<SatelliteComponent>().Fail);
-        
+
 
 
         //for (int i = 0; i < satellite.Count; i++)
