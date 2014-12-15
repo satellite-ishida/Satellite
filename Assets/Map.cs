@@ -20,6 +20,7 @@ class Map
 
     public Cell_Data this[double x,double y]  {
         get {  return this.cd[(int)x + 180, (int)y * (-1) + 90]; }
+        private set { this.cd[(int)x + 180, (int)y * (-1) + 90] = value;  }
     }
 
     /// <summary>
@@ -65,8 +66,8 @@ class Map
 
             string[] values = line.Split(',');
 
-            this.cd[int.Parse(values[2]) + 180, int.Parse(values[3]) * (-1) + 90].Country = values[0];
-            this.cd[int.Parse(values[2]) + 180, int.Parse(values[3]) * (-1) + 90].City = values[1];
+            this[int.Parse(values[2]), int.Parse(values[3])].Country = values[0];
+            this[int.Parse(values[2]), int.Parse(values[3])].City = values[1];
         }
 
         /*
@@ -127,8 +128,8 @@ class Map
 
                 string[] values = line.Split(',');
 
-                this.cd[int.Parse(values[2]) + 180, int.Parse(values[3]) * (-1) + 90].Country = values[0];
-                this.cd[int.Parse(values[2]) + 180, int.Parse(values[3]) * (-1) + 90].City = values[1];
+                this[int.Parse(values[2]), int.Parse(values[3])].Country = values[0];
+                this[int.Parse(values[2]), int.Parse(values[3])].City = values[1];
             }
 
         }
@@ -180,10 +181,10 @@ class Map
     /// 
     public bool Set_BaseStation(double x, double y) 
     {
-        if (this.cd[(int)x + 180, (int)y * (-1) + 90].Land)
+        if (this[x, y].Land)
         {
 
-            this.cd[(int)x + 180, (int)y * (-1) + 90].GS = true;
+            this[x, y].GS = true;
             return true;
 
         }
@@ -210,7 +211,7 @@ class Map
          *        y軸方向は緯度-90？(北極)を0として、南方向に180マスある
          */
 
-        return cd[(int)g.GetComponent<SatelliteComponent>().X + 180, (int)g.GetComponent<SatelliteComponent>().Y * (-1) + 90];
+        return this[g.GetComponent<SatelliteComponent>().X, g.GetComponent<SatelliteComponent>().Y ];
     }
 
     /// <summary>
