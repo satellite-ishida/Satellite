@@ -18,22 +18,22 @@ public class GameManager : MonoBehaviour {
 
         /////////////////////↓デバック用
         // キャラクターを取得する
-        this._charactor = GameObject.Find("Sattellite");
-        this._charactor2 = GameObject.Find("Satellite2");
-        this._charactor3 = GameObject.Find("Satellite3");
+        //this._charactor = GameObject.Find("Sattellite");
+        //this._charactor2 = GameObject.Find("Satellite2");
+        //this._charactor3 = GameObject.Find("Satellite3");
 
-        GameObject prefab = (GameObject)Resources.Load("Prefabs/QZS");
+        GameObject prefab = (GameObject)Resources.Load("Prefabs/QZStest");
 
-        // 緯度
-        double latitude = _charactor3.transform.localPosition.y;
+        //// 緯度
+        //double latitude = _charactor3.transform.localPosition.y;
 
-        // 経度
-        double longitude = _charactor3.transform.localPosition.x;
+        //// 経度
+        //double longitude = _charactor3.transform.localPosition.x;
 
         map = new Map();
 
         // 衛星の個数
-        int n = 5;
+        int n = 1;
 
         for (int i = 0; i < 360; i += (360 / n))
         {
@@ -134,6 +134,7 @@ public class GameManager : MonoBehaviour {
     void Update()
     {
         map.Satellite_Update();
+        map.CalcScore();
     }
 
     public static void CreateNewSat(String M0, String M1, String M2, String e, String i, String s_omg, String L_omg, String ET)
@@ -147,7 +148,7 @@ public class GameManager : MonoBehaviour {
         double _L_omg = double.Parse(L_omg);
         double _ET = double.Parse(ET);
 
-        GameObject prefab = (GameObject)Resources.Load("Prefabs/QZS");
+        GameObject prefab = (GameObject)Resources.Load("Prefabs/QZStest");
         GameObject satellite = Instantiate(prefab) as GameObject;
         SatelliteComponent component = satellite.GetComponent<SatelliteComponent>();
 
@@ -165,7 +166,7 @@ public class GameManager : MonoBehaviour {
     public static void CreateNewSat(double M0, double M1, double M2, double e, double i, double s_omg, double L_omg, double ET)
     {
 
-        GameObject prefab = (GameObject)Resources.Load("Prefabs/QZS");
+        GameObject prefab = (GameObject)Resources.Load("Prefabs/QZStest");
         GameObject satellite = Instantiate(prefab) as GameObject;
         SatelliteComponent component = satellite.GetComponent<SatelliteComponent>();
 
@@ -176,6 +177,8 @@ public class GameManager : MonoBehaviour {
         component.e = e;
         component.s_omg0 = s_omg;
         component.M0 = M0;
+        component.M1 = M1;
+        component.M2 = M2;
         component.ET = ET;
         component.L_omg0 = L_omg;
     }
@@ -188,12 +191,12 @@ public class GameManager : MonoBehaviour {
     {
         //GameObject prefab3 = (GameObject)Resources.Load("Prefabs/base_station");
 
-    
-        float x = Input.mousePosition.x;
-        float y = Input.mousePosition.y;
 
-        start = new Vector3(x, y, 0);
-        
+        //float x = Input.mousePosition.x;
+        //float y = Input.mousePosition.y;
+
+        //start = new Vector3(x, y, 0);
+
 
         //double longitude = Math.Round(.x);
         //double latitude = Math.Round(mousePos.y);
@@ -207,56 +210,56 @@ public class GameManager : MonoBehaviour {
         //print(map[longitude,latitude].GS);
         //print((int)longitude + "," + (int)latitude);
 
-      //  print(map[(int)longitude,(int)latitude].City);
+        //  print(map[(int)longitude,(int)latitude].City);
     }
 
     void OnMouseUp()
     {
-        float x = Input.mousePosition.x;
-        float y = Input.mousePosition.y;
+    //    float x = Input.mousePosition.x;
+    //    float y = Input.mousePosition.y;
 
-        Vector3 currentPosition = new Vector3(x, y, 1);
+    //    Vector3 currentPosition = new Vector3(x, y, 1);
 
 
-        GameObject prefab3 = (GameObject)Resources.Load("Prefabs/base_station");
+    //    GameObject prefab3 = (GameObject)Resources.Load("Prefabs/base_station");
 
-        GameObject aa = Instantiate(prefab3) as GameObject;
-        aa.transform.position = Camera.main.ScreenToWorldPoint(currentPosition / 2 + start / 2);
-        aa.transform.localScale = (currentPosition - start) * 2;
+    //    GameObject aa = Instantiate(prefab3) as GameObject;
+    //    aa.transform.position = Camera.main.ScreenToWorldPoint(currentPosition / 2 + start / 2);
+    //    aa.transform.localScale = (currentPosition - start) * 2;
 
-        print(currentPosition.x - start.x);
+    //    print(currentPosition.x - start.x);
 
-        double a = (currentPosition.x - start.x) / 4;
-        double b = (currentPosition.y - start.y) / 4;
-        Vector3 O = Camera.main.ScreenToWorldPoint(currentPosition / 2 + start / 2);
+    //    double a = (currentPosition.x - start.x) / 4;
+    //    double b = (currentPosition.y - start.y) / 4;
+    //    Vector3 O = Camera.main.ScreenToWorldPoint(currentPosition / 2 + start / 2);
 
-        int citynum = 0;
-        int landnum = 0;
-        int seanum = 0;
+    //    int citynum = 0;
+    //    int landnum = 0;
+    //    int seanum = 0;
 
-        for (int i = (int)O.x - (int)Math.Abs(currentPosition.x - start.x) / 4; i < (int)O.x + (int)Math.Abs(currentPosition.x - start.x); i++)
-        {
-            for (int j = (int)O.y - (int)Math.Abs(currentPosition.y - start.y) / 4; j < (int)O.y + (int)Math.Abs(currentPosition.y - start.y) / 4; j++)
-            {
-                if (((i - O.x) * (i - O.x)) / (a * a) + ((j - O.y) * (j - O.y)) / (b * b) <= 1)
-                {
-                    if (string.Compare(map[i, j].City, null) != 0)
-                    {
-                        citynum++;
-                    }
-                    if (map[i, j].Land)
-                    {
-                        landnum++;
-                    }
-                    else
-                    {
-                        seanum++;
-                    }
-                }
-            }
+    //    for (int i = (int)O.x - (int)Math.Abs(currentPosition.x - start.x) / 4; i < (int)O.x + (int)Math.Abs(currentPosition.x - start.x); i++)
+    //    {
+    //        for (int j = (int)O.y - (int)Math.Abs(currentPosition.y - start.y) / 4; j < (int)O.y + (int)Math.Abs(currentPosition.y - start.y) / 4; j++)
+    //        {
+    //            if (((i - O.x) * (i - O.x)) / (a * a) + ((j - O.y) * (j - O.y)) / (b * b) <= 1)
+    //            {
+    //                if (string.Compare(map[i, j].City, null) != 0)
+    //                {
+    //                    citynum++;
+    //                }
+    //                if (map[i, j].Land)
+    //                {
+    //                    landnum++;
+    //                }
+    //                else
+    //                {
+    //                    seanum++;
+    //                }
+    //            }
+    //        }
 
-        }
+    //    }
 
-        print(citynum + "," + landnum + "," + seanum);
+    //    print(citynum + "," + landnum + "," + seanum);
     }
 }

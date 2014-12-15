@@ -4,6 +4,8 @@ using System.Linq;
 using System.Text;
 using UnityEngine;
 using System.Collections;
+using UnityEngine.UI;
+
 
 public class SatelliteComponent : MonoBehaviour {
     /// <summary>
@@ -61,7 +63,7 @@ public class SatelliteComponent : MonoBehaviour {
             date_et = new DateTime(year+2000, 1, 1);
             double diff_day = (double)(double_et - year * 1000) - 1;
             date_et = date_et.AddDays(diff_day);
-            observe_time = date_et;
+            observe_time = date_et.AddHours(15.5);
         }
     }
    
@@ -118,6 +120,14 @@ public class SatelliteComponent : MonoBehaviour {
         get { return locate_y; }
     }
 
+    private double span = 1;
+
+    public double SPAN
+    {
+        get;
+        set;
+    }
+
     /// <summary>
     /// 位置の更新
     /// </summary>
@@ -134,11 +144,11 @@ public class SatelliteComponent : MonoBehaviour {
     /// </summary>
     private System.Random rnd;
 
-    //とりあえず一律0.1％で
+    
     /// <summary>
     /// 故障率
     /// </summary>
-    private double fail = 0.001;
+    private double fail = 0;
 
     /// <summary>
     /// 故障判定
@@ -221,6 +231,11 @@ public class SatelliteComponent : MonoBehaviour {
         return time_diff;
     }
 
+    void Start()
+    {
+
+    }
+
     private double calc_eccentric_anomaly(double M)
     {
         double e_r = e;
@@ -274,7 +289,11 @@ public class SatelliteComponent : MonoBehaviour {
         //もしJST(日本時刻)ならUSTに直す。(時間から９時間引く)
         DateTime greenwich = new DateTime(observe_time.Year, 1, 1, 0, 0, 0);
         TimeSpan span = observe_time - greenwich;
-        double day_decimal = ((double)observe_time.Hour + (double)observe_time.Minute / 60 + (double)observe_time.Second / 60 / 10) / 24;
+        //double day_decimal = ((double)observe_time.Hour + (double)observe_time.Minute / 60 + (double)observe_time.Second / 60 / 10) / 24;
+        double second = (double)observe_time.Second + (double)observe_time.Millisecond / 1000;
+        double minute = (double)observe_time.Minute + second / 60;
+        double hour   = (double)observe_time.Hour + minute / 60;    
+        double day_decimal = hour / 24;
         double day = double.Parse(span.Days.ToString());
         double num_day = day + day_decimal;
         
@@ -287,23 +306,79 @@ public class SatelliteComponent : MonoBehaviour {
 
     }
 
+    private DateTime time = new DateTime(2000, 1, 1, 0, 0, 0);
+
     // Update is called once per frame
     void Update()
     {
         
         if (observe_time.Year > 1900)
         {
-            for (int i = 0; i < 1; i++)
-            {
-                update_locate(observe_time);
-                transform.position = new Vector3(locate_x, locate_y, 0);
-                // observe_time = observe_time.AddSeconds(1);
-                //observe_time = observe_time.AddDays(10);
-                observe_time = observe_time.AddMinutes(1);
-                //print(observe_time + " x=" + locate_x + " y=" + locate_y);
-            }
+           // GameObject span = GameObject.Find("Span");
+           // Slider s = span.GetComponent<Slider>();
+
+
+
+           // for (int i = 0; i < Math.Floor(s.value); i++)
+           // {
+
+           //     update_locate(observe_time);
+           //     transform.position = new Vector3(locate_x, locate_y, 0);
+           //    // observe_time = observe_time.AddSeconds(10);
+           //     observe_time = observe_time.AddMinutes(1);
+                
+           //     //print(observe_time + " x=" + locate_x + " y=" + locate_y);
+                
+           //     ////更新確認用
+           //     //time = time.AddMinutes(1);
+           //     //GameObject date = GameObject.Find("Date");
+           //     //Text te = date.GetComponent<Text>();
+           //     //te.text = time.ToString();
+           //}
+
+            transform.position = new Vector3(locate_x, locate_y, 0);
         }
          
 
     }
+
+    public void calc()
+    {
+            update_locate(observe_time);
+            observe_time = observe_time.AddMinutes(1);
+            //observe_time = observe_time.AddSeconds(10);
+    }
+
+    Boolean sensorOn = false;
+
+    void OnMouseDown()
+    {
+        GameObject sensor = gameObject.transform.FindChild("Sensor").gameObject;
+        SpriteRenderer sr = sensor.GetComponent<SpriteRenderer>();
+        print(sr.color);
+        Color c;
+        if (sensorOn)
+        {
+            c = new Color(1f, 1f, 0f, 0f);
+            sensorOn = false;
+        }
+        else
+        {
+            c = new Color(1f, 1f, 0f, 0.2f);
+            sensorOn = true;
+        }
+        
+    sr.color = c;
+    }
+
+    void OnMouseUp()
+    {
+            //GameObject sensor = gameObject.transform.FindChild("Sensor").gameObject;
+            //SpriteRenderer sr = sensor.GetComponent<SpriteRenderer>();
+            //print(sr.color);
+            //Color c = new Color(1f, 1f, 0f, 0f);
+            //sr.color = c;
+        
+    }
+
 }

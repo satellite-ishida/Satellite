@@ -53,5 +53,8 @@ class Cell_Data
         set { ground_station = value; }
 
     }
+
+
+
 }
 
