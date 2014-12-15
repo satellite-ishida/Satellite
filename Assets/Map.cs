@@ -19,7 +19,21 @@ class Map
     private Cell_Data[,] cd;
 
     public Cell_Data this[double x,double y]  {
-        get {  return this.cd[(int)x + 180, (int)y * (-1) + 90]; }
+        get 
+        {
+            if (x < -180) 
+            {
+                return this.cd[540 - (int)x, (int)y * (-1) + 90];
+            }
+            else if (x >= 180)
+            {
+                return this.cd[(int)x - 180, (int)y * (-1) + 90];
+            }
+            else
+            {
+                return this.cd[(int)x + 180, (int)y * (-1) + 90];
+            }
+        }
         private set { this.cd[(int)x + 180, (int)y * (-1) + 90] = value;  }
     }
 

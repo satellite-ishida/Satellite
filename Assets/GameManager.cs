@@ -118,7 +118,7 @@ public class GameManager : MonoBehaviour {
     // Update is called once per frame
     void Update()
     {
-        map.Satellite_Updata();
+        map.Satellite_Update();
     }
 
     public static void CreateNewSat(String M0, String M1, String M2, String e, String i, String s_omg, String L_omg, String ET)
