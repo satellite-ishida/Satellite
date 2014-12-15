@@ -91,7 +91,7 @@ public class SatelliteComponent : MonoBehaviour {
         get { return id;  }
         set{
             id = value;
-            rnd = new System.Random(id * Environment.TickCount);
+            //rnd = new System.Random(id * Environment.TickCount);
         }
     }
 
@@ -156,15 +156,15 @@ public class SatelliteComponent : MonoBehaviour {
     public Boolean Fail
     {
         get {
-            if (rnd.Next(0, 1000) < fail * 1000)
-            {
-                Destroy(gameObject);
-                return true;
-            }
-            else
-            {
+        //    if (rnd.Next(0, 1000) < fail * 1000)
+        //    {
+        //        Destroy(gameObject);
+        //        return true;
+        //    }
+        //    else
+        //    {
                 return false;
-            }
+        //    }
         }
     }
 
@@ -338,7 +338,14 @@ public class SatelliteComponent : MonoBehaviour {
 
             transform.position = new Vector3(locate_x, locate_y, 0);
 
+            //正距円筒による歪みを考慮
+            GameObject sensor = gameObject.transform.FindChild("Sensor").gameObject;
+            SpriteRenderer sr = sensor.GetComponent<SpriteRenderer>();
+            float a = sr.transform.lossyScale.x;
             double h = Math.Cos(locate_y * (2 * (Math.PI / 360)));
+            float xscale = (float)(1.0 / h);
+            sr.transform.localScale = new Vector3(xscale * 5, 5, 1);
+
         }
          
 
@@ -359,6 +366,7 @@ public class SatelliteComponent : MonoBehaviour {
         SpriteRenderer sr = sensor.GetComponent<SpriteRenderer>();
 
         print(sr.color);
+
         Color c;
         if (sensorOn)
         {

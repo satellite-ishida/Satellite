@@ -350,19 +350,19 @@ class Map
                 landnum = 0;
                 seanum = 0;
 
-                double x = g.transform.position.x;
-                double y = g.transform.position.y;
-                int a = (int)((g.transform.localScale.x * sensor.transform.localScale.x) * 0.09);
-                int b = (int)((g.transform.localScale.y * sensor.transform.localScale.y) * 0.09);
+                int x = (int)g.transform.position.x;
+                int y = (int)g.transform.position.y;
+                int a = (int)((sensor.transform.lossyScale.x) * 0.09);
+                int b = (int)((sensor.transform.lossyScale.y) * 0.09);
 
 
-                for (int i = (int)x - a; i <= (int)x + a; i++)
+                for (int i = x - a; i <= x + a; i++)
                 {
-                    for (int j = (int)y - a; j <= (int)y + a; j++)
+                    for (int j = y - b; j < y + b; j++)
                     {
                         //とりあえず円で
                      //   if ((x - i) * (x - i) + (y - j) * (y - j) <= a * a)
-                        if ((i -x) * (i - x) + (j - y) * (j - y) <= a * a)
+                        if (((i - x) * (i - x)) * (b * b) + ((j - y) * (j - y)) * (a * a) <= a * a * b * b)
                         {
                             if (string.Compare(this[i, j].City, null) != 0)
                             {
