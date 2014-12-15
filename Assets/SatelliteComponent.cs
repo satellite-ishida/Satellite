@@ -337,6 +337,8 @@ public class SatelliteComponent : MonoBehaviour {
            //}
 
             transform.position = new Vector3(locate_x, locate_y, 0);
+
+            double h = Math.Cos(locate_y * (2 * (Math.PI / 360)));
         }
          
 
@@ -355,6 +357,7 @@ public class SatelliteComponent : MonoBehaviour {
     {
         GameObject sensor = gameObject.transform.FindChild("Sensor").gameObject;
         SpriteRenderer sr = sensor.GetComponent<SpriteRenderer>();
+
         print(sr.color);
         Color c;
         if (sensorOn)
@@ -369,6 +372,7 @@ public class SatelliteComponent : MonoBehaviour {
         }
         
     sr.color = c;
+
     }
 
     void OnMouseUp()

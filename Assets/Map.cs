@@ -21,7 +21,35 @@ class Map
 
     public Cell_Data this[double x, double y]
     {
-        get { return this.cd[(int)x + 180, (int)y * (-1) + 90]; }
+        get 
+        {
+            int b = (int)y * (-1) + 90;
+            if (y <= -90)
+            {
+                b = 179;
+            }
+            else if (y > 90)
+            {
+                b = 0;
+            }
+
+
+            if (x < -180) 
+            {
+                return this.cd[539 + (int)x, b]; 
+            }
+            else if (180 <= x)
+            {
+                return this.cd[(int)x - 180, b];
+            }
+            else {
+                return this.cd[(int)x + 180, b]; 
+            }
+
+
+            
+        }
+        private set { this.cd[(int)x + 180, (int)y * (-1) + 90] = value; }
     }
 
     /// <summary>
@@ -33,6 +61,7 @@ class Map
     public GameObject SatelliteObject
     {
         set { satelliteobject.Add(value); }
+
     }
 
 
@@ -67,8 +96,8 @@ class Map
 
             string[] values = line.Split(',');
 
-            this.cd[int.Parse(values[2]) + 180, int.Parse(values[3]) * (-1) + 90].Country = values[0];
-            this.cd[int.Parse(values[2]) + 180, int.Parse(values[3]) * (-1) + 90].City = values[1];
+            this[int.Parse(values[2]), int.Parse(values[3])].Country = values[0];
+            this[int.Parse(values[2]), int.Parse(values[3])].City = values[1];
         }
 
         /*
@@ -129,8 +158,8 @@ class Map
 
                 string[] values = line.Split(',');
 
-                this.cd[int.Parse(values[2]) + 180, int.Parse(values[3]) * (-1) + 90].Country = values[0];
-                this.cd[int.Parse(values[2]) + 180, int.Parse(values[3]) * (-1) + 90].City = values[1];
+                this[int.Parse(values[2]), int.Parse(values[3])].Country = values[0];
+                this[int.Parse(values[2]), int.Parse(values[3])].City = values[1];
             }
 
         }
@@ -182,10 +211,10 @@ class Map
     /// 
     public bool Set_BaseStation(double x, double y)
     {
-        if (this.cd[(int)x + 180, (int)y * (-1) + 90].Land)
+        if (this[x, y].Land)
         {
 
-            this.cd[(int)x + 180, (int)y * (-1) + 90].GS = true;
+            this[x, y].GS = true;
             return true;
 
         }
@@ -212,7 +241,7 @@ class Map
          *        y軸方向は緯度-90？(北極)を0として、南方向に180マスある
          */
 
-        return cd[(int)g.GetComponent<SatelliteComponent>().X + 180, (int)g.GetComponent<SatelliteComponent>().Y * (-1) + 90];
+        return this[g.GetComponent<SatelliteComponent>().X, g.GetComponent<SatelliteComponent>().Y];
     }
 
     /// <summary>
@@ -321,24 +350,25 @@ class Map
                 landnum = 0;
                 seanum = 0;
 
-                int x = (int)g.transform.position.x + 180;
-                int y = (int)-g.transform.position.y + 90;
+                double x = g.transform.position.x;
+                double y = g.transform.position.y;
                 int a = (int)((g.transform.localScale.x * sensor.transform.localScale.x) * 0.09);
                 int b = (int)((g.transform.localScale.y * sensor.transform.localScale.y) * 0.09);
 
 
-                for (int i = 0; i < 360; i++)
+                for (int i = (int)x - a; i <= (int)x + a; i++)
                 {
-                    for (int j = 0; j < 180; j++)
+                    for (int j = (int)y - a; j <= (int)y + a; j++)
                     {
                         //とりあえず円で
-                        if ((x - i) * (x - i) + (y - j) * (y - j) <= a * a)
+                     //   if ((x - i) * (x - i) + (y - j) * (y - j) <= a * a)
+                        if ((i -x) * (i - x) + (j - y) * (j - y) <= a * a)
                         {
-                            if (string.Compare(cd[i, j].City, null) != 0)
+                            if (string.Compare(this[i, j].City, null) != 0)
                             {
                                 citynum++;
                             }
-                            if (cd[i, j].Land)
+                            if (this[i, j].Land)
                             {
                                 landnum++;
                             }
