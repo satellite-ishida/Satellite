@@ -5,6 +5,7 @@ using System.Text;
 using System.IO;
 using UnityEngine;
 using System.Collections;
+using UnityEngine.UI;
 
 /// <summary>
 /// 地図のセル情報を扱うクラス
@@ -296,8 +297,65 @@ class Map
         */
     }
 
+    private int score = 0;
+
+    public void CalcScore()
+    {
+        int citynum = 0;
+        int landnum = 0;
+        int seanum = 0;
+
+        foreach (GameObject g in satelliteobject)
+        {
+            SatelliteComponent satellite = g.GetComponent<SatelliteComponent>();
+
+            GameObject span = GameObject.Find("Span");
+            Slider s = span.GetComponent<Slider>();
+
+            for (int n = 0; n < Math.Floor(s.value); n++)
+            {
+                satellite.calc();
+                GameObject sensor = g.transform.FindChild("Sensor").gameObject;
+
+                citynum = 0;
+                landnum = 0;
+                seanum = 0;
+
+                int x = (int)g.transform.position.x + 180;
+                int y = (int)-g.transform.position.y + 90;
+                int a = (int)((g.transform.localScale.x * sensor.transform.localScale.x) * 0.09);
+                int b = (int)((g.transform.localScale.y * sensor.transform.localScale.y) * 0.09);
 
 
+                for (int i = 0; i < 360; i++)
+                {
+                    for (int j = 0; j < 180; j++)
+                    {
+                        //とりあえず円で
+                        if ((x - i) * (x - i) + (y - j) * (y - j) <= a * a)
+                        {
+                            if (string.Compare(cd[i, j].City, null) != 0)
+                            {
+                                citynum++;
+                            }
+                            if (cd[i, j].Land)
+                            {
+                                landnum++;
+                            }
+                            else
+                            {
+                                seanum++;
+                            }
+                        }
+                    }
+                }
+                score += citynum;
+            }
+            GameObject date = GameObject.Find("Score");
+            Text t = date.GetComponent<Text>();
+            t.text = citynum.ToString() + " " + score;
+        }
+    }
 }
 
 
