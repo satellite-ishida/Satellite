@@ -5,6 +5,7 @@ using System.Text;
 using System.IO;
 using UnityEngine;
 using System.Collections;
+using UnityEngine.UI;
 
 /// <summary>
 /// 地図のセル情報を扱うクラス
@@ -18,23 +19,37 @@ class Map
     /// 
     private Cell_Data[,] cd;
 
-    public Cell_Data this[double x,double y]  {
+    public Cell_Data this[double x, double y]
+    {
         get 
         {
+            int b = (int)y * (-1) + 90;
+            if (y <= -90)
+            {
+                b = 179;
+            }
+            else if (y > 90)
+            {
+                b = 0;
+            }
+
+
             if (x < -180) 
             {
-                return this.cd[540 - (int)x, (int)y * (-1) + 90];
+                return this.cd[539 + (int)x, b]; 
             }
-            else if (x >= 180)
+            else if (180 <= x)
             {
-                return this.cd[(int)x - 180, (int)y * (-1) + 90];
+                return this.cd[(int)x - 180, b];
             }
-            else
-            {
-                return this.cd[(int)x + 180, (int)y * (-1) + 90];
+            else {
+                return this.cd[(int)x + 180, b]; 
             }
+
+
+            
         }
-        private set { this.cd[(int)x + 180, (int)y * (-1) + 90] = value;  }
+        private set { this.cd[(int)x + 180, (int)y * (-1) + 90] = value; }
     }
 
     /// <summary>
@@ -46,13 +61,14 @@ class Map
     public GameObject SatelliteObject
     {
         set { satelliteobject.Add(value); }
+
     }
 
 
 
-   /// <summary>
-   /// コンストラクタ
-   /// </summary>
+    /// <summary>
+    /// コンストラクタ
+    /// </summary>
     public Map()
     {
 
@@ -193,7 +209,7 @@ class Map
     /// <param name="y">緯度</param>>
     /// <return>基地建設の成功判定</return>
     /// 
-    public bool Set_BaseStation(double x, double y) 
+    public bool Set_BaseStation(double x, double y)
     {
         if (this[x, y].Land)
         {
@@ -202,7 +218,7 @@ class Map
             return true;
 
         }
-        else 
+        else
         {
             return false;
         }
@@ -225,7 +241,7 @@ class Map
          *        y軸方向は緯度-90？(北極)を0として、南方向に180マスある
          */
 
-        return this[g.GetComponent<SatelliteComponent>().X, g.GetComponent<SatelliteComponent>().Y ];
+        return this[g.GetComponent<SatelliteComponent>().X, g.GetComponent<SatelliteComponent>().Y];
     }
 
     /// <summary>
@@ -244,7 +260,7 @@ class Map
         ///// 
         //public void Satellite_Updata()
         //{
-             
+
         //    for (int i = 0; i < satellite.Count; i++)
         //    {
         //        satellite[i].update_locate(satellite[i].TIME);
@@ -260,7 +276,7 @@ class Map
         //               print(name);
         //           }*/
 
-                
+
         //        if (breakjudg(satellite[i])) 
         //        {
         //            satellite.RemoveAt(i);
@@ -268,7 +284,7 @@ class Map
         //        }
         //    }
 
-            
+
         //    SatelliteComponent component = g.GetComponent<SatelliteComponent>();
         //    //
         //    if (component.breakjudg())
@@ -278,7 +294,7 @@ class Map
         //    }
         //}
         satelliteobject.RemoveAll(x => x.GetComponent<SatelliteComponent>().Fail);
-        
+
 
 
         //for (int i = 0; i < satellite.Count; i++)
@@ -310,8 +326,66 @@ class Map
         */
     }
 
+    private int score = 0;
+
+    public void CalcScore()
+    {
+        int citynum = 0;
+        int landnum = 0;
+        int seanum = 0;
+
+        foreach (GameObject g in satelliteobject)
+        {
+            SatelliteComponent satellite = g.GetComponent<SatelliteComponent>();
+
+            GameObject span = GameObject.Find("Span");
+            Slider s = span.GetComponent<Slider>();
+
+            for (int n = 0; n < Math.Floor(s.value); n++)
+            {
+                satellite.calc();
+                GameObject sensor = g.transform.FindChild("Sensor").gameObject;
+
+                citynum = 0;
+                landnum = 0;
+                seanum = 0;
+
+                double x = g.transform.position.x;
+                double y = g.transform.position.y;
+                int a = (int)((g.transform.localScale.x * sensor.transform.localScale.x) * 0.09);
+                int b = (int)((g.transform.localScale.y * sensor.transform.localScale.y) * 0.09);
 
 
+                for (int i = (int)x - a; i <= (int)x + a; i++)
+                {
+                    for (int j = (int)y - a; j <= (int)y + a; j++)
+                    {
+                        //とりあえず円で
+                     //   if ((x - i) * (x - i) + (y - j) * (y - j) <= a * a)
+                        if ((i -x) * (i - x) + (j - y) * (j - y) <= a * a)
+                        {
+                            if (string.Compare(this[i, j].City, null) != 0)
+                            {
+                                citynum++;
+                            }
+                            if (this[i, j].Land)
+                            {
+                                landnum++;
+                            }
+                            else
+                            {
+                                seanum++;
+                            }
+                        }
+                    }
+                }
+                score += citynum;
+            }
+            GameObject date = GameObject.Find("Score");
+            Text t = date.GetComponent<Text>();
+            t.text = citynum.ToString() + " " + score;
+        }
+    }
 }
 
 
