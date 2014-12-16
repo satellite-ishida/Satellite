@@ -1,8 +1,11 @@
 ﻿using UnityEngine;
 using System.Collections;
 using System;
+using UnityEngine.UI;
 
 public class Input_Easy_Sat_Component : MonoBehaviour {
+
+    
 
     //ペグマンを置く
     public void Put_Locate()

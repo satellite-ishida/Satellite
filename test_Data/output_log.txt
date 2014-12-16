@@ -4,17 +4,18 @@ Direct3D:
     Version:  Direct3D 11.0 [level 11.0]
     Renderer: Intel(R) HD Graphics 4000 (ID=0x166)
     Vendor:   Intel
-    VRAM:     32 MB
+    VRAM:     64 MB
 Begin MonoManager ReloadAssembly
-Platform assembly: C:\Users\pp\Documents\GitHub\Satellite\test_Data\Managed\UnityEngine.dll (this message is harmless)
-Loading C:\Users\pp\Documents\GitHub\Satellite\test_Data\Managed\UnityEngine.dll into Unity Child Domain
-Platform assembly: C:\Users\pp\Documents\GitHub\Satellite\test_Data\Managed\Assembly-CSharp.dll (this message is harmless)
-Loading C:\Users\pp\Documents\GitHub\Satellite\test_Data\Managed\Assembly-CSharp.dll into Unity Child Domain
-Platform assembly: C:\Users\pp\Documents\GitHub\Satellite\test_Data\Managed\UnityEngine.UI.dll (this message is harmless)
-Loading C:\Users\pp\Documents\GitHub\Satellite\test_Data\Managed\UnityEngine.UI.dll into Unity Child Domain
-- Completed reload, in  0.103 seconds
-desktop: 1920x1080 59Hz; virtual: 1920x1080 at 0,0
+Platform assembly: C:\Users\morita\Documents\GitHub\Satellite\test_Data\Managed\UnityEngine.dll (this message is harmless)
+Loading C:\Users\morita\Documents\GitHub\Satellite\test_Data\Managed\UnityEngine.dll into Unity Child Domain
+Platform assembly: C:\Users\morita\Documents\GitHub\Satellite\test_Data\Managed\Assembly-CSharp.dll (this message is harmless)
+Loading C:\Users\morita\Documents\GitHub\Satellite\test_Data\Managed\Assembly-CSharp.dll into Unity Child Domain
+Platform assembly: C:\Users\morita\Documents\GitHub\Satellite\test_Data\Managed\UnityEngine.UI.dll (this message is harmless)
+Loading C:\Users\morita\Documents\GitHub\Satellite\test_Data\Managed\UnityEngine.UI.dll into Unity Child Domain
+- Completed reload, in  0.152 seconds
+desktop: 1600x900 60Hz; virtual: 1600x900 at 0,0
 <RI> Initializing input.
+XInput1_3.dll not found.
 <RI> Input initialized.
-Platform assembly: C:\Users\pp\Documents\GitHub\Satellite\test_Data\Managed\System.Core.dll (this message is harmless)
-Platform assembly: C:\Users\pp\Documents\GitHub\Satellite\test_Data\Managed\System.dll (this message is harmless)
+Platform assembly: C:\Users\morita\Documents\GitHub\Satellite\test_Data\Managed\System.Core.dll (this message is harmless)
+Platform assembly: C:\Users\morita\Documents\GitHub\Satellite\test_Data\Managed\System.dll (this message is harmless)

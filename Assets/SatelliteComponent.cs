@@ -4,6 +4,8 @@ using System.Linq;
 using System.Text;
 using UnityEngine;
 using System.Collections;
+using UnityEngine.UI;
+
 
 public class SatelliteComponent : MonoBehaviour {
     /// <summary>
@@ -61,7 +63,7 @@ public class SatelliteComponent : MonoBehaviour {
             date_et = new DateTime(year+2000, 1, 1);
             double diff_day = (double)(double_et - year * 1000) - 1;
             date_et = date_et.AddDays(diff_day);
-            observe_time = date_et;
+            observe_time = date_et.AddHours(15.5);
         }
     }
    
@@ -89,7 +91,7 @@ public class SatelliteComponent : MonoBehaviour {
         get { return id;  }
         set{
             id = value;
-            rnd = new System.Random(id * Environment.TickCount);
+            //rnd = new System.Random(id * Environment.TickCount);
         }
     }
 
@@ -118,6 +120,7 @@ public class SatelliteComponent : MonoBehaviour {
         get { return locate_y; }
     }
 
+
     /// <summary>
     /// 位置の更新
     /// </summary>
@@ -134,11 +137,11 @@ public class SatelliteComponent : MonoBehaviour {
     /// </summary>
     private System.Random rnd;
 
-    //とりあえず一律0.1％で
+    
     /// <summary>
     /// 故障率
     /// </summary>
-    private double fail = 0.001;
+    private double fail = 0;
 
     /// <summary>
     /// 故障判定
@@ -146,17 +149,19 @@ public class SatelliteComponent : MonoBehaviour {
     public Boolean Fail
     {
         get {
-            if (rnd.Next(0, 1000) < fail * 1000)
-            {
-                Destroy(gameObject);
-                return true;
-            }
-            else
-            {
+        //    if (rnd.Next(0, 1000) < fail * 1000)
+        //    {
+        //        Destroy(gameObject);
+        //        return true;
+        //    }
+        //    else
+        //    {
                 return false;
-            }
+        //    }
         }
     }
+
+ 
 
     /// <summary>
     /// 衛星軌道の計算
@@ -189,11 +194,11 @@ public class SatelliteComponent : MonoBehaviour {
         double y = U * (Math.Sin(L_omg / 180 * Math.PI) * Math.Cos(s_omg / 180 * Math.PI) + Math.Cos(L_omg / 180 * Math.PI) * Math.Cos(i / 180 * Math.PI) * Math.Sin(s_omg / 180 * Math.PI))
             - V * (Math.Sin(L_omg / 180 * Math.PI) * Math.Sin(s_omg / 180 * Math.PI) - Math.Cos(L_omg / 180 * Math.PI) * Math.Cos(i / 180 * Math.PI) * Math.Cos(s_omg / 180 * Math.PI));
         double z = U * Math.Sin(i / 180 * Math.PI) * Math.Sin(s_omg / 180 * Math.PI) + V * Math.Sin(i / 180 * Math.PI) * Math.Cos(s_omg / 180 * Math.PI);
-        //グリニッジ子午線の赤経計算(ちょっと誤差出てるかも)
+        //グリニッジ子午線の赤経計算
         double st0 = calc_greenwich_roll(new DateTime(ob_time.Year, 1, 1, 0, 0, 0));
         double stg = st0 + 1.002737909 * calc_num_day(ob_time);
         stg = 360 * (stg - Math.Floor(stg));
-        //緯度・経度の計算(結構誤差出てる)
+        //緯度・経度の計算
         double X = x * Math.Cos((-1) * stg / 180 * Math.PI) - y * Math.Sin((-1) * stg / 180 * Math.PI);
         double Y = x * Math.Sin((-1) * stg / 180 * Math.PI) + y * Math.Cos((-1) * stg / 180 * Math.PI);
         double Z = z;
@@ -220,6 +225,7 @@ public class SatelliteComponent : MonoBehaviour {
 
         return time_diff;
     }
+
 
     private double calc_eccentric_anomaly(double M)
     {
@@ -268,36 +274,109 @@ public class SatelliteComponent : MonoBehaviour {
         return st_decimal;
     }
 
-    //その年の1/1 00:00からどれだけの日数が経っているか計算する
+    // その年の1/1 00:00からどれだけの日数が経っているか計算する
     private double calc_num_day(DateTime observe_time)
     {
         //もしJST(日本時刻)ならUSTに直す。(時間から９時間引く)
         DateTime greenwich = new DateTime(observe_time.Year, 1, 1, 0, 0, 0);
         TimeSpan span = observe_time - greenwich;
-        double day_decimal = ((double)observe_time.Hour + (double)observe_time.Minute / 60 + (double)observe_time.Second / 60 / 10) / 24;
+        //double day_decimal = ((double)observe_time.Hour + (double)observe_time.Minute / 60 + (double)observe_time.Second / 60 / 10) / 24;
+        double second = (double)observe_time.Second + (double)observe_time.Millisecond / 1000;
+        double minute = (double)observe_time.Minute + second / 60;
+        double hour   = (double)observe_time.Hour + minute / 60;    
+        double day_decimal = hour / 24;
         double day = double.Parse(span.Days.ToString());
         double num_day = day + day_decimal;
         
         return num_day;
     }
 
+    //コルーチンのスタート
+    void Start()
+    {
+        StartCoroutine("SatObject");
+    }
+
+    private IEnumerator SatObject()
+    {
+        while (true)
+        {
+            update_locate(observe_time);
+            observe_time = observe_time.AddMinutes(10);
+
+            transform.position = new Vector3(locate_x, locate_y, 0);
+            GameManager.CalcScore(gameObject);
+
+            //正距円筒による歪みを考慮
+            GameObject sensor = gameObject.transform.FindChild("Sensor").gameObject;
+            SpriteRenderer sr = sensor.GetComponent<SpriteRenderer>();
+            float a = sr.transform.lossyScale.x;
+            double h = Math.Cos(locate_y * (2 * (Math.PI / 360)));
+            float xscale = (float)(1.0 / h);
+            sr.transform.localScale = new Vector3(xscale * 5, 5, 1);
+
+            yield return new WaitForSeconds(0.03f);
+        }
+    }
+
     // Update is called once per frame
     void Update()
     {
-        
+        //スパンの値でタイムスケールの調整
+        Time.timeScale = 1.0f * GameMaster.GetSpanValue();
+
         if (observe_time.Year > 1900)
         {
-            for (int i = 0; i < 1; i++)
-            {
-                update_locate(observe_time);
-                transform.position = new Vector3(locate_x, locate_y, 0);
-                // observe_time = observe_time.AddSeconds(1);
-                //observe_time = observe_time.AddDays(10);
-                observe_time = observe_time.AddMinutes(1);
-                //print(observe_time + " x=" + locate_x + " y=" + locate_y);
-            }
+            //update_locate(observe_time);
+            //observe_time = observe_time.AddMinutes(10);
+
+            //transform.position = new Vector3(locate_x, locate_y, 0);
+            //GameManager.CalcScore(gameObject);
+
+            ////正距円筒による歪みを考慮
+            //GameObject sensor = gameObject.transform.FindChild("Sensor").gameObject;
+            //SpriteRenderer sr = sensor.GetComponent<SpriteRenderer>();
+            //float a = sr.transform.lossyScale.x;
+            //double h = Math.Cos(locate_y * (2 * (Math.PI / 360)));
+            //float xscale = (float)(1.0 / h);
+            //sr.transform.localScale = new Vector3(xscale * 5, 5, 1);
+
         }
-         
+    }
+
+    Boolean sensorOn = false;
+
+    void OnMouseDown()
+    {
+        GameObject sensor = gameObject.transform.FindChild("Sensor").gameObject;
+        SpriteRenderer sr = sensor.GetComponent<SpriteRenderer>();
+
+        print(sr.color);
+
+        Color c;
+        if (sensorOn)
+        {
+            c = new Color(1f, 1f, 0f, 0f);
+            sensorOn = false;
+        }
+        else
+        {
+            c = new Color(1f, 1f, 0f, 0.2f);
+            sensorOn = true;
+        }
+        
+    sr.color = c;
 
     }
+
+    void OnMouseUp()
+    {
+            //GameObject sensor = gameObject.transform.FindChild("Sensor").gameObject;
+            //SpriteRenderer sr = sensor.GetComponent<SpriteRenderer>();
+            //print(sr.color);
+            //Color c = new Color(1f, 1f, 0f, 0f);
+            //sr.color = c;
+        
+    }
+
 }
