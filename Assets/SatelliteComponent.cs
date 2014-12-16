@@ -311,7 +311,6 @@ public class SatelliteComponent : MonoBehaviour {
     // Update is called once per frame
     void Update()
     {
-        
         if (observe_time.Year > 1900)
         {
            // GameObject span = GameObject.Find("Span");
