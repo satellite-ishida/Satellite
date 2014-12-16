@@ -2,14 +2,18 @@
 using System.Collections;
 using System.Collections.Generic;
 using System;
+using UnityEngine.UI;
 
-public class GameManager : MonoBehaviour {
+public class GameManager : MonoBehaviour
+{
 
     private GameObject _charactor;
     private GameObject _charactor2;
     private GameObject _charactor3;
 
     private static Map map;
+
+    private DateTime Global_Time = new DateTime(2000, 1, 1, 0, 0, 0);
 
     // Use this for initialization
     void Start()
@@ -30,8 +34,6 @@ public class GameManager : MonoBehaviour {
         //// 経度
         //double longitude = _charactor3.transform.localPosition.x;
 
-        map = new Map();
-
         // 衛星の個数
         int n = 1;
 
@@ -40,9 +42,9 @@ public class GameManager : MonoBehaviour {
             GameObject satellite = Instantiate(prefab) as GameObject;
             SatelliteComponent component = satellite.GetComponent<SatelliteComponent>();
 
-            map.SatelliteObject = satellite;
+            GameMaster.AddSatelliteList(satellite);
             //map.Satellite = component;
-  
+
             component.ID = i;
             // ////真の衛星軌道
             component.M1 = 14.117117471;
@@ -75,7 +77,7 @@ public class GameManager : MonoBehaviour {
             //// 経度
             //component.i = latitude;
             //component.e = Math.Abs((0.0746703 / 40.5968) * latitude);
-            
+
         }
         GameObject prefab2 = (GameObject)Resources.Load("Prefabs/point");
 
@@ -134,7 +136,13 @@ public class GameManager : MonoBehaviour {
     void Update()
     {
         map.Satellite_Update();
-        map.CalcScore();
+
+        //グローバルタイムの更新と表示
+        Global_Time = Global_Time.AddMinutes(Math.Floor(GameMaster.GetSpanValue()));
+        //time = time.AddSeconds(10*s.value);
+        GameObject date = GameObject.Find("Date");
+        Text t = date.GetComponent<Text>();
+        t.text = Global_Time.ToString();
     }
 
     public static void CreateNewSat(String M0, String M1, String M2, String e, String i, String s_omg, String L_omg, String ET)
@@ -152,7 +160,7 @@ public class GameManager : MonoBehaviour {
         GameObject satellite = Instantiate(prefab) as GameObject;
         SatelliteComponent component = satellite.GetComponent<SatelliteComponent>();
 
-        map.SatelliteObject = satellite;
+        GameMaster.AddSatelliteList(satellite);
 
         component.ID = GameMaster.Get_Satellite_ID();
         component.i = _i;
@@ -170,7 +178,7 @@ public class GameManager : MonoBehaviour {
         GameObject satellite = Instantiate(prefab) as GameObject;
         SatelliteComponent component = satellite.GetComponent<SatelliteComponent>();
 
-        map.SatelliteObject = satellite;
+        GameMaster.AddSatelliteList(satellite);
 
         component.ID = GameMaster.Get_Satellite_ID();
         component.i = i;
@@ -183,6 +191,53 @@ public class GameManager : MonoBehaviour {
         component.L_omg0 = L_omg;
     }
 
+    public static void CalcScore(GameObject g)
+    {
+        int citynum = 0;
+        int landnum = 0;
+        int seanum = 0;
+
+
+        SatelliteComponent satellite = g.GetComponent<SatelliteComponent>();
+
+        GameObject sensor = g.transform.FindChild("Sensor").gameObject;
+
+        citynum = 0;
+        landnum = 0;
+        seanum = 0;
+
+        int x = (int)g.transform.position.x;
+        int y = (int)g.transform.position.y;
+        int a = (int)((sensor.transform.lossyScale.x) * 0.09);
+        int b = (int)((sensor.transform.lossyScale.y) * 0.09);
+
+
+        for (int i = x - a; i <= x + a; i++)
+        {
+            for (int j = y - b; j < y + b; j++)
+            {
+                //とりあえず円で
+                //   if ((x - i) * (x - i) + (y - j) * (y - j) <= a * a)
+                if (((i - x) * (i - x)) * (b * b) + ((j - y) * (j - y)) * (a * a) <= a * a * b * b)
+                {
+                    if (string.Compare(map[i, j].City, null) != 0)
+                    {
+                        citynum++;
+                    }
+                    if (map[i, j].Land)
+                    {
+                        landnum++;
+                    }
+                    else
+                    {
+                        seanum++;
+                    }
+                }
+            }
+        }
+        //ゲームマスターにスコアの通知
+        GameMaster.AddScore(citynum);
+    }
 
     private Vector3 start;
 
@@ -215,51 +270,51 @@ public class GameManager : MonoBehaviour {
 
     void OnMouseUp()
     {
-    //    float x = Input.mousePosition.x;
-    //    float y = Input.mousePosition.y;
+        //    float x = Input.mousePosition.x;
+        //    float y = Input.mousePosition.y;
 
-    //    Vector3 currentPosition = new Vector3(x, y, 1);
+        //    Vector3 currentPosition = new Vector3(x, y, 1);
 
 
-    //    GameObject prefab3 = (GameObject)Resources.Load("Prefabs/base_station");
+        //    GameObject prefab3 = (GameObject)Resources.Load("Prefabs/base_station");
 
-    //    GameObject aa = Instantiate(prefab3) as GameObject;
-    //    aa.transform.position = Camera.main.ScreenToWorldPoint(currentPosition / 2 + start / 2);
-    //    aa.transform.localScale = (currentPosition - start) * 2;
+        //    GameObject aa = Instantiate(prefab3) as GameObject;
+        //    aa.transform.position = Camera.main.ScreenToWorldPoint(currentPosition / 2 + start / 2);
+        //    aa.transform.localScale = (currentPosition - start) * 2;
 
-    //    print(currentPosition.x - start.x);
+        //    print(currentPosition.x - start.x);
 
-    //    double a = (currentPosition.x - start.x) / 4;
-    //    double b = (currentPosition.y - start.y) / 4;
-    //    Vector3 O = Camera.main.ScreenToWorldPoint(currentPosition / 2 + start / 2);
+        //    double a = (currentPosition.x - start.x) / 4;
+        //    double b = (currentPosition.y - start.y) / 4;
+        //    Vector3 O = Camera.main.ScreenToWorldPoint(currentPosition / 2 + start / 2);
 
-    //    int citynum = 0;
-    //    int landnum = 0;
-    //    int seanum = 0;
+        //    int citynum = 0;
+        //    int landnum = 0;
+        //    int seanum = 0;
 
-    //    for (int i = (int)O.x - (int)Math.Abs(currentPosition.x - start.x) / 4; i < (int)O.x + (int)Math.Abs(currentPosition.x - start.x); i++)
-    //    {
-    //        for (int j = (int)O.y - (int)Math.Abs(currentPosition.y - start.y) / 4; j < (int)O.y + (int)Math.Abs(currentPosition.y - start.y) / 4; j++)
-    //        {
-    //            if (((i - O.x) * (i - O.x)) / (a * a) + ((j - O.y) * (j - O.y)) / (b * b) <= 1)
-    //            {
-    //                if (string.Compare(map[i, j].City, null) != 0)
-    //                {
-    //                    citynum++;
-    //                }
-    //                if (map[i, j].Land)
-    //                {
-    //                    landnum++;
-    //                }
-    //                else
-    //                {
-    //                    seanum++;
-    //                }
-    //            }
-    //        }
+        //    for (int i = (int)O.x - (int)Math.Abs(currentPosition.x - start.x) / 4; i < (int)O.x + (int)Math.Abs(currentPosition.x - start.x); i++)
+        //    {
+        //        for (int j = (int)O.y - (int)Math.Abs(currentPosition.y - start.y) / 4; j < (int)O.y + (int)Math.Abs(currentPosition.y - start.y) / 4; j++)
+        //        {
+        //            if (((i - O.x) * (i - O.x)) / (a * a) + ((j - O.y) * (j - O.y)) / (b * b) <= 1)
+        //            {
+        //                if (string.Compare(map[i, j].City, null) != 0)
+        //                {
+        //                    citynum++;
+        //                }
+        //                if (map[i, j].Land)
+        //                {
+        //                    landnum++;
+        //                }
+        //                else
+        //                {
+        //                    seanum++;
+        //                }
+        //            }
+        //        }
 
-    //    }
+        //    }
 
-    //    print(citynum + "," + landnum + "," + seanum);
+        //    print(citynum + "," + landnum + "," + seanum);
     }
 }

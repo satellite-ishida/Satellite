@@ -1,8 +1,22 @@
 ﻿using UnityEngine;
 using System.Collections;
+using UnityEngine.UI;
+using System;
 
-public class Right_GUI_Manager: MonoBehaviour {
+public class GUI_Manager : MonoBehaviour
+{
 
+    //スライダーの値が変更されたとき
+    public void Set_Slider_Event()
+    {
+        GameObject span = GameObject.Find("Span");
+        Slider s = span.GetComponent<Slider>();
+        GameMaster.SetSpanValue(s.value);
+
+        GameObject spanText = GameObject.Find("SpanText");
+        Text st = spanText.GetComponent<Text>();
+        st.text = "Update Time : " + s.value.ToString() + " Hours";
+    }
     //アドバンスパネルを前面に
     public void Set_Advanced_Panel()
     {
@@ -17,6 +31,6 @@ public class Right_GUI_Manager: MonoBehaviour {
     {
         GameObject g = GameObject.Find("Input_Easy_Sat_Panel");
         g.transform.SetAsLastSibling();
-
     }
 }
+    
