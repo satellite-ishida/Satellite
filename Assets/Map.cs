@@ -24,7 +24,7 @@ class Map
     /// </summary>
     public Cell_Data this[double longitude, double latitude]
     {
-        get 
+        get
         {
 
             int x = (int)longitude + 180;
@@ -44,7 +44,7 @@ class Map
             //y軸がはみ出した場合、地球の反対側を観測
             if (y < 0)
             {
-                y =  -y ;
+                y = -y;
                 x = (x < 180) ? x + 180 : x - 180;
             }
             else if (180 <= y)
@@ -53,25 +53,11 @@ class Map
                 x = (x < 180) ? x + 180 : x - 180;
             }
 
-                return this.cd[x, y]; 
-            
+            return this.cd[x, y];
+
         }
         private set { this.cd[(int)longitude + 180, (int)latitude * (-1) + 90] = value; }
     }
-
-    /// <summary>
-    /// 衛星オブジェクト
-    /// </summary>
-    /// 
-    private List<GameObject> satelliteobject = new List<GameObject>();
-
-    public GameObject SatelliteObject
-    {
-        set { satelliteobject.Add(value); }
-
-    }
-
-
 
     /// <summary>
     /// コンストラクタ
@@ -220,7 +206,6 @@ class Map
     {
         if (this[x, y].Land)
         {
-
             this[x, y].GS = true;
             return true;
 
@@ -300,7 +285,7 @@ class Map
         //        Destroy(g);
         //    }
         //}
-        satelliteobject.RemoveAll(x => x.GetComponent<SatelliteComponent>().Fail);
+        GameMaster.RemoveFailSatelliteList();
 
 
 
@@ -335,64 +320,7 @@ class Map
 
     private int score = 0;
 
-    public void CalcScore()
-    {
-        int citynum = 0;
-        int landnum = 0;
-        int seanum = 0;
-
-        foreach (GameObject g in satelliteobject)
-        {
-            SatelliteComponent satellite = g.GetComponent<SatelliteComponent>();
-
-            GameObject span = GameObject.Find("Span");
-            Slider s = span.GetComponent<Slider>();
-
-            for (int n = 0; n < Math.Floor(s.value); n++)
-            {
-                satellite.calc();
-                GameObject sensor = g.transform.FindChild("Sensor").gameObject;
-
-                citynum = 0;
-                landnum = 0;
-                seanum = 0;
-
-                int x = (int)g.transform.position.x;
-                int y = (int)g.transform.position.y;
-                int a = (int)((sensor.transform.lossyScale.x) * 0.09);
-                int b = (int)((sensor.transform.lossyScale.y) * 0.09);
-
-
-                for (int i = x - a; i <= x + a; i++)
-                {
-                    for (int j = y - b; j < y + b; j++)
-                    {
-                        //とりあえず円で
-                     //   if ((x - i) * (x - i) + (y - j) * (y - j) <= a * a)
-                        if (((i - x) * (i - x)) * (b * b) + ((j - y) * (j - y)) * (a * a) <= a * a * b * b)
-                        {
-                            if (string.Compare(this[i, j].City, null) != 0)
-                            {
-                                citynum++;
-                            }
-                            if (this[i, j].Land)
-                            {
-                                landnum++;
-                            }
-                            else
-                            {
-                                seanum++;
-                            }
-                        }
-                    }
-                }
-                score += citynum;
-            }
-            GameObject date = GameObject.Find("Score");
-            Text t = date.GetComponent<Text>();
-            t.text = citynum.ToString() + " " + score;
-        }
-    }
+    
 }
 
 

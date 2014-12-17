@@ -120,13 +120,6 @@ public class SatelliteComponent : MonoBehaviour {
         get { return locate_y; }
     }
 
-    private double span = 1;
-
-    public double SPAN
-    {
-        get;
-        set;
-    }
 
     /// <summary>
     /// 位置の更新
@@ -168,6 +161,8 @@ public class SatelliteComponent : MonoBehaviour {
         }
     }
 
+ 
+
     /// <summary>
     /// 衛星軌道の計算
     /// </summary>
@@ -199,11 +194,11 @@ public class SatelliteComponent : MonoBehaviour {
         double y = U * (Math.Sin(L_omg / 180 * Math.PI) * Math.Cos(s_omg / 180 * Math.PI) + Math.Cos(L_omg / 180 * Math.PI) * Math.Cos(i / 180 * Math.PI) * Math.Sin(s_omg / 180 * Math.PI))
             - V * (Math.Sin(L_omg / 180 * Math.PI) * Math.Sin(s_omg / 180 * Math.PI) - Math.Cos(L_omg / 180 * Math.PI) * Math.Cos(i / 180 * Math.PI) * Math.Cos(s_omg / 180 * Math.PI));
         double z = U * Math.Sin(i / 180 * Math.PI) * Math.Sin(s_omg / 180 * Math.PI) + V * Math.Sin(i / 180 * Math.PI) * Math.Cos(s_omg / 180 * Math.PI);
-        //グリニッジ子午線の赤経計算(ちょっと誤差出てるかも)
+        //グリニッジ子午線の赤経計算
         double st0 = calc_greenwich_roll(new DateTime(ob_time.Year, 1, 1, 0, 0, 0));
         double stg = st0 + 1.002737909 * calc_num_day(ob_time);
         stg = 360 * (stg - Math.Floor(stg));
-        //緯度・経度の計算(結構誤差出てる)
+        //緯度・経度の計算
         double X = x * Math.Cos((-1) * stg / 180 * Math.PI) - y * Math.Sin((-1) * stg / 180 * Math.PI);
         double Y = x * Math.Sin((-1) * stg / 180 * Math.PI) + y * Math.Cos((-1) * stg / 180 * Math.PI);
         double Z = z;
@@ -231,10 +226,6 @@ public class SatelliteComponent : MonoBehaviour {
         return time_diff;
     }
 
-    void Start()
-    {
-
-    }
 
     private double calc_eccentric_anomaly(double M)
     {
@@ -300,42 +291,21 @@ public class SatelliteComponent : MonoBehaviour {
         return num_day;
     }
 
-    //
-    private void makeSatellite()
+    //コルーチンのスタート
+    void Start()
     {
-
+        StartCoroutine("SatObject");
     }
 
-    private DateTime time = new DateTime(2000, 1, 1, 0, 0, 0);
-
-    // Update is called once per frame
-    void Update()
+    private IEnumerator SatObject()
     {
-        if (observe_time.Year > 1900)
+        while (true)
         {
-           // GameObject span = GameObject.Find("Span");
-           // Slider s = span.GetComponent<Slider>();
-
-
-
-           // for (int i = 0; i < Math.Floor(s.value); i++)
-           // {
-
-           //     update_locate(observe_time);
-           //     transform.position = new Vector3(locate_x, locate_y, 0);
-           //    // observe_time = observe_time.AddSeconds(10);
-           //     observe_time = observe_time.AddMinutes(1);
-                
-           //     //print(observe_time + " x=" + locate_x + " y=" + locate_y);
-                
-           //     ////更新確認用
-           //     //time = time.AddMinutes(1);
-           //     //GameObject date = GameObject.Find("Date");
-           //     //Text te = date.GetComponent<Text>();
-           //     //te.text = time.ToString();
-           //}
+            update_locate(observe_time);
+            observe_time = observe_time.AddMinutes(10);
 
             transform.position = new Vector3(locate_x, locate_y, 0);
+            GameManager.CalcScore(gameObject);
 
             //正距円筒による歪みを考慮
             GameObject sensor = gameObject.transform.FindChild("Sensor").gameObject;
@@ -345,16 +315,33 @@ public class SatelliteComponent : MonoBehaviour {
             float xscale = (float)(1.0 / h);
             sr.transform.localScale = new Vector3(xscale * 5, 5, 1);
 
+            yield return new WaitForSeconds(0.03f);
         }
-         
-
     }
 
-    public void calc()
+    // Update is called once per frame
+    void Update()
     {
-            update_locate(observe_time);
-            observe_time = observe_time.AddMinutes(1);
-            //observe_time = observe_time.AddSeconds(10);
+        //スパンの値でタイムスケールの調整
+        Time.timeScale = 1.0f * GameMaster.GetSpanValue();
+
+        if (observe_time.Year > 1900)
+        {
+            //update_locate(observe_time);
+            //observe_time = observe_time.AddMinutes(10);
+
+            //transform.position = new Vector3(locate_x, locate_y, 0);
+            //GameManager.CalcScore(gameObject);
+
+            ////正距円筒による歪みを考慮
+            //GameObject sensor = gameObject.transform.FindChild("Sensor").gameObject;
+            //SpriteRenderer sr = sensor.GetComponent<SpriteRenderer>();
+            //float a = sr.transform.lossyScale.x;
+            //double h = Math.Cos(locate_y * (2 * (Math.PI / 360)));
+            //float xscale = (float)(1.0 / h);
+            //sr.transform.localScale = new Vector3(xscale * 5, 5, 1);
+
+        }
     }
 
     Boolean sensorOn = false;

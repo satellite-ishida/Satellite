@@ -5,7 +5,7 @@ using UnityEngine.UI;
 
 public class Input_Easy_Sat_Component : MonoBehaviour {
 
-    private DateTime time = new DateTime(2000, 1, 1, 0, 0, 0);
+    
 
     //ペグマンを置く
     public void Put_Locate()
@@ -44,21 +44,5 @@ public class Input_Easy_Sat_Component : MonoBehaviour {
             //ペグマンをデストロイ
             Destroy(Pegman);
         }
-    }
-
-    void Update()
-    {
-        GameObject span = GameObject.Find("Span");
-        Slider s = span.GetComponent<Slider>();
-        time = time.AddMinutes(Math.Floor(s.value));
-        //time = time.AddSeconds(10*s.value);
-        
-        GameObject date = GameObject.Find("Date");
-        Text t = date.GetComponent<Text>();
-        t.text = time.ToString();
-
-        GameObject spanText = GameObject.Find("SpanText");
-        Text st = spanText.GetComponent<Text>();
-        st.text = "Update Time : " + Math.Floor(s.value).ToString() + " Hours";
     }
 }
