@@ -19,37 +19,44 @@ class Map
     /// 
     private Cell_Data[,] cd;
 
-    public Cell_Data this[double x, double y]
+    /// <summary>
+    /// セル情報を格納する配列
+    /// </summary>
+    public Cell_Data this[double longitude, double latitude]
     {
-        get 
+        get
         {
-            int b = (int)y * (-1) + 90;
-            if (y <= -90)
+
+            int x = (int)longitude + 180;
+            int y = (int)latitude * (-1) + 90;
+
+            //地図外のポイントを入力された時の処理
+
+            if (x < 0)
             {
-                b = 179;
+                x = 359 - (-x);
             }
-            else if (y > 90)
+            else if (360 <= x)
             {
-                b = 0;
+                x = -(360 - x);
             }
 
-
-            if (x < -180) 
+            //y軸がはみ出した場合、地球の反対側を観測
+            if (y < 0)
             {
-                return this.cd[539 + (int)x, b]; 
+                y = -y;
+                x = (x < 180) ? x + 180 : x - 180;
             }
-            else if (180 <= x)
+            else if (180 <= y)
             {
-                return this.cd[(int)x - 180, b];
-            }
-            else {
-                return this.cd[(int)x + 180, b]; 
+                y = 179 - (y - 180);    //(y-180)がオーバーしたセルの数
+                x = (x < 180) ? x + 180 : x - 180;
             }
 
+            return this.cd[x, y];
 
-            
         }
-        private set { this.cd[(int)x + 180, (int)y * (-1) + 90] = value; }
+        private set { this.cd[(int)longitude + 180, (int)latitude * (-1) + 90] = value; }
     }
 
     /// <summary>
