@@ -11,7 +11,7 @@ using UnityEngine.UI;
 /// 地図のセル情報を扱うクラス
 /// </summary>
 
-class Map
+public class Map
 {
     /// <summary>
     /// セル情報を格納する配列
@@ -317,10 +317,5 @@ class Map
         }
         */
     }
-
-    private int score = 0;
-
     
 }
-
-

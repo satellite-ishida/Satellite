@@ -34,6 +34,17 @@ public class GameMaster : MonoBehaviour
         return (Score);
     }
 
+    /// <summary>
+    /// マップクラス
+    /// </summary>
+    private static Map map;
+
+    public static Map Map
+    {
+        get { return map; }
+        set { map = value; }
+    }
+
     //衛星リスト
     private static List<GameObject> SatelliteList = new List<GameObject>();
     //衛星の追加

@@ -46,7 +46,7 @@ public class SatelliteComponent : MonoBehaviour {
     /// <summary>
     /// 現在時刻
     /// </summary>
-    private DateTime observe_time = new DateTime(1800,1,1,0,0,0);
+    protected DateTime observe_time = new DateTime(1800,1,1,0,0,0);
 
 
     /// <summary>
@@ -71,7 +71,7 @@ public class SatelliteComponent : MonoBehaviour {
     /// <summary>
     /// 現在位置_x軸
     /// </summary>
-    private float locate_x;
+    private  float locate_x;
 
     /// <summary>
     /// 現在位置_y軸
@@ -290,13 +290,13 @@ public class SatelliteComponent : MonoBehaviour {
         
         return num_day;
     }
-
+    
     //コルーチンのスタート
-    void Start()
+    public virtual void Start()
     {
-        StartCoroutine("SatObject");
+       StartCoroutine("SatObject");
     }
-
+    
     private IEnumerator SatObject()
     {
         while (true)
@@ -304,23 +304,29 @@ public class SatelliteComponent : MonoBehaviour {
             update_locate(observe_time);
             observe_time = observe_time.AddMinutes(10);
 
-            transform.position = new Vector3(locate_x, locate_y, 0);
-            GameManager.CalcScore(gameObject);
+             transform.position = new Vector3(locate_x, locate_y, 0);
+          //  GameManager.CalcScore(gameObject);
 
             //正距円筒による歪みを考慮
             GameObject sensor = gameObject.transform.FindChild("Sensor").gameObject;
             SpriteRenderer sr = sensor.GetComponent<SpriteRenderer>();
             float a = sr.transform.lossyScale.x;
-            double h = Math.Cos(locate_y * (2 * (Math.PI / 360)));
-            float xscale = (float)(1.0 / h);
-            sr.transform.localScale = new Vector3(xscale * 5, 5, 1);
 
+            double h =  Math.Cos(locate_y * (2 * (Math.PI / 360)));
+            float xscale = (h < 0.001) ?(float)(1.0 / h) : 360;
+            sr.transform.localScale = new Vector3(xscale * 5, 5, 1);
+            
+            CalcScore();
             yield return new WaitForSeconds(0.03f);
         }
     }
+     
+    
+
+    protected virtual void CalcScore() { }
 
     // Update is called once per frame
-    void Update()
+    public virtual void Update()
     {
         //スパンの値でタイムスケールの調整
         Time.timeScale = 1.0f * GameMaster.GetSpanValue();

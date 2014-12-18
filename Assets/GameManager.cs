@@ -4,21 +4,19 @@ using System.Collections.Generic;
 using System;
 using UnityEngine.UI;
 
-public class GameManager : MonoBehaviour
+class GameManager : MonoBehaviour
 {
 
     private GameObject _charactor;
     private GameObject _charactor2;
     private GameObject _charactor3;
 
-    private static Map map;
-
     private DateTime Global_Time = new DateTime(2000, 1, 1, 0, 0, 0);
 
     // Use this for initialization
     void Start()
     {
-        map = new Map();
+        GameMaster.Map = new Map();
 
         /////////////////////↓デバック用
         // キャラクターを取得する
@@ -40,11 +38,14 @@ public class GameManager : MonoBehaviour
         for (int i = 0; i < 360; i += (360 / n))
         {
             GameObject satellite = Instantiate(prefab) as GameObject;
-            SatelliteComponent component = satellite.GetComponent<SatelliteComponent>();
+        //    SatelliteComponent component = satellite.GetComponent<SatelliteComponent>();
 
+            //衛星の設定にあったクラスを入れる
+            satellite.AddComponent<Weather_Satellite>();
+            SatelliteComponent component = satellite.GetComponent<Weather_Satellite>();
             GameMaster.AddSatelliteList(satellite);
             //map.Satellite = component;
-
+            
             component.ID = i;
             // ////真の衛星軌道
             component.M1 = 14.117117471;
@@ -54,7 +55,7 @@ public class GameManager : MonoBehaviour
             component.M0 = 136.8816;
             component.ET = 97320.90946019;
             component.L_omg0 = 272.6745;
-
+            
             ////真の真ののの衛星軌道
             ////component.M1 = 1.00287879;
             //component.i = 40.5968;
@@ -85,7 +86,7 @@ public class GameManager : MonoBehaviour
         {
             for (int j = -89; j < 90; j++)
             {
-                if (string.Compare(map[i, j].City, null) != 0)
+                if (string.Compare(GameMaster.Map[i, j].City, null) != 0)
                 {
                     GameObject point = Instantiate(prefab2) as GameObject;
                     point.transform.position = new Vector3(i, j, 1);
@@ -135,7 +136,7 @@ public class GameManager : MonoBehaviour
     // Update is called once per frame
     void Update()
     {
-        map.Satellite_Update();
+        GameMaster.Map.Satellite_Update();
 
         //グローバルタイムの更新と表示
         Global_Time = Global_Time.AddMinutes(Math.Floor(GameMaster.GetSpanValue()));
@@ -158,7 +159,10 @@ public class GameManager : MonoBehaviour
 
         GameObject prefab = (GameObject)Resources.Load("Prefabs/QZStest");
         GameObject satellite = Instantiate(prefab) as GameObject;
-        SatelliteComponent component = satellite.GetComponent<SatelliteComponent>();
+        satellite.AddComponent<Weather_Satellite>();
+        SatelliteComponent component = satellite.GetComponent<Weather_Satellite>();
+       
+        // SatelliteComponent component = satellite.GetComponent<SatelliteComponent>();
 
         GameMaster.AddSatelliteList(satellite);
 
@@ -176,7 +180,10 @@ public class GameManager : MonoBehaviour
 
         GameObject prefab = (GameObject)Resources.Load("Prefabs/QZStest");
         GameObject satellite = Instantiate(prefab) as GameObject;
-        SatelliteComponent component = satellite.GetComponent<SatelliteComponent>();
+        satellite.AddComponent<Weather_Satellite>();
+        SatelliteComponent component = satellite.GetComponent<Weather_Satellite>();
+
+     //   SatelliteComponent component = satellite.GetComponent<SatelliteComponent>();
 
         GameMaster.AddSatelliteList(satellite);
 
@@ -190,7 +197,7 @@ public class GameManager : MonoBehaviour
         component.ET = ET;
         component.L_omg0 = L_omg;
     }
-
+    /*
     public static void CalcScore(GameObject g)
     {
         int citynum = 0;
@@ -220,11 +227,11 @@ public class GameManager : MonoBehaviour
                 //   if ((x - i) * (x - i) + (y - j) * (y - j) <= a * a)
                 if (((i - x) * (i - x)) * (b * b) + ((j - y) * (j - y)) * (a * a) <= a * a * b * b)
                 {
-                    if (string.Compare(map[i, j].City, null) != 0)
+                    if (string.Compare(GameMaster.Map[i, j].City, null) != 0)
                     {
                         citynum++;
                     }
-                    if (map[i, j].Land)
+                    if (GameMaster.Map[i, j].Land)
                     {
                         landnum++;
                     }
@@ -238,10 +245,7 @@ public class GameManager : MonoBehaviour
         //ゲームマスターにスコアの通知
         GameMaster.AddScore(citynum);
     }
-
-    private Vector3 start;
-
-
+    */
     void OnMouseDown()
     {
         //GameObject prefab3 = (GameObject)Resources.Load("Prefabs/base_station");

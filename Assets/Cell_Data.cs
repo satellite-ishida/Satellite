@@ -5,7 +5,11 @@ using System.Text;
 using UnityEngine;
 using System.Collections;
 
-class Cell_Data
+
+/// <summary>
+/// セルの情報を保持
+/// </summary>
+public class Cell_Data
 {
 
     private Boolean land;
