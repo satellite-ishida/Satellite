@@ -313,16 +313,18 @@ public class SatelliteComponent : MonoBehaviour {
             float a = sr.transform.lossyScale.x;
 
             double h =  Math.Cos(locate_y * (2 * (Math.PI / 360)));
-            float xscale = (h < 0.001) ?(float)(1.0 / h) : 360;
+            //0割り回避
+            float xscale = (h < 0.001) ? 360 : (float)(1.0 / h);
             sr.transform.localScale = new Vector3(xscale * 5, 5, 1);
             
             CalcScore();
             yield return new WaitForSeconds(0.03f);
         }
     }
-     
-    
 
+    /// <summary>
+    /// スコア計算関数
+    /// </summary>
     protected virtual void CalcScore() { }
 
     // Update is called once per frame

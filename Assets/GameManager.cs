@@ -40,7 +40,7 @@ class GameManager : MonoBehaviour
             GameObject satellite = Instantiate(prefab) as GameObject;
         //    SatelliteComponent component = satellite.GetComponent<SatelliteComponent>();
 
-            //衛星の設定にあったクラスを入れる
+            //衛星の設定にあったコンポーネントを入れる
             satellite.AddComponent<Weather_Satellite>();
             SatelliteComponent component = satellite.GetComponent<Weather_Satellite>();
             GameMaster.AddSatelliteList(satellite);
