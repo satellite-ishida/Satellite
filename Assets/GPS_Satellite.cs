@@ -6,6 +6,12 @@ using UnityEngine;
 using System.Collections;
 using UnityEngine.UI;
 
+/*
+ *　とりあえずの仕様 
+ *　・都市を観測することで得点(自国の都市のみでもいいかも)
+ *　・海、陸に関しては調整
+ */
+
 /// <summary>
 /// GPS衛星クラス
 /// </summary>
@@ -48,7 +54,7 @@ public class GPS_Satellite : SatelliteComponent
                 //   if ((x - i) * (x - i) + (y - j) * (y - j) <= a * a)
                 if (((i - x) * (i - x)) * (b * b) + ((j - y) * (j - y)) * (a * a) <= a * a * b * b)
                 {
-                    if (string.Compare(GameMaster.Map[i, j].City, null) != 0)
+                    if (!String.IsNullOrEmpty(GameMaster.Map[i, j].City))
                     {
                         citynum++;
                     }

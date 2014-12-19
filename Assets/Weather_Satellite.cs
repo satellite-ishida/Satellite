@@ -6,6 +6,12 @@ using UnityEngine;
 using System.Collections;
 using UnityEngine.UI;
 
+/*
+ *　とりあえずの気象衛星の仕様 
+ *　・マップの地形に関係なく情報を得られる
+ *　・観測したセルは一定時間、気象衛星による観測得点が入らない
+ */
+
 /// <summary>
 /// 気象衛星クラス
 /// </summary>
@@ -24,15 +30,11 @@ public class Weather_Satellite : SatelliteComponent
     /// </summary>
     protected override void CalcScore()
     {
-        int citynum = 0;
-        int landnum = 0;
-        int seanum = 0;
+
 
         GameObject sensor = transform.FindChild("Sensor").gameObject;
 
-        citynum = 0;
-        landnum = 0;
-        seanum = 0;
+        int num = 0;
 
         int x = (int)transform.position.x;
         int y = (int)transform.position.y;
@@ -44,26 +46,19 @@ public class Weather_Satellite : SatelliteComponent
         {
             for (int j = y - b; j < y + b; j++)
             {
-                //とりあえず円で
-                //   if ((x - i) * (x - i) + (y - j) * (y - j) <= a * a)
                 if (((i - x) * (i - x)) * (b * b) + ((j - y) * (j - y)) * (a * a) <= a * a * b * b)
                 {
-                    if (string.Compare(GameMaster.Map[i, j].City, null) != 0)
+                    if (!GameMaster.Map[i, j].Observe_Status) 
                     {
-                        citynum++;
+                        num ++;
+                        GameMaster.Map[i, j].Observe_Status = true;
                     }
-                    if (GameMaster.Map[i, j].Land)
-                    {
-                        landnum++;
-                    }
-                    else
-                    {
-                        seanum++;
-                    }
+                    
                 }
             }
         }
+        print(num);
         //ゲームマスターにスコアの通知
-        GameMaster.AddScore(citynum);
+        GameMaster.AddScore(num);
     }
 }

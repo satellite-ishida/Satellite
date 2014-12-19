@@ -40,8 +40,6 @@ class GameManager : MonoBehaviour
             GameObject satellite = Instantiate(prefab) as GameObject;
         //    SatelliteComponent component = satellite.GetComponent<SatelliteComponent>();
 
-            //衛星の設定にあったコンポーネントを入れる
-            satellite.AddComponent<Weather_Satellite>();
             SatelliteComponent component = satellite.GetComponent<Weather_Satellite>();
             GameMaster.AddSatelliteList(satellite);
             //map.Satellite = component;
@@ -159,7 +157,6 @@ class GameManager : MonoBehaviour
 
         GameObject prefab = (GameObject)Resources.Load("Prefabs/QZStest");
         GameObject satellite = Instantiate(prefab) as GameObject;
-        satellite.AddComponent<Weather_Satellite>();
         SatelliteComponent component = satellite.GetComponent<Weather_Satellite>();
        
         // SatelliteComponent component = satellite.GetComponent<SatelliteComponent>();
@@ -178,9 +175,10 @@ class GameManager : MonoBehaviour
     public static void CreateNewSat(double M0, double M1, double M2, double e, double i, double s_omg, double L_omg, double ET)
     {
 
+      //  GameObject prefab = (GameObject)Resources.Load("Prefabs/GPS");
         GameObject prefab = (GameObject)Resources.Load("Prefabs/QZStest");
         GameObject satellite = Instantiate(prefab) as GameObject;
-        satellite.AddComponent<Weather_Satellite>();
+//        SatelliteComponent component = satellite.GetComponent<GPS_Satellite>();
         SatelliteComponent component = satellite.GetComponent<Weather_Satellite>();
 
      //   SatelliteComponent component = satellite.GetComponent<SatelliteComponent>();

@@ -216,24 +216,18 @@ public class Map
         }
     }
 
-
-    //現在いるセル(一マス)しか見ていない
-
     /// <summary>
-    /// セルの情報を取得
+    /// 観測状況のリセット
     /// </summary>
-    /// <param name="sa">衛星クラス</param>
-    /// <return>セルデータ</return>
-    /// 
-
-    private Cell_Data Get_CellData(GameObject g)
+    public void Reset_Observe()
     {
-        /*
-         *  セルはx軸方向は経度‐180を0として、東方向に360マスある
-         *        y軸方向は緯度-90？(北極)を0として、南方向に180マスある
-         */
-
-        return this[g.GetComponent<SatelliteComponent>().X, g.GetComponent<SatelliteComponent>().Y];
+        for (int i = 0; i < 360; i++) 
+        {
+            for (int j = 0; j < 180; j++) 
+            {
+                cd[i, j].Observe_Status = false;
+            }
+        }
     }
 
     /// <summary>
