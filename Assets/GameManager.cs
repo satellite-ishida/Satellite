@@ -49,7 +49,7 @@ class GameManager : MonoBehaviour
             GameMaster.AddSatelliteList(satellite);
             //map.Satellite = component;
             
-            component.ID = i;
+            component.ID =GameMaster.Get_Satellite_ID();
             // ////真の衛星軌道
             component.M1 = 14.117117471;
             component.i = 99.0090;
@@ -160,7 +160,8 @@ class GameManager : MonoBehaviour
         t.text = Global_Time.ToString();
     }
 
-    public static void CreateNewSat(String M0, String M1, String M2, String e, String i, String s_omg, String L_omg, String ET)
+    //新しい衛星の作成(引数String)
+    public static void CreateNewSat(String M0, String M1, String M2, String e, String i, String s_omg, String L_omg, String ET,String type)
     {
         double _M0 = double.Parse(M0);
         double _M1 = double.Parse(M1);
@@ -171,13 +172,22 @@ class GameManager : MonoBehaviour
         double _L_omg = double.Parse(L_omg);
         double _ET = double.Parse(ET);
 
-        GameObject prefab = (GameObject)Resources.Load("Prefabs/QZStest");
-        GameObject satellite = Instantiate(prefab) as GameObject;
-        //satellite.AddComponent<Weather_Satellite>();
-        SatelliteComponent component = satellite.GetComponent<Weather_Satellite>();
+        GameObject prefab = null;
+        GameObject satellite = null;
+        SatelliteComponent component = null;
+        if (type.Equals("Weather"))
+        {
+            prefab = (GameObject)Resources.Load("Prefabs/QZStest");
+            satellite = Instantiate(prefab) as GameObject;
+            component = satellite.GetComponent<Weather_Satellite>();
+        }
+        else if (type.Equals("GPS"))
+        {
+            prefab = (GameObject)Resources.Load("Prefabs/GPS");
+            satellite = Instantiate(prefab) as GameObject;
+            component = satellite.GetComponent<GPS_Satellite>();
+        }
        
-        // SatelliteComponent component = satellite.GetComponent<SatelliteComponent>();
-
         GameMaster.AddSatelliteList(satellite);
 
         component.ID = GameMaster.Get_Satellite_ID();
@@ -189,16 +199,25 @@ class GameManager : MonoBehaviour
         component.L_omg0 = _L_omg;
     }
 
-    public static void CreateNewSat(double M0, double M1, double M2, double e, double i, double s_omg, double L_omg, double ET)
+    //新しい衛星の作成(引数double)
+    public static void CreateNewSat(double M0, double M1, double M2, double e, double i, double s_omg, double L_omg, double ET,String type)
     {
 
-      //  GameObject prefab = (GameObject)Resources.Load("Prefabs/GPS");
-        GameObject prefab = (GameObject)Resources.Load("Prefabs/QZStest");
-        GameObject satellite = Instantiate(prefab) as GameObject;
-//        SatelliteComponent component = satellite.GetComponent<GPS_Satellite>();
-        SatelliteComponent component = satellite.GetComponent<Weather_Satellite>();
-
-     //   SatelliteComponent component = satellite.GetComponent<SatelliteComponent>();
+        GameObject prefab = null;
+        GameObject satellite = null;
+        SatelliteComponent component = null;
+        if (type.Equals("Weather"))
+        {
+            prefab = (GameObject)Resources.Load("Prefabs/QZStest");
+            satellite = Instantiate(prefab) as GameObject;
+            component = satellite.GetComponent<Weather_Satellite>();
+        }
+        else if (type.Equals("GPS"))
+        {
+            prefab = (GameObject)Resources.Load("Prefabs/GPS");
+            satellite = Instantiate(prefab) as GameObject;
+            component = satellite.GetComponent<GPS_Satellite>();
+        }
 
         GameMaster.AddSatelliteList(satellite);
 
@@ -212,6 +231,31 @@ class GameManager : MonoBehaviour
         component.ET = ET;
         component.L_omg0 = L_omg;
     }
+
+    //新しい衛星の作成(衛星の指定なし)
+    public static void CreateNewSat(double M0, double M1, double M2, double e, double i, double s_omg, double L_omg, double ET)
+    {
+
+        GameObject prefab = null;
+        prefab = (GameObject)Resources.Load("Prefabs/QZStest");
+       
+        GameObject satellite = Instantiate(prefab) as GameObject;
+        SatelliteComponent component = satellite.GetComponent<Weather_Satellite>();
+
+        GameMaster.AddSatelliteList(satellite);
+
+        component.ID = GameMaster.Get_Satellite_ID();
+        component.i = i;
+        component.e = e;
+        component.s_omg0 = s_omg;
+        component.M0 = M0;
+        component.M1 = M1;
+        component.M2 = M2;
+        component.ET = ET;
+        component.L_omg0 = L_omg;
+    }
+
+
     /*
     public static void CalcScore(GameObject g)
     {
@@ -261,79 +305,5 @@ class GameManager : MonoBehaviour
         GameMaster.AddScore(citynum);
     }
     */
-    void OnMouseDown()
-    {
-        //GameObject prefab3 = (GameObject)Resources.Load("Prefabs/base_station");
 
-
-        //float x = Input.mousePosition.x;
-        //float y = Input.mousePosition.y;
-
-        //start = new Vector3(x, y, 0);
-
-
-        //double longitude = Math.Round(.x);
-        //double latitude = Math.Round(mousePos.y);
-
-        //if (!map[longitude, latitude].GS && map.Set_BaseStation((int)longitude, (int)latitude))
-        //{
-        //    GameObject base_sation = Instantiate(prefab3) as GameObject;
-        //    base_sation.transform.position = new Vector3((int)longitude, (int)latitude, 1);
-        //}
-
-        //print(map[longitude,latitude].GS);
-        //print((int)longitude + "," + (int)latitude);
-
-        //  print(map[(int)longitude,(int)latitude].City);
-    }
-
-    void OnMouseUp()
-    {
-        //    float x = Input.mousePosition.x;
-        //    float y = Input.mousePosition.y;
-
-        //    Vector3 currentPosition = new Vector3(x, y, 1);
-
-
-        //    GameObject prefab3 = (GameObject)Resources.Load("Prefabs/base_station");
-
-        //    GameObject aa = Instantiate(prefab3) as GameObject;
-        //    aa.transform.position = Camera.main.ScreenToWorldPoint(currentPosition / 2 + start / 2);
-        //    aa.transform.localScale = (currentPosition - start) * 2;
-
-        //    print(currentPosition.x - start.x);
-
-        //    double a = (currentPosition.x - start.x) / 4;
-        //    double b = (currentPosition.y - start.y) / 4;
-        //    Vector3 O = Camera.main.ScreenToWorldPoint(currentPosition / 2 + start / 2);
-
-        //    int citynum = 0;
-        //    int landnum = 0;
-        //    int seanum = 0;
-
-        //    for (int i = (int)O.x - (int)Math.Abs(currentPosition.x - start.x) / 4; i < (int)O.x + (int)Math.Abs(currentPosition.x - start.x); i++)
-        //    {
-        //        for (int j = (int)O.y - (int)Math.Abs(currentPosition.y - start.y) / 4; j < (int)O.y + (int)Math.Abs(currentPosition.y - start.y) / 4; j++)
-        //        {
-        //            if (((i - O.x) * (i - O.x)) / (a * a) + ((j - O.y) * (j - O.y)) / (b * b) <= 1)
-        //            {
-        //                if (string.Compare(map[i, j].City, null) != 0)
-        //                {
-        //                    citynum++;
-        //                }
-        //                if (map[i, j].Land)
-        //                {
-        //                    landnum++;
-        //                }
-        //                else
-        //                {
-        //                    seanum++;
-        //                }
-        //            }
-        //        }
-
-        //    }
-
-        //    print(citynum + "," + landnum + "," + seanum);
-    }
 }
