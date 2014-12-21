@@ -4,8 +4,6 @@ using UnityEngine.UI;
 
 public class ScrollController : MonoBehaviour {
 
-   // [SerializeField]
-    //RectTransform prefab = null;
 
     void Start()
     {
