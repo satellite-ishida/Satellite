@@ -15,7 +15,7 @@ public class GUI_Manager : MonoBehaviour
 
         GameObject spanText = GameObject.Find("SpanText");
         Text st = spanText.GetComponent<Text>();
-        st.text = "Update Time : " + s.value.ToString() + " Hours";
+        st.text = "Time Scale : " + s.value.ToString() ;
     }
     //アドバンスパネルを前面に
     public void Set_Advanced_Panel()
@@ -30,6 +30,18 @@ public class GUI_Manager : MonoBehaviour
     public void Set_Easy_Panel()
     {
         GameObject g = GameObject.Find("Input_Easy_Sat_Panel");
+        g.transform.SetAsLastSibling();
+    }
+    //Create_Satパネルにチェンジ
+    public void Set_Create_Sat_Panel()
+    {
+        GameObject g = GameObject.Find("Create_Sat_Panel");
+        g.transform.SetAsLastSibling();
+    }
+    //Main_GUIパネルにチェンジ
+    public void Set_Main_GUI_Panel()
+    {
+        GameObject g = GameObject.Find("Main_GUI_Panel");
         g.transform.SetAsLastSibling();
     }
 }

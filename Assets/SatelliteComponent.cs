@@ -66,7 +66,16 @@ public class SatelliteComponent : MonoBehaviour {
             observe_time = date_et.AddHours(15.5);
         }
     }
-   
+
+    /// <summary>
+    /// 衛星の名前
+    /// </summary>
+    private String name;
+    public String NAME
+    {
+        get { return name; }
+        set { name = value; }
+    }
 
     /// <summary>
     /// 現在位置_x軸
@@ -296,13 +305,14 @@ public class SatelliteComponent : MonoBehaviour {
     {
        StartCoroutine("SatObject");
     }
-    
+
+    //コルーチン
     private IEnumerator SatObject()
     {
         while (true)
         {
             update_locate(observe_time);
-            observe_time = observe_time.AddMinutes(10);
+            observe_time = observe_time.AddMinutes(5);
 
              transform.position = new Vector3(locate_x, locate_y, 0);
           //  GameManager.CalcScore(gameObject);
@@ -312,13 +322,15 @@ public class SatelliteComponent : MonoBehaviour {
             SpriteRenderer sr = sensor.GetComponent<SpriteRenderer>();
             float a = sr.transform.lossyScale.x;
 
+
             double h =  Math.Cos(locate_y * (2 * (Math.PI / 360)));
             //0割り回避
             float xscale = (h < 0.001) ? 360 : (float)(1.0 / h);
             sr.transform.localScale = new Vector3(xscale * 5, 5, 1);
             
             CalcScore();
-            yield return new WaitForSeconds(0.03f);
+
+            yield return new WaitForSeconds(0.03f);//0.03fで30fpsぐらい
         }
     }
 
