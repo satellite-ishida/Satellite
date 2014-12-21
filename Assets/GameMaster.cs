@@ -41,6 +41,11 @@ public class GameMaster : MonoBehaviour
     {
         SatelliteList.Add(g);
     }
+    //衛星の取得（リストのインデックス,衛星のID番号）
+    public static GameObject GetSatelliteList(int index)
+    {
+        return SatelliteList[index];
+    }
     //Failがtrueの衛星をリストから削除
     public static void RemoveFailSatelliteList()
     {
