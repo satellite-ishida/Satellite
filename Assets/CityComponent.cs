@@ -26,7 +26,6 @@ public class CityComponent : MonoBehaviour {
                 num++;
             }
         }
-        print(num);
         return num;
     }
 

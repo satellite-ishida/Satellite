@@ -5,8 +5,6 @@ using UnityEngine.UI;
 
 public class Input_Easy_Sat_Component : MonoBehaviour {
 
-    
-
     //ペグマンを置く
     public void Put_Locate()
     {
@@ -15,6 +13,8 @@ public class Input_Easy_Sat_Component : MonoBehaviour {
             GameObject prefab = (GameObject)Resources.Load("Prefabs/Pegman");
             GameObject Pegman = Instantiate(prefab) as GameObject;
         }
+        
+        
     }
 
     public void Submit()
@@ -45,4 +45,17 @@ public class Input_Easy_Sat_Component : MonoBehaviour {
             Destroy(Pegman);
         }
     }
+    private int selGridInt = 0;
+    private string[] selCaptions = new string[] {
+		"DataA",
+		"DataB",
+		"DataC",
+		"DataD",
+	};
+
+ /*   void OnGUI()
+    {
+		selGridInt = GUILayout.SelectionGrid(selGridInt, selCaptions, 2, "Toggle");
+    }
+    */
 }

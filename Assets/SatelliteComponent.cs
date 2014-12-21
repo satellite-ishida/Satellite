@@ -384,7 +384,7 @@ public class SatelliteComponent : MonoBehaviour {
             c = new Color(1f, 1f, 0f, 0.2f);
             sensorOn = true;
         }
-        
+
     sr.color = c;
 
     }

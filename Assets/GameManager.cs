@@ -11,7 +11,7 @@ class GameManager : MonoBehaviour
     private GameObject _charactor2;
     private GameObject _charactor3;
 
-    private DateTime Global_Time = new DateTime(2000, 1, 1, 0, 0, 0);
+    private static DateTime Global_Time = new DateTime(2000, 1, 1, 0, 0, 0);
 
     /// <summary>
     /// 都市管理用ハッシュマップ(key:都市名,value:GameObject)

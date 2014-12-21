@@ -58,25 +58,5 @@ public class Cell_Data
 
     }
 
-    private bool observe_status;
-    private DateTime observe_time;
-    /// <summary>
-    /// セルの観測状況
-    /// </summary>
-    public bool Observe_Status
-    {
-        get { return observe_status; }
-        set 
-        { 
-            observe_status = value;
-            observe_time = DateTime.Now;
-        }
-    }
-
-    public DateTime ObserveTime
-    {
-        get { return observe_time; }
-    }
-
 }
 
