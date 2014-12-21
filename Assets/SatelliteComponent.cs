@@ -60,10 +60,11 @@ public class SatelliteComponent : MonoBehaviour {
         set {
             double_et = value;
             int year = (int)(double_et / 1000);
-            date_et = new DateTime(year+2000, 1, 1);
+            date_et = new DateTime(year+1900, 1, 1);
             double diff_day = (double)(double_et - year * 1000) - 1;
             date_et = date_et.AddDays(diff_day);
-            observe_time = date_et.AddHours(15.5);
+            //observe_time = date_et.AddHours(15.5);
+            observe_time = date_et;
         }
     }
    
@@ -302,18 +303,18 @@ public class SatelliteComponent : MonoBehaviour {
         while (true)
         {
             update_locate(observe_time);
-            observe_time = observe_time.AddMinutes(10);
-
+            observe_time = observe_time.AddMinutes(5);
+            //observe_time = observe_time.AddSeconds(10);
             transform.position = new Vector3(locate_x, locate_y, 0);
             GameManager.CalcScore(gameObject);
 
             //正距円筒による歪みを考慮
-            GameObject sensor = gameObject.transform.FindChild("Sensor").gameObject;
-            SpriteRenderer sr = sensor.GetComponent<SpriteRenderer>();
-            float a = sr.transform.lossyScale.x;
-            double h = Math.Cos(locate_y * (2 * (Math.PI / 360)));
-            float xscale = (float)(1.0 / h);
-            sr.transform.localScale = new Vector3(xscale * 5, 5, 1);
+            //GameObject sensor = gameObject.transform.FindChild("Sensor").gameObject;
+            //SpriteRenderer sr = sensor.GetComponent<SpriteRenderer>();
+            //float a = sr.transform.lossyScale.x;
+            //double h = Math.Cos(locate_y * (2 * (Math.PI / 360)));
+            //float xscale = (float)(1.0 / h);
+            //sr.transform.localScale = new Vector3(xscale * 5, 5, 1);
 
             yield return new WaitForSeconds(0.03f);
         }

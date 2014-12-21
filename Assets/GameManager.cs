@@ -29,15 +29,15 @@ public class GameManager : MonoBehaviour
         GameObject prefab = (GameObject)Resources.Load("Prefabs/QZStest");
 
         //// 緯度
-        //double latitude = _charactor3.transform.localPosition.y;
+        double latitude = 40;
 
         //// 経度
-        //double longitude = _charactor3.transform.localPosition.x;
+        double longitude = 135;
 
         // 衛星の個数
         int n = 1;
-
-        for (int i = 0; i < 360; i += (360 / n))
+        GameObject _58 = GameObject.Find("58");
+        for (int i = 1; i < 360; i += (360 / n))
         {
             GameObject satellite = Instantiate(prefab) as GameObject;
             SatelliteComponent component = satellite.GetComponent<SatelliteComponent>();
@@ -48,12 +48,32 @@ public class GameManager : MonoBehaviour
             component.ID = i;
             // ////真の衛星軌道
             component.M1 = 14.117117471;
-            component.i = 99.0090;
+            //component.M1 = 5 + i/n;
+            component.i = 99.0090;// +i;
+            //component.i = Math.Abs(_58.transform.position.y);
+            //if (_58.transform.position.x < 0)
+            //{
+            //    component.i -= 180;
+            //}
+
             component.e = 0.0008546;
             component.s_omg0 = 223.1686;
-            component.M0 = 136.8816;
+            component.M0 = 136.8816 + i;
             component.ET = 97320.90946019;
-            component.L_omg0 = 272.6745;
+            component.L_omg0 = 272.6745 - i;
+
+            //component.ID = i;
+            //// ロシアのやつ
+            //component.M1 = 2.00613016;
+            //component.i = 62.9125;
+
+
+            //component.e = 0.7134453;
+            //component.s_omg0 = 295.0386;
+            //component.M0 = 9.2449;
+            //component.ET = 13154.54631441;
+            //// 位相(右方向)
+            //component.L_omg0 = 153.0958 + i;
 
             ////真の真ののの衛星軌道
             ////component.M1 = 1.00287879;
@@ -190,6 +210,59 @@ public class GameManager : MonoBehaviour
         component.ET = ET;
         component.L_omg0 = L_omg;
     }
+
+    /// <summary>
+    /// 準天頂衛星作成
+    /// </summary>
+    /// <param name="longitude">経度</param>
+    /// <param name="latitude">緯度</param>
+    public static void CreateQZS(double longitude, double latitude)
+    {
+        GameObject prefab = (GameObject)Resources.Load("Prefabs/QZStest");
+        GameObject satellite = Instantiate(prefab) as GameObject;
+        SatelliteComponent component = satellite.GetComponent<SatelliteComponent>();
+
+        GameMaster.AddSatelliteList(satellite);
+
+        component.ID = GameMaster.Get_Satellite_ID();
+        component.i = latitude;
+        component.e = Math.Abs((0.0746703 / 40.5968) * latitude);
+        component.s_omg0 = 269.9725;
+        component.M0 = 181.9023;
+        component.M1 = 1.002737;
+        component.M2 = 0;
+        component.ET = 14343.49492826;
+        component.L_omg0 = 165 + longitude;
+    }
+
+    /// <summary>
+    /// 極軌道衛星作成
+    /// </summary>
+    /// <param name="longitude">経度</param>
+    /// <param name="latitude">緯度</param>
+    public static void CreatePOS(double longitude, double latitude)
+    {
+        GameObject prefab = (GameObject)Resources.Load("Prefabs/QZStest");
+        GameObject satellite = Instantiate(prefab) as GameObject;
+        SatelliteComponent component = satellite.GetComponent<SatelliteComponent>();
+
+        GameMaster.AddSatelliteList(satellite);
+
+        component.ID = GameMaster.Get_Satellite_ID();
+        component.i = latitude;
+        component.e = 0.0008546;
+        component.s_omg0 = 223.1686;
+        //component.M0 = 136.8816;
+        component.M0 = 136.8816;
+        //component.M1 = 14.117117471;
+        component.M1 = 2;
+        component.M2 = 0;
+        component.ET = 97320.90946019;
+        //component.L_omg0 = 272.6745;
+        component.L_omg0 = 272.6745;
+    }
+
+
 
     public static void CalcScore(GameObject g)
     {
