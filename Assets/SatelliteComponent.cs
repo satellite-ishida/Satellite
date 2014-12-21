@@ -379,14 +379,5 @@ public class SatelliteComponent : MonoBehaviour {
 
     }
 
-    void OnMouseUp()
-    {
-            //GameObject sensor = gameObject.transform.FindChild("Sensor").gameObject;
-            //SpriteRenderer sr = sensor.GetComponent<SpriteRenderer>();
-            //print(sr.color);
-            //Color c = new Color(1f, 1f, 0f, 0f);
-            //sr.color = c;
-        
-    }
 
 }
