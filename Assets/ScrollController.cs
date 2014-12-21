@@ -9,7 +9,7 @@ public class ScrollController : MonoBehaviour {
 
     void Start()
     {
-        GameObject prefabb = (GameObject)Resources.Load("Prefabs/Node");
+        GameObject prefabb = (GameObject)Resources.Load("Prefabs/Sat_Node");
 
         for (int i = 0; i < 15; i++)
         {
