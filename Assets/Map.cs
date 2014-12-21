@@ -225,7 +225,10 @@ public class Map
         {
             for (int j = 0; j < 180; j++) 
             {
+
                 cd[i, j].Observe_Status = false;
+
+
             }
         }
     }
