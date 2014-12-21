@@ -44,5 +44,17 @@ public class GUI_Manager : MonoBehaviour
         GameObject g = GameObject.Find("Main_GUI_Panel");
         g.transform.SetAsLastSibling();
     }
+
+    //Sat_Listの衛星ノードを削除（衛星IDで判別）
+    public void Destroy_Sat_Node(int ID)
+    {
+        GameObject g = GameObject.Find("Sat_List");
+        var item = g.transform as RectTransform;
+        foreach (RectTransform child in item)
+        {
+            if (child.GetComponent<Sat_Info>().ID == ID) Destroy(child.gameObject);
+            break;
+        }     
+    }
 }
     
