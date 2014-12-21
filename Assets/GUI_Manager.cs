@@ -33,7 +33,7 @@ public class GUI_Manager : MonoBehaviour
         g.transform.SetAsLastSibling();
     }
     //Create_Satパネルにチェンジ
-    public void Set_New_Sat_Panel()
+    public void Set_Create_Sat_Panel()
     {
         GameObject g = GameObject.Find("Create_Sat_Panel");
         g.transform.SetAsLastSibling();
