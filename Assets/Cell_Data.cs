@@ -5,7 +5,11 @@ using System.Text;
 using UnityEngine;
 using System.Collections;
 
-class Cell_Data
+
+/// <summary>
+/// セルの情報を保持
+/// </summary>
+public class Cell_Data
 {
 
     private Boolean land;
@@ -54,7 +58,16 @@ class Cell_Data
 
     }
 
+    private bool observe_status;
+    /// <summary>
+    /// セルの観測状況
+    /// </summary>
+    public bool Observe_Status
+    {
+        get { return observe_status; }
+        set { observe_status = value; }
 
+    }
 
 }
 
