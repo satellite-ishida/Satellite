@@ -306,6 +306,7 @@ public class SatelliteComponent : MonoBehaviour {
        StartCoroutine("SatObject");
     }
 
+
     //コルーチン
     private IEnumerator SatObject()
     {
@@ -322,14 +323,12 @@ public class SatelliteComponent : MonoBehaviour {
             SpriteRenderer sr = sensor.GetComponent<SpriteRenderer>();
             float a = sr.transform.lossyScale.x;
 
-
             double h =  Math.Cos(locate_y * (2 * (Math.PI / 360)));
             //0割り回避
             float xscale = (h < 0.001) ? 360 : (float)(1.0 / h);
             sr.transform.localScale = new Vector3(xscale * 5, 5, 1);
             
             CalcScore();
-
             yield return new WaitForSeconds(0.03f);//0.03fで30fpsぐらい
         }
     }
