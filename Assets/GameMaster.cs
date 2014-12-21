@@ -47,6 +47,13 @@ public class GameMaster : MonoBehaviour
 
     //衛星リスト
     private static List<GameObject> SatelliteList = new List<GameObject>();
+
+    public static List<GameObject> Satellitelist
+    {
+        get {
+            return SatelliteList;
+        }
+    }
     //衛星の追加
     public static void AddSatelliteList(GameObject g)
     {

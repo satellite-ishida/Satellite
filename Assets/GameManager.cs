@@ -13,6 +13,11 @@ class GameManager : MonoBehaviour
 
     private DateTime Global_Time = new DateTime(2000, 1, 1, 0, 0, 0);
 
+    /// <summary>
+    /// 都市管理用ハッシュマップ(key:都市名,value:GameObject)
+    /// </summary>
+    private Dictionary<string, GameObject> Citydict = new Dictionary<string, GameObject>();
+
     // Use this for initialization
     void Start()
     {
@@ -78,16 +83,23 @@ class GameManager : MonoBehaviour
             //component.e = Math.Abs((0.0746703 / 40.5968) * latitude);
 
         }
+
+        //都市オブジェクトの作成
         GameObject prefab2 = (GameObject)Resources.Load("Prefabs/point");
 
         for (int i = -180; i < 180; i++)
         {
             for (int j = -89; j < 90; j++)
             {
-                if (string.Compare(GameMaster.Map[i, j].City, null) != 0)
+                if (!String.IsNullOrEmpty(GameMaster.Map[i, j].City))
                 {
                     GameObject point = Instantiate(prefab2) as GameObject;
                     point.transform.position = new Vector3(i, j, 1);
+
+                    if (!Citydict.ContainsKey(GameMaster.Map[i, j].City))
+                    {
+                        Citydict.Add(GameMaster.Map[i, j].City, point);
+                    }
                 }
             }
         }
@@ -136,6 +148,10 @@ class GameManager : MonoBehaviour
     {
         GameMaster.Map.Satellite_Update();
 
+
+        Citydict["東京"].GetComponent<CityComponent>().SatelliteNum();
+        
+
         //グローバルタイムの更新と表示
         Global_Time = Global_Time.AddMinutes(Math.Floor(GameMaster.GetSpanValue()));
         //time = time.AddSeconds(10*s.value);
@@ -157,6 +173,7 @@ class GameManager : MonoBehaviour
 
         GameObject prefab = (GameObject)Resources.Load("Prefabs/QZStest");
         GameObject satellite = Instantiate(prefab) as GameObject;
+        //satellite.AddComponent<Weather_Satellite>();
         SatelliteComponent component = satellite.GetComponent<Weather_Satellite>();
        
         // SatelliteComponent component = satellite.GetComponent<SatelliteComponent>();

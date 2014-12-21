@@ -57,7 +57,6 @@ public class Weather_Satellite : SatelliteComponent
                 }
             }
         }
-        print(num);
         //ゲームマスターにスコアの通知
         GameMaster.AddScore(num);
     }
