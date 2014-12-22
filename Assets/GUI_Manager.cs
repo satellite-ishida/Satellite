@@ -45,6 +45,11 @@ public class GUI_Manager : MonoBehaviour
         g.transform.SetAsLastSibling();
     }
 
+    private int target_ID = 0;
+    public void Click_Sat_Node()
+    {
+        print(gameObject.name);
+    }
     //Sat_Listの衛星ノードを削除（衛星IDで判別）
     public void Destroy_Sat_Node(int ID)
     {
