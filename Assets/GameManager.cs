@@ -141,23 +141,46 @@ class GameManager : MonoBehaviour
         //component3.TIME = observe_time;
 
         ///////////////////↑デバック用ここまで
+        StartCoroutine("ManagerCoroutines");
     }
+
+    //コルーチン
+    private IEnumerator ManagerCoroutines()
+    {
+        while (true)
+        {
+            //グローバルタイムの更新と表示
+            Global_Time = Global_Time.AddSeconds(Math.Floor(GameMaster.SpanValue * 60));
+            //time = time.AddSeconds(10 * s.value);
+            GameObject date = GameObject.Find("Date");
+            Text t = date.GetComponent<Text>();
+
+            String year = Global_Time.Year.ToString() + "年";
+            String Month = Global_Time.Month.ToString() + "月";
+            String Day = Global_Time.Day.ToString() + "日";
+            String Hour = Global_Time.Hour.ToString() + "時";
+
+            t.text = year + Month + Day + Hour;
+
+
+            yield return new WaitForSeconds(0.03f);//0.03fで30fpsぐらい
+        }
+    }
+
+
+
 
     // Update is called once per frame
     void Update()
     {
+
+
 
         GameMaster.Map.Satellite_Update();
 
         Citydict["東京"].GetComponent<CityComponent>().SatelliteNum();
 
 
-        //グローバルタイムの更新と表示
-        Global_Time = Global_Time.AddSeconds(Math.Floor(GameMaster.SpanValue * 60));
-        //time = time.AddSeconds(10 * s.value);
-        GameObject date = GameObject.Find("Date");
-        Text t = date.GetComponent<Text>();
-        t.text = Global_Time.ToString();
     }
 
     //新しい衛星の作成(引数String)

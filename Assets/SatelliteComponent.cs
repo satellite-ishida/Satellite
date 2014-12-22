@@ -316,6 +316,7 @@ public class SatelliteComponent : MonoBehaviour {
     }
 
 
+
     //コルーチン
     private IEnumerator SatObject()
     {
