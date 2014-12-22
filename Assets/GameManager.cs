@@ -11,8 +11,6 @@ class GameManager : MonoBehaviour
     private GameObject _charactor2;
     private GameObject _charactor3;
 
-    private static DateTime Global_Time = new DateTime(2000, 1, 1, 0, 0, 0);
-
     /// <summary>
     /// 都市管理用ハッシュマップ(key:都市名,value:GameObject)
     /// </summary>
@@ -152,16 +150,16 @@ class GameManager : MonoBehaviour
         while (true)
         {
             //グローバルタイムの更新と表示
-            Global_Time = Global_Time.AddSeconds(Math.Floor(GameMaster.SpanValue * 60));
+            GameMaster.GlobalTime = GameMaster.GlobalTime.AddSeconds(Math.Floor(GameMaster.SpanValue * 60));
             //time = time.AddSeconds(10 * s.value);
-            GameObject date = GameObject.Find("Date");
+            GameObject date = GameObject.Find("DateText");
             Text t = date.GetComponent<Text>();
 
-            String year = Global_Time.Year.ToString() + "年";
-            String Month = Global_Time.Month.ToString() + "月";
-            String Day = Global_Time.Day.ToString() + "日";
-            String Hour = Global_Time.Hour.ToString() + "時";
-            String Minute = Global_Time.Minute.ToString() + "分";
+            String year = GameMaster.GlobalTime.Year.ToString() + "年";
+            String Month = GameMaster.GlobalTime.Month.ToString() + "月";
+            String Day = GameMaster.GlobalTime.Day.ToString() + "日";
+            String Hour = GameMaster.GlobalTime.Hour.ToString() + "時";
+            String Minute = GameMaster.GlobalTime.Minute.ToString() + "分";
 
             t.text = year + Month + Day + Hour + Minute;
 

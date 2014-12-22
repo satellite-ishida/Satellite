@@ -31,11 +31,6 @@ public class CityComponent : MonoBehaviour {
         return num;
     }
 
-
-
-
-
-
     // Use this for initialization
     void Start()
     {
