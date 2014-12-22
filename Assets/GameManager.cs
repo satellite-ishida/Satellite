@@ -86,6 +86,7 @@ class GameManager : MonoBehaviour
 
         //都市オブジェクトの作成
         GameObject prefab2 = (GameObject)Resources.Load("Prefabs/point");
+        GameObject city = GameObject.Find("City");
 
         for (int i = -180; i < 180; i++)
         {
@@ -93,8 +94,9 @@ class GameManager : MonoBehaviour
             {
                 if (!String.IsNullOrEmpty(GameMaster.Map[i, j].City))
                 {
-                    GameObject point = Instantiate(prefab2) as GameObject;
+                    GameObject point = Instantiate(prefab2) as GameObject;                    
                     point.transform.position = new Vector3(i, j, 1);
+                    point.transform.parent = city.transform;
 
                     if (!Citydict.ContainsKey(GameMaster.Map[i, j].City))
                     {
@@ -159,8 +161,9 @@ class GameManager : MonoBehaviour
             String Month = Global_Time.Month.ToString() + "月";
             String Day = Global_Time.Day.ToString() + "日";
             String Hour = Global_Time.Hour.ToString() + "時";
+            String Minute = Global_Time.Minute.ToString() + "分";
 
-            t.text = year + Month + Day + Hour;
+            t.text = year + Month + Day + Hour + Minute;
 
 
             yield return new WaitForSeconds(0.03f);//0.03fで30fpsぐらい
