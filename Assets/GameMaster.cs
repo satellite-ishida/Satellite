@@ -72,6 +72,14 @@ public class GameMaster : MonoBehaviour
 
     //スライダー(タイムスパン)の値
     private static float Span_Value = 1.0f;
+
+    public static float SpanValue 
+    {
+        get { return Span_Value; }
+        set { Span_Value = value; }
+    }
+
+    /*
     public static void SetSpanValue(float f)
     {
         Span_Value = f;
@@ -79,5 +87,5 @@ public class GameMaster : MonoBehaviour
     public static float GetSpanValue()
     {
         return Span_Value;
-    }
+    }*/
 }

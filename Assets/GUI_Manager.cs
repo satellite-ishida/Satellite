@@ -11,11 +11,11 @@ public class GUI_Manager : MonoBehaviour
     {
         GameObject span = GameObject.Find("Span");
         Slider s = span.GetComponent<Slider>();
-        GameMaster.SetSpanValue(s.value);
+        GameMaster.SpanValue = s.value;
 
         GameObject spanText = GameObject.Find("SpanText");
         Text st = spanText.GetComponent<Text>();
-        st.text = "Time Scale : " + s.value.ToString() ;
+        st.text = "Time Scale : " + s.value.ToString();
     }
     //アドバンスパネルを前面に
     public void Set_Advanced_Panel()

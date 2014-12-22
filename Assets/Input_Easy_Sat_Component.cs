@@ -5,8 +5,6 @@ using UnityEngine.UI;
 
 public class Input_Easy_Sat_Component : MonoBehaviour {
 
-    public Toggle GPS_Toggle;
-    public Toggle Weather_Toggle;
 
     //ペグマンを置く
     public void Put_Locate()
@@ -28,22 +26,13 @@ public class Input_Easy_Sat_Component : MonoBehaviour {
         Toggle t2 = g2.GetComponent<Toggle>();
 
         String type = "";
-        if (t1.isOn && !t2.isOn)
+        if (t1.isOn)
         {
             type = "GPS";
         }
-        else if (!t1.isOn && t2.isOn)
+        else if (t2.isOn)
         {
             type = "Weather";
-        }
-        //チェックがどこにも付いていない場合
-        else if (!t1.isOn && !t2.isOn)
-        {
-            //t1.isOn = true;
-            return;
-        }
-        else{
-            type = "GPS";
         }
 
         if ((Pegman = GameObject.Find("Pegman(Clone)")) != null)
@@ -66,9 +55,30 @@ public class Input_Easy_Sat_Component : MonoBehaviour {
             double i = latitude;
             double e = Math.Abs((0.0746703 / 40.5968) * latitude);
 
-            GameManager.CreateNewSat(M0, M1, 0, e, i, s_omg0, L_omg0, ET ,type);
+
+            //衛星のパラメータ
+            int[] param = new int[3];
+            //センサ
+            GameObject sensor = GameObject.Find("Sensor");
+            Scrollbar s = sensor.GetComponent<Scrollbar>();
+            param[0] = (int)(s.value*10);
+
+
+
+            GameManager.CreateNewSat(M0, M1, 0, e, i, s_omg0, L_omg0, ET ,type,param);
             //ペグマンをデストロイ
             Destroy(Pegman);
         }
+    }
+
+    public void Set_Sensor_Performance()
+    {
+        GameObject sensor = GameObject.Find("Sensor");
+        Scrollbar s = sensor.GetComponent<Scrollbar>();
+   //     GameMaster.SpanValue = s.value;
+
+        GameObject value = GameObject.Find("SensorValue");
+        Text v = value.GetComponent<Text>();
+        v.text = (s.value*10).ToString();
     }
 }

@@ -170,6 +170,15 @@ public class SatelliteComponent : MonoBehaviour {
         }
     }
 
+    /// <summary>
+    /// センサの観測範囲
+    /// </summary>
+    private int sensor_performance = 5;
+
+    public int Sensor_Performance 
+    {
+        set { sensor_performance = value; }
+    }
  
 
     /// <summary>
@@ -326,7 +335,7 @@ public class SatelliteComponent : MonoBehaviour {
             double h =  Math.Cos(locate_y * (2 * (Math.PI / 360)));
             //0割り回避
             float xscale = (h < 0.001) ? 360 : (float)(1.0 / h);
-            sr.transform.localScale = new Vector3(xscale * 5, 5, 1);
+            sr.transform.localScale = new Vector3(xscale * sensor_performance, sensor_performance, 1);
             
             CalcScore();
             yield return new WaitForSeconds(0.03f);//0.03fで30fpsぐらい
@@ -338,11 +347,12 @@ public class SatelliteComponent : MonoBehaviour {
     /// </summary>
     protected virtual void CalcScore() { }
 
+
     // Update is called once per frame
     public virtual void Update()
     {
         //スパンの値でタイムスケールの調整
-        Time.timeScale = 1.0f * GameMaster.GetSpanValue();
+        Time.timeScale = 1.0f * GameMaster.SpanValue;
 
         if (observe_time.Year > 1900)
         {

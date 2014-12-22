@@ -4,11 +4,6 @@ using System.Collections;
 public class CityComponent : MonoBehaviour {
 
     /// <summary>
-    /// 都市の観測範囲
-    /// </summary>
-    private int range = 70;
-
-    /// <summary>
     /// 都市から近くの衛星の数を数える
     /// </summary>
     public int SatelliteNum() 
@@ -18,12 +13,19 @@ public class CityComponent : MonoBehaviour {
 
         foreach (GameObject g in GameMaster.Satellitelist)
         {
-            Vector3 Cpos = transform.position;
-            Vector3 Spos = g.transform.position;
-            float dis = Vector3.Distance(Cpos, Spos);
-            if (dis < range) 
+            if (g.GetComponent<GPS_Satellite>())
             {
-                num++;
+
+                GameObject sensor = g.transform.FindChild("Sensor").gameObject;
+                int range = (int)((sensor.transform.lossyScale.x) * 0.09);
+
+                Vector3 Cpos = transform.position;
+                Vector3 Spos = g.transform.position;
+                float dis = Vector3.Distance(Cpos, Spos);
+                if (dis < range)
+                {
+                    num++;
+                }
             }
         }
         return num;

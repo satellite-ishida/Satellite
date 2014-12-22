@@ -146,15 +146,15 @@ class GameManager : MonoBehaviour
     // Update is called once per frame
     void Update()
     {
+
         GameMaster.Map.Satellite_Update();
 
-
         Citydict["東京"].GetComponent<CityComponent>().SatelliteNum();
-        
+
 
         //グローバルタイムの更新と表示
-        Global_Time = Global_Time.AddMinutes(Math.Floor(GameMaster.GetSpanValue()));
-        //time = time.AddSeconds(10*s.value);
+        Global_Time = Global_Time.AddSeconds(Math.Floor(GameMaster.SpanValue * 60));
+        //time = time.AddSeconds(10 * s.value);
         GameObject date = GameObject.Find("Date");
         Text t = date.GetComponent<Text>();
         t.text = Global_Time.ToString();
@@ -200,7 +200,7 @@ class GameManager : MonoBehaviour
     }
 
     //新しい衛星の作成(引数double)
-    public static void CreateNewSat(double M0, double M1, double M2, double e, double i, double s_omg, double L_omg, double ET,String type)
+    public static void CreateNewSat(double M0, double M1, double M2, double e, double i, double s_omg, double L_omg, double ET,String type,int[] param)
     {
 
         GameObject prefab = null;
@@ -230,6 +230,7 @@ class GameManager : MonoBehaviour
         component.M2 = M2;
         component.ET = ET;
         component.L_omg0 = L_omg;
+        component.Sensor_Performance = param[0];
     }
 
     //新しい衛星の作成(衛星の指定なし)
@@ -254,56 +255,4 @@ class GameManager : MonoBehaviour
         component.ET = ET;
         component.L_omg0 = L_omg;
     }
-
-
-    /*
-    public static void CalcScore(GameObject g)
-    {
-        int citynum = 0;
-        int landnum = 0;
-        int seanum = 0;
-
-
-        SatelliteComponent satellite = g.GetComponent<SatelliteComponent>();
-
-        GameObject sensor = g.transform.FindChild("Sensor").gameObject;
-
-        citynum = 0;
-        landnum = 0;
-        seanum = 0;
-
-        int x = (int)g.transform.position.x;
-        int y = (int)g.transform.position.y;
-        int a = (int)((sensor.transform.lossyScale.x) * 0.09);
-        int b = (int)((sensor.transform.lossyScale.y) * 0.09);
-
-
-        for (int i = x - a; i <= x + a; i++)
-        {
-            for (int j = y - b; j < y + b; j++)
-            {
-                //とりあえず円で
-                //   if ((x - i) * (x - i) + (y - j) * (y - j) <= a * a)
-                if (((i - x) * (i - x)) * (b * b) + ((j - y) * (j - y)) * (a * a) <= a * a * b * b)
-                {
-                    if (string.Compare(GameMaster.Map[i, j].City, null) != 0)
-                    {
-                        citynum++;
-                    }
-                    if (GameMaster.Map[i, j].Land)
-                    {
-                        landnum++;
-                    }
-                    else
-                    {
-                        seanum++;
-                    }
-                }
-            }
-        }
-        //ゲームマスターにスコアの通知
-        GameMaster.AddScore(citynum);
-    }
-    */
-
 }
