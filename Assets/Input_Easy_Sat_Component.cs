@@ -59,7 +59,7 @@ public class Input_Easy_Sat_Component : MonoBehaviour {
             //衛星のパラメータ
             int[] param = new int[3];
             //センサ
-            GameObject sensor = GameObject.Find("Sensor");
+            GameObject sensor = GameObject.Find("Sensor_Scrollbar");
             Scrollbar s = sensor.GetComponent<Scrollbar>();
             param[0] = (int)(s.value*10);
 
@@ -73,7 +73,7 @@ public class Input_Easy_Sat_Component : MonoBehaviour {
 
     public void Set_Sensor_Performance()
     {
-        GameObject sensor = GameObject.Find("Sensor");
+        GameObject sensor = GameObject.Find("Sensor_Scrollbar");
         Scrollbar s = sensor.GetComponent<Scrollbar>();
    //     GameMaster.SpanValue = s.value;
 
