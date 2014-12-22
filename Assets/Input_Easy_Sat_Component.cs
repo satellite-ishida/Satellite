@@ -75,6 +75,7 @@ public class Input_Easy_Sat_Component : MonoBehaviour {
     {
         GameObject sensor = GameObject.Find("Sensor_Scrollbar");
         Scrollbar s = sensor.GetComponent<Scrollbar>();
+        print(sensor.name);
    //     GameMaster.SpanValue = s.value;
 
         GameObject value = GameObject.Find("SensorValue");
