@@ -41,7 +41,7 @@ public class Input_Easy_Sat_Component : MonoBehaviour {
             //double e = Math.Abs((0.0746703 / 40.5968) * latitude);
 
             //GameManager.CreateNewSat(M0, M1, 0, e, i, s_omg0, L_omg0, ET);
-            GameManager.CreatePOS(longitude, latitude);
+            GameManager.CreateMOS(longitude, latitude);
             
             //ペグマンをデストロイ
             Destroy(Pegman);

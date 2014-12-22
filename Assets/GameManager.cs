@@ -45,35 +45,35 @@ public class GameManager : MonoBehaviour
             GameMaster.AddSatelliteList(satellite);
             //map.Satellite = component;
 
-            component.ID = i;
-            // ////真の衛星軌道
-            component.M1 = 14.117117471;
-            //component.M1 = 5 + i/n;
-            component.i = 99.0090;// +i;
-            //component.i = Math.Abs(_58.transform.position.y);
-            //if (_58.transform.position.x < 0)
-            //{
-            //    component.i -= 180;
-            //}
-
-            component.e = 0.0008546;
-            component.s_omg0 = 223.1686;
-            component.M0 = 136.8816 + i;
-            component.ET = 97320.90946019;
-            component.L_omg0 = 272.6745 - i;
-
             //component.ID = i;
-            //// ロシアのやつ
-            //component.M1 = 2.00613016;
-            //component.i = 62.9125;
+            //// ////真の衛星軌道
+            //component.M1 = 14.117117471;
+            ////component.M1 = 5 + i/n;
+            //component.i = 99.0090;// +i;
+            ////component.i = Math.Abs(_58.transform.position.y);
+            ////if (_58.transform.position.x < 0)
+            ////{
+            ////    component.i -= 180;
+            ////}
+
+            //component.e = 0.0008546;
+            //component.s_omg0 = 223.1686;
+            //component.M0 = 136.8816 + i;
+            //component.ET = 97320.90946019;
+            //component.L_omg0 = 272.6745;
+
+            component.ID = i;
+            // ロシアのやつ
+            component.M1 = 2.00613016;
+            component.i = 62.9125;
 
 
-            //component.e = 0.7134453;
-            //component.s_omg0 = 295.0386;
-            //component.M0 = 9.2449;
-            //component.ET = 13154.54631441;
-            //// 位相(右方向)
-            //component.L_omg0 = 153.0958 + i;
+            component.e = 0.7134453;
+            component.s_omg0 = 295.0386;
+            component.M0 = 9.2449;
+            component.ET = 13154.54631441;
+            // 位相(右方向)
+            component.L_omg0 = 153.0958 + i;
 
             ////真の真ののの衛星軌道
             ////component.M1 = 1.00287879;
@@ -253,16 +253,58 @@ public class GameManager : MonoBehaviour
         component.e = 0.0008546;
         component.s_omg0 = 223.1686;
         //component.M0 = 136.8816;
-        component.M0 = 136.8816;
+        component.M0 = 136.8816 + 90;
         //component.M1 = 14.117117471;
-        component.M1 = 2;
+
+        // 速度
+        component.M1 = 5;
+        
         component.M2 = 0;
         component.ET = 97320.90946019;
         //component.L_omg0 = 272.6745;
-        component.L_omg0 = 272.6745;
+        component.L_omg0 = longitude - 60;
     }
 
+    /// <summary>
+    /// モルニヤ軌道衛星作成
+    /// </summary>
+    /// <param name="longitude">経度</param>
+    /// <param name="latitude">緯度</param>
+    public static void CreateMOS(double longitude, double latitude)
+    {
+        GameObject prefab = (GameObject)Resources.Load("Prefabs/QZStest");
+        GameObject satellite = Instantiate(prefab) as GameObject;
+        SatelliteComponent component = satellite.GetComponent<SatelliteComponent>();
 
+        GameMaster.AddSatelliteList(satellite);
+
+        component.ID = GameMaster.Get_Satellite_ID();
+        component.i = latitude;
+        component.e = 0.7134453;
+        component.s_omg0 = 295.0386;
+        //component.M0 = 136.8816;
+        component.M0 = 9.2449 + 100;
+        //component.M1 = 14.117117471;
+
+        // 速度
+        component.M1 = 2.00613016;
+
+        component.M2 = 0;
+        component.ET = 13154.54631441;
+        //component.L_omg0 = 153.0958;
+        component.L_omg0 = longitude - 15;
+
+        component.M1 = 2.00613016;
+        //component.i = 62.9125;
+
+
+        //component.e = 0.7134453;
+        //component.s_omg0 = 295.0386;
+        //component.M0 = 9.2449;
+        //component.ET = 13154.54631441;
+        //// 位相(右方向)
+        //component.L_omg0 = 153.0958 + i;
+    }
 
     public static void CalcScore(GameObject g)
     {
