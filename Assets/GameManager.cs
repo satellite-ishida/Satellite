@@ -42,22 +42,22 @@ class GameManager : MonoBehaviour
 
         for (int i = 0; i < 360; i += (360 / n))
         {
-            GameObject satellite = Instantiate(prefab) as GameObject;
-        //    SatelliteComponent component = satellite.GetComponent<SatelliteComponent>();
+        //    GameObject satellite = Instantiate(prefab) as GameObject;
+        ////    SatelliteComponent component = satellite.GetComponent<SatelliteComponent>();
 
-            SatelliteComponent component = satellite.GetComponent<Weather_Satellite>();
-            GameMaster.AddSatelliteList(satellite);
-            //map.Satellite = component;
+        //    SatelliteComponent component = satellite.GetComponent<Weather_Satellite>();
+        //    GameMaster.AddSatelliteList(satellite);
+        //    //map.Satellite = component;
             
-            component.ID =GameMaster.Get_Satellite_ID();
-            // ////真の衛星軌道
-            component.M1 = 14.117117471;
-            component.i = 99.0090;
-            component.e = 0.0008546;
-            component.s_omg0 = 223.1686;
-            component.M0 = 136.8816;
-            component.ET = 97320.90946019;
-            component.L_omg0 = 272.6745;
+        //    component.ID =GameMaster.Get_Satellite_ID();
+        //    // ////真の衛星軌道
+        //    component.M1 = 14.117117471;
+        //    component.i = 99.0090;
+        //    component.e = 0.0008546;
+        //    component.s_omg0 = 223.1686;
+        //    component.M0 = 136.8816;
+        //    component.ET = 97320.90946019;
+        //    component.L_omg0 = 272.6745;
             
             ////真の真ののの衛星軌道
             ////component.M1 = 1.00287879;
@@ -254,5 +254,122 @@ class GameManager : MonoBehaviour
         component.M2 = M2;
         component.ET = ET;
         component.L_omg0 = L_omg;
+    }
+
+    /// <summary>
+    /// 準天頂衛星作成
+    /// </summary>
+    /// <param name="longitude">経度</param>
+    /// <param name="latitude">緯度</param>
+    public static void CreateQZS(String type, double longitude, double latitude)
+    {
+        GameObject prefab = null;
+        GameObject satellite = null;
+        SatelliteComponent component = null;
+        if (type.Equals("Weather"))
+        {
+            prefab = (GameObject)Resources.Load("Prefabs/QZStest");
+            satellite = Instantiate(prefab) as GameObject;
+            component = satellite.GetComponent<Weather_Satellite>();
+        }
+        else if (type.Equals("GPS"))
+        {
+            prefab = (GameObject)Resources.Load("Prefabs/GPS");
+            satellite = Instantiate(prefab) as GameObject;
+            component = satellite.GetComponent<GPS_Satellite>();
+        }
+
+        GameMaster.AddSatelliteList(satellite);
+
+        component.ID = GameMaster.Get_Satellite_ID();
+        component.i = latitude;
+        component.e = Math.Abs((0.0746703 / 40.5968) * latitude);
+        component.s_omg0 = 269.9725;
+        component.M0 = 181.9023;
+        component.M1 = 1.002737;
+        component.M2 = 0;
+        component.ET = 14343.49492826;
+        component.L_omg0 = 165 + longitude;
+    }
+
+    /// <summary>
+    /// 極軌道衛星作成
+    /// </summary>
+    /// <param name="longitude">経度</param>
+    /// <param name="latitude">緯度</param>
+    public static void CreatePOS(String type, double longitude, double latitude)
+    {
+        GameObject prefab = null;
+        GameObject satellite = null;
+        SatelliteComponent component = null;
+        if (type.Equals("Weather"))
+        {
+            prefab = (GameObject)Resources.Load("Prefabs/QZStest");
+            satellite = Instantiate(prefab) as GameObject;
+            component = satellite.GetComponent<Weather_Satellite>();
+        }
+        else if (type.Equals("GPS"))
+        {
+            prefab = (GameObject)Resources.Load("Prefabs/GPS");
+            satellite = Instantiate(prefab) as GameObject;
+            component = satellite.GetComponent<GPS_Satellite>();
+        }
+
+        GameMaster.AddSatelliteList(satellite);
+
+        component.ID = GameMaster.Get_Satellite_ID();
+        component.i = latitude;
+        component.e = 0.0008546;
+        component.s_omg0 = 223.1686;
+        //component.M0 = 136.8816;
+        component.M0 = 136.8816 + 90;
+        //component.M1 = 14.117117471;
+
+        // 速度
+        component.M1 = 5;
+
+        component.M2 = 0;
+        component.ET = 97320.90946019;
+        //component.L_omg0 = 272.6745;
+        component.L_omg0 = longitude - 60;
+    }
+
+    /// <summary>
+    /// モルニヤ軌道衛星作成
+    /// </summary>
+    /// <param name="longitude">経度</param>
+    /// <param name="latitude">緯度</param>
+    public static void CreateMOS(String type, double longitude, double latitude)
+    {
+        GameObject prefab = null;
+        GameObject satellite = null;
+        SatelliteComponent component = null;
+        if (type.Equals("Weather"))
+        {
+            prefab = (GameObject)Resources.Load("Prefabs/QZStest");
+            satellite = Instantiate(prefab) as GameObject;
+            component = satellite.GetComponent<Weather_Satellite>();
+        }
+        else if (type.Equals("GPS"))
+        {
+            prefab = (GameObject)Resources.Load("Prefabs/GPS");
+            satellite = Instantiate(prefab) as GameObject;
+            component = satellite.GetComponent<GPS_Satellite>();
+        }
+
+        GameMaster.AddSatelliteList(satellite);
+
+        component.ID = GameMaster.Get_Satellite_ID();
+        component.i = latitude;
+        component.e = 0.7134453;
+        component.s_omg0 = 295.0386;
+        //component.M0 = 136.8816;
+        component.M0 = 9.2449 + 100;
+        component.M1 = 2.00613016;
+        component.M2 = 0;
+        component.ET = 13154.54631441;
+        //component.L_omg0 = 153.0958;
+        component.L_omg0 = longitude - 15;
+        //component.i = 62.9125;
     }
 }
