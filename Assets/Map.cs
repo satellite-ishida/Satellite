@@ -126,76 +126,6 @@ public class Map
 
 
     /// <summary>
-    /// 都市データの再読み込み
-    /// </summary>
-    /// <param name="filename">都市データのファイル名</param> 
-
-    public void City_Input(string filename)
-    {
-
-        for (int i = 0; i < 180; i++)
-        {
-            for (int j = 0; j < 360; j++)
-            {
-                this.cd[j, i].Country = null;
-                this.cd[j, i].City = null;
-            }
-        }
-
-
-        using (System.IO.StreamReader sr = new System.IO.StreamReader(filename, System.Text.Encoding.GetEncoding("shift_jis")))
-        {
-            while (!sr.EndOfStream)
-            {
-                string line = sr.ReadLine();
-
-                string[] values = line.Split(',');
-
-                this[int.Parse(values[2]), int.Parse(values[3])].Country = values[0];
-                this[int.Parse(values[2]), int.Parse(values[3])].City = values[1];
-            }
-
-        }
-    }
-
-
-    /// <summary>
-    /// 地図データの再読み込み
-    /// </summary>
-    /// <param name="filename">地図データのファイル名</param>
-    /// 
-    public void Map_Input(string filename)
-    {
-
-        using (System.IO.StreamReader sr = new System.IO.StreamReader(filename, System.Text.Encoding.GetEncoding("shift_jis")))
-        {
-            int j = 0;
-            while (!sr.EndOfStream)
-            {
-                string line = sr.ReadLine();
-
-                string[] values = line.Split(',');
-
-                for (int i = 0; i < 360; i++)
-                {
-                    if (int.Parse(values[i]) == 1)
-                    {
-                        this.cd[i, j].Land = true;
-
-                    }
-                    else
-                    {
-                        this.cd[i, j].Land = false;
-                    }
-                }
-                j++;
-            }
-        }
-
-    }
-
-
-    /// <summary>
     /// 基地局を追加
     /// </summary>
     /// <param name="x">経度</param>
@@ -216,19 +146,17 @@ public class Map
         }
     }
 
+
     /// <summary>
     /// 観測状況のリセット
     /// </summary>
-    public void Reset_Observe()
+    public void Reset_Observe() 
     {
-        for (int i = 0; i < 360; i++) 
+        for (int i = 0; i < 180; i++)
         {
-            for (int j = 0; j < 180; j++) 
+            for (int j = 0; j < 360; j++)
             {
-
-                cd[i, j].Observe_Status = false;
-
-
+                this.cd[j, i].Observe = false;
             }
         }
     }

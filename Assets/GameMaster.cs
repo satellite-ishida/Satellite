@@ -24,10 +24,13 @@ public class GameMaster : MonoBehaviour
     {
         Score += add_num;
 
-        //スコアの表示
-        GameObject data = GameObject.Find("Score");
-        Text t = data.GetComponent<Text>();
-        t.text = Score.ToString();
+
+            //スコアの表示
+            GameObject date = GameObject.Find("ScoreText");
+            Text t = date.GetComponent<Text>();
+            t.text = Score.ToString();
+
+
     }
     public static int Get_Score()
     {
@@ -75,6 +78,23 @@ public class GameMaster : MonoBehaviour
 
     //スライダー(タイムスパン)の値
     private static float Span_Value = 1.0f;
+
+    public static float SpanValue 
+    {
+        get { return Span_Value; }
+        set { Span_Value = value; }
+    }
+
+    private static DateTime Global_Time = new DateTime(2000, 1, 1, 0, 0, 0);
+
+    public static DateTime GlobalTime
+    {
+        get { return Global_Time; }
+        set { Global_Time = value; }
+    }
+
+
+    /*
     public static void SetSpanValue(float f)
     {
         Span_Value = f;
@@ -82,5 +102,5 @@ public class GameMaster : MonoBehaviour
     public static float GetSpanValue()
     {
         return Span_Value;
-    }
+    }*/
 }
