@@ -1,5 +1,7 @@
 ﻿using UnityEngine;
 using System.Collections;
+using System;
+
 
 /*
  *　とりあえずの放送衛星の仕様 
