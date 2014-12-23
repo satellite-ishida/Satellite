@@ -5,7 +5,8 @@ using UnityEngine.UI;
 
 public class Input_Easy_Sat_Component : MonoBehaviour {
 
-    
+    public Toggle GPS_Toggle;
+    public Toggle Weather_Toggle;
 
     //ペグマンを置く
     public void Put_Locate()
@@ -20,6 +21,31 @@ public class Input_Easy_Sat_Component : MonoBehaviour {
     public void Submit()
     {
         GameObject Pegman;
+
+        GameObject g1 = GameObject.Find("GPS_Toggle");
+        Toggle t1 = g1.transform.GetComponent<Toggle>();
+        GameObject g2 = GameObject.Find("Weather_Toggle");
+        Toggle t2 = g2.GetComponent<Toggle>();
+
+        String type = "";
+        if (t1.isOn && !t2.isOn)
+        {
+            type = "GPS";
+        }
+        else if (!t1.isOn && t2.isOn)
+        {
+            type = "Weather";
+        }
+        //チェックがどこにも付いていない場合
+        else if (!t1.isOn && !t2.isOn)
+        {
+            //t1.isOn = true;
+            return;
+        }
+        else{
+            type = "GPS";
+        }
+
         if ((Pegman = GameObject.Find("Pegman(Clone)")) != null)
         {
             /////↓森田定数を使った静止軌道
@@ -40,7 +66,7 @@ public class Input_Easy_Sat_Component : MonoBehaviour {
             double i = latitude;
             double e = Math.Abs((0.0746703 / 40.5968) * latitude);
 
-            GameManager.CreateNewSat(M0, M1, 0, e, i, s_omg0, L_omg0, ET);
+            GameManager.CreateNewSat(M0, M1, 0, e, i, s_omg0, L_omg0, ET ,type);
             //ペグマンをデストロイ
             Destroy(Pegman);
         }
