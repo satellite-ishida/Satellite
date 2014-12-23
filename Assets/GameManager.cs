@@ -163,6 +163,8 @@ class GameManager : MonoBehaviour
 
             t.text = year + Month + Day + Hour + Minute;
 
+            GameMaster.Map.Reset_Observe();
+
 
             yield return new WaitForSeconds(0.03f);//0.03fで30fpsぐらい
         }
@@ -301,6 +303,12 @@ class GameManager : MonoBehaviour
             prefab = (GameObject)Resources.Load("Prefabs/GPS");
             satellite = Instantiate(prefab) as GameObject;
             component = satellite.GetComponent<GPS_Satellite>();
+        }
+        else if (type.Equals("BS")) 
+        {
+            prefab = (GameObject)Resources.Load("Prefabs/BS");
+            satellite = Instantiate(prefab) as GameObject;
+            component = satellite.GetComponent<Broadcasting_Satellite>();
         }
 
         GameMaster.AddSatelliteList(satellite);

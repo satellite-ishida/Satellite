@@ -1,27 +1,23 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using UnityEngine;
+﻿using UnityEngine;
 using System.Collections;
-using UnityEngine.UI;
 
 /*
- *　とりあえずの気象衛星の仕様 
- *　・マップの地形に関係なく情報を得られる
- *　・観測したセルは一定時間、気象衛星による観測得点が入らない
+ *　とりあえずの放送衛星の仕様 
+ *　・放送局(基地局)から情報をもらう
+ *　・もらった情報
  */
 
 /// <summary>
-/// 気象衛星クラス
+/// 放送衛星クラス
 /// </summary>
 
-public class Weather_Satellite : SatelliteComponent 
-{
+
+public class Broadcasting_Satellite : SatelliteComponent{
+
     public override void Start()
     {
         base.Start();
-   //     StartCoroutine("SatObject");
+        //     StartCoroutine("SatObject");
     }
 
     /// <summary>
@@ -39,7 +35,7 @@ public class Weather_Satellite : SatelliteComponent
         int a = (int)((sensor.transform.lossyScale.x) * 0.09);
         int b = (int)((sensor.transform.lossyScale.y) * 0.09);
 
-        
+
         for (int i = x - a; i <= x + a; i++)
         {
             for (int j = y - b; j < y + b; j++)
@@ -54,10 +50,10 @@ public class Weather_Satellite : SatelliteComponent
                 }
             }
         }
-         
+
         //楕円の面積による得点補正(少し誤差がある)
         double ratio = (Math.PI * b * b) / (Math.PI * a * b);
         //ゲームマスターにスコアの通知
-        GameMaster.AddScore((int)(num*ratio));
+        GameMaster.AddScore((int)(num * ratio));
     }
 }

@@ -58,5 +58,16 @@ public class Cell_Data
 
     }
 
+    private bool observe = false;
+    /// <summary>
+    /// 観測判定
+    /// </summary>
+    public bool Observe
+    {
+        get { return observe; }
+        set { observe = value; }
+
+    }
+
 }
 

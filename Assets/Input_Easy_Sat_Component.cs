@@ -25,19 +25,28 @@ public class Input_Easy_Sat_Component : MonoBehaviour {
     {
         GameObject Pegman;
 
-        GameObject g1 = GameObject.Find("GPS_Toggle");
-        Toggle t1 = g1.transform.GetComponent<Toggle>();
-        GameObject g2 = GameObject.Find("Weather_Toggle");
-        Toggle t2 = g2.GetComponent<Toggle>();
+        GameObject[] st = new GameObject[3];
+        Toggle[] t = new Toggle[3];
+
+        st[0] = GameObject.Find("GPS_Toggle");
+         t[0] = st[0].transform.GetComponent<Toggle>();
+        st[1] = GameObject.Find("Weather_Toggle");
+         t[1] = st[1].GetComponent<Toggle>();
+        st[2] = GameObject.Find("BS_Toggle");
+         t[2] = st[2].GetComponent<Toggle>();
 
         String type = "";
-        if (t1.isOn)
+        if (t[0].isOn)
         {
             type = "GPS";
         }
-        else if (t2.isOn)
+        else if (t[1].isOn)
         {
             type = "Weather";
+        }
+        else if (t[2].isOn) 
+        {
+            type = "BS";
         }
 
         if ((Pegman = GameObject.Find("Pegman(Clone)")) != null)
@@ -101,13 +110,14 @@ public class Input_Easy_Sat_Component : MonoBehaviour {
 
     public void Set_Sensor_Performance()
     {
-        GameObject sensor = GameObject.Find("Sensor_Scrollbar");
-        Scrollbar s = sensor.GetComponent<Scrollbar>();
+        GameObject sensorbar = GameObject.Find("Sensor_Scrollbar");
+        Scrollbar s = sensorbar.GetComponent<Scrollbar>();
    //     GameMaster.SpanValue = s.value;
 
         GameObject value = GameObject.Find("SensorValue");
         Text v = value.GetComponent<Text>();
         v.text = (s.value*10).ToString();
+
     }
 
     public void Set_Body_Strength() 
