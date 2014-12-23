@@ -1,16 +1,12 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using UnityEngine;
+﻿using UnityEngine;
 using System.Collections;
-using UnityEngine.UI;
+using System;
+
 
 /*
  *　とりあえずの放送衛星の仕様 
  *　・放送局(基地局)から情報をもらう
- *　・もらった情報を地上に送信(同じ情報は一度のみ)
- *　・一日ごとに放送局からもらう情報が更新される
+ *　・もらった情報を地上に送信
  */
 
 /// <summary>
@@ -20,11 +16,18 @@ using UnityEngine.UI;
 
 public class Broadcasting_Satellite : SatelliteComponent{
 
+    public override void Awake()
+    {
+        base.Awake();
+    }
+
+
     public override void Start()
     {
         base.Start();
-        //     StartCoroutine("SatObject");
     }
+
+
 
     /// <summary>
     /// スコア計算関数

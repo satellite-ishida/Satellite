@@ -308,8 +308,12 @@ public class SatelliteComponent : MonoBehaviour {
         
         return num_day;
     }
-    
-    //コルーチンのスタート
+
+    public virtual void Awake()
+    {
+        ID = GameMaster.Get_Satellite_ID();
+    }
+    //コルーチンのスタートとIDの取得
     public virtual void Start()
     {
        StartCoroutine("SatObject");
@@ -353,6 +357,7 @@ public class SatelliteComponent : MonoBehaviour {
     public virtual void Update()
     {
         //スパンの値でタイムスケールの調整
+
         Time.timeScale = 1.0f * GameMaster.SpanValue;
 
         if (observe_time.Year > 1900)
@@ -372,6 +377,7 @@ public class SatelliteComponent : MonoBehaviour {
             //sr.transform.localScale = new Vector3(xscale * 5, 5, 1);
 
         }
+
     }
 
     Boolean sensorOn = false;
@@ -399,14 +405,5 @@ public class SatelliteComponent : MonoBehaviour {
 
     }
 
-    void OnMouseUp()
-    {
-            //GameObject sensor = gameObject.transform.FindChild("Sensor").gameObject;
-            //SpriteRenderer sr = sensor.GetComponent<SpriteRenderer>();
-            //print(sr.color);
-            //Color c = new Color(1f, 1f, 0f, 0f);
-            //sr.color = c;
-        
-    }
 
 }

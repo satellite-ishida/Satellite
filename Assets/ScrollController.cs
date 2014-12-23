@@ -4,11 +4,10 @@ using UnityEngine.UI;
 
 public class ScrollController : MonoBehaviour {
 
-   // [SerializeField]
-    //RectTransform prefab = null;
 
     void Start()
     {
+        /*
         GameObject prefabb = (GameObject)Resources.Load("Prefabs/Sat_Node");
 
         for (int i = 0; i < 15; i++)
@@ -19,10 +18,8 @@ public class ScrollController : MonoBehaviour {
             var text = item.GetComponentInChildren<Text>();
             text.text = "item:" + i.ToString();
         }
+         * */
     }
 
-    public void Add()
-    {
 
-    }
 }

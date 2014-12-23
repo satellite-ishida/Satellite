@@ -18,6 +18,10 @@ using UnityEngine.UI;
 
 public class GPS_Satellite : SatelliteComponent
 {
+    public override void Awake()
+    {
+        base.Awake();
+    }
 
     public override void Start()
     {

@@ -21,6 +21,7 @@ class GameManager : MonoBehaviour
     {
         GameMaster.Map = new Map();
 
+
         /////////////////////↓デバック用
         // キャラクターを取得する
         //this._charactor = GameObject.Find("Sattellite");
@@ -81,6 +82,7 @@ class GameManager : MonoBehaviour
             //component.e = Math.Abs((0.0746703 / 40.5968) * latitude);
 
         }
+
 
         //都市オブジェクトの作成
         GameObject prefab2 = (GameObject)Resources.Load("Prefabs/point");
@@ -216,7 +218,6 @@ class GameManager : MonoBehaviour
        
         GameMaster.AddSatelliteList(satellite);
 
-        component.ID = GameMaster.Get_Satellite_ID();
         component.i = _i;
         component.e = _e;
         component.s_omg0 = _s_omg;
@@ -247,7 +248,6 @@ class GameManager : MonoBehaviour
 
         GameMaster.AddSatelliteList(satellite);
 
-        component.ID = GameMaster.Get_Satellite_ID();
         component.i = i;
         component.e = e;
         component.s_omg0 = s_omg;
@@ -271,7 +271,6 @@ class GameManager : MonoBehaviour
 
         GameMaster.AddSatelliteList(satellite);
 
-        component.ID = GameMaster.Get_Satellite_ID();
         component.i = i;
         component.e = e;
         component.s_omg0 = s_omg;
@@ -313,7 +312,7 @@ class GameManager : MonoBehaviour
 
         GameMaster.AddSatelliteList(satellite);
 
-        component.ID = GameMaster.Get_Satellite_ID();
+      //  component.ID = GameMaster.Get_Satellite_ID();
         component.i = latitude;
         component.e = Math.Abs((0.0746703 / 40.5968) * latitude);
         component.s_omg0 = 269.9725;
@@ -346,10 +345,16 @@ class GameManager : MonoBehaviour
             satellite = Instantiate(prefab) as GameObject;
             component = satellite.GetComponent<GPS_Satellite>();
         }
+        else if (type.Equals("BS"))
+        {
+            prefab = (GameObject)Resources.Load("Prefabs/BS");
+            satellite = Instantiate(prefab) as GameObject;
+            component = satellite.GetComponent<Broadcasting_Satellite>();
+        }
 
         GameMaster.AddSatelliteList(satellite);
 
-        component.ID = GameMaster.Get_Satellite_ID();
+     //   component.ID = GameMaster.Get_Satellite_ID();
         component.i = latitude;
         component.e = 0.0008546;
         component.s_omg0 = 223.1686;
@@ -388,10 +393,16 @@ class GameManager : MonoBehaviour
             satellite = Instantiate(prefab) as GameObject;
             component = satellite.GetComponent<GPS_Satellite>();
         }
+        else if (type.Equals("BS"))
+        {
+            prefab = (GameObject)Resources.Load("Prefabs/BS");
+            satellite = Instantiate(prefab) as GameObject;
+            component = satellite.GetComponent<Broadcasting_Satellite>();
+        }
 
         GameMaster.AddSatelliteList(satellite);
 
-        component.ID = GameMaster.Get_Satellite_ID();
+   //     component.ID = GameMaster.Get_Satellite_ID();
         component.i = latitude;
         component.e = 0.7134453;
         component.s_omg0 = 295.0386;
@@ -403,5 +414,21 @@ class GameManager : MonoBehaviour
         //component.L_omg0 = 153.0958;
         component.L_omg0 = longitude - 15;
         //component.i = 62.9125;
+    }
+    void OnMouseDown()
+    {
+        Vector3 vec =  Camera.main.ScreenToWorldPoint(Input.mousePosition);
+        vec.z = 0;
+
+        if (GameMaster.Map[vec.x, vec.y].Land && !GameMaster.Map[vec.x,vec.y].GS)
+        {
+            GameObject prefab = (GameObject)Resources.Load("Prefabs/ground_station");
+            GameObject Base = Instantiate(prefab) as GameObject;
+            GameMaster.Map[vec.x, vec.y].GS = true;
+            GameObject ground = GameObject.Find("GroundStation");
+            Base.transform.parent = ground.transform;
+            Base.transform.position = vec;
+        }
+
     }
 }
