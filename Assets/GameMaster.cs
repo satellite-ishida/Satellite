@@ -25,8 +25,8 @@ public class GameMaster : MonoBehaviour
         Score += add_num;
 
         //スコアの表示
-        GameObject date = GameObject.Find("Score");
-        Text t = date.GetComponent<Text>();
+        GameObject data = GameObject.Find("Score");
+        Text t = data.GetComponent<Text>();
         t.text = Score.ToString();
     }
     public static int Get_Score()
@@ -58,15 +58,18 @@ public class GameMaster : MonoBehaviour
     public static void AddSatelliteList(GameObject g)
     {
         SatelliteList.Add(g);
+        GUI_Manager.Add_Sat_Node(g.GetComponent<SatelliteComponent>()); //GUI
     }
-    //衛星の取得（リストのインデックス,衛星のID番号）
-    public static GameObject GetSatelliteList(int index)
+    //衛星の取得（衛星のID番号）
+    public static GameObject GetSatelliteByID(int ID)
     {
-        return SatelliteList[index];
+        GameObject g = SatelliteList.Find(x => (x.GetComponent<SatelliteComponent>().ID == ID));
+        return g;
     }
     //Failがtrueの衛星をリストから削除
     public static void RemoveFailSatelliteList()
     {
+        GUI_Manager.Destroy_Sat_Node(SatelliteList.FindAll(x => x.GetComponent<SatelliteComponent>().Fail)); //GUI
         SatelliteList.RemoveAll(x => x.GetComponent<SatelliteComponent>().Fail);
     }
 

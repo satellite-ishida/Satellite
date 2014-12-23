@@ -18,11 +18,14 @@ using UnityEngine.UI;
 
 public class Weather_Satellite : SatelliteComponent 
 {
+    public override void Awake()
+    {
+        base.Awake();
+    }
 
     public override void Start()
     {
         base.Start();
-   //     StartCoroutine("SatObject");
     }
 
     /// <summary>

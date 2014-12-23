@@ -2,6 +2,7 @@
 using System.Collections;
 using UnityEngine.UI;
 using System;
+using System.Collections.Generic;
 
 public class GUI_Manager : MonoBehaviour
 {
@@ -50,8 +51,24 @@ public class GUI_Manager : MonoBehaviour
     {
         print(gameObject.name);
     }
+
+    //Sat_Listにノード追加
+    static public void Add_Sat_Node(SatelliteComponent sc)
+    {
+        GameObject prefab = (GameObject)Resources.Load("Prefabs/Sat_Node");
+        var item = GameObject.Instantiate(prefab.transform) as RectTransform;
+        Sat_Info si = prefab.GetComponent<Sat_Info>();
+        si.set_Info(sc);
+
+
+        GameObject self = GameObject.Find("Sat_List");
+        item.SetParent(self.transform, false);
+
+        var text = item.GetComponentInChildren<Text>();
+        text.text = "ID:" + sc.ID.ToString();
+    }
     //Sat_Listの衛星ノードを削除（衛星IDで判別）
-    public void Destroy_Sat_Node(int ID)
+    public static void Destroy_Sat_Node(int ID)
     {
         GameObject g = GameObject.Find("Sat_List");
         var item = g.transform as RectTransform;
@@ -60,6 +77,17 @@ public class GUI_Manager : MonoBehaviour
             if (child.GetComponent<Sat_Info>().ID == ID) Destroy(child.gameObject);
             break;
         }     
+    }
+    //Sat_Listの衛星ノードを削除（GameObjevtで判別）
+    public static void Destroy_Sat_Node(List<GameObject> gl)
+    {
+        GameObject g = GameObject.Find("Sat_List");
+        var item = g.transform as RectTransform;
+        foreach (GameObject child in gl)
+        {
+            if (child.GetComponent<SatelliteComponent>().Fail) Destroy(child.gameObject);
+            break;
+        }
     }
 }
     
