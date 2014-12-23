@@ -54,18 +54,24 @@ public class Sat_Info : MonoBehaviour {
     /// </summary>
     public int ID;
 
-    /// <summary>
-    /// 現在位置_x軸
-    /// </summary>
-    private float locate_x;
 
-    /// <summary>
-    /// 現在位置_y軸
-    /// </summary>
-    private float locate_y;
+    public void set_Info(SatelliteComponent sc)
+    {
+        M0 = sc.M0;
+        M1 = sc.M1;
+        M2 = sc.M2;
+        e = sc.e;
+        i = sc.i;
+        s_omg0 = sc.s_omg0;
+        L_omg0 = sc.L_omg0;
+        ET = sc.ET;
+        NAME = sc.NAME;
+        ID = sc.ID;
+    }
 
-	// Update is called once per frame
-	void Update () {
-	
-	}
+    public void Click_Sat_Node()
+    {
+        Sat_Info sc = gameObject.GetComponent<Sat_Info>();
+        Info_Panel_Manager.target_Change(sc.ID);
+    }
 }

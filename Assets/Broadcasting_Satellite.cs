@@ -1,11 +1,15 @@
 ﻿using UnityEngine;
 using System.Collections;
 using System;
+<<<<<<< HEAD
+=======
+
+>>>>>>> origin/ikeno
 
 /*
  *　とりあえずの放送衛星の仕様 
  *　・放送局(基地局)から情報をもらう
- *　・もらった情報
+ *　・もらった情報を地上に送信
  */
 
 /// <summary>
@@ -15,11 +19,18 @@ using System;
 
 public class Broadcasting_Satellite : SatelliteComponent{
 
+    public override void Awake()
+    {
+        base.Awake();
+    }
+
+
     public override void Start()
     {
         base.Start();
-        //     StartCoroutine("SatObject");
     }
+
+
 
     /// <summary>
     /// スコア計算関数
