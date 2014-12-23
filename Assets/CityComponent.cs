@@ -28,6 +28,8 @@ public class CityComponent : MonoBehaviour {
                 }
             }
         }
+
+        GameMaster.AddScore(num);
         return num;
     }
 

@@ -5,6 +5,11 @@ using UnityEngine.UI;
 
 public class Input_Easy_Sat_Component : MonoBehaviour {
 
+    void Start() 
+    {
+
+        Calc_Cost();
+    }
 
     //ペグマンを置く
     public void Put_Locate()
@@ -104,4 +109,52 @@ public class Input_Easy_Sat_Component : MonoBehaviour {
         Text v = value.GetComponent<Text>();
         v.text = (s.value*10).ToString();
     }
+
+    public void Set_Body_Strength() 
+    {
+        GameObject body = GameObject.Find("Body_Scrollbar");
+        Scrollbar b = body.GetComponent<Scrollbar>();
+        //     GameMaster.SpanValue = s.value;
+
+        GameObject value = GameObject.Find("BodyValue");
+        Text v = value.GetComponent<Text>();
+        v.text = (b.value * 10).ToString();
+    
+    
+    }
+
+    public void Calc_Cost() 
+    {
+        int cost = 0;
+
+        //衛星のパラメータのコスト
+        GameObject sensor = GameObject.Find("Sensor_Scrollbar");
+        Scrollbar s = sensor.GetComponent<Scrollbar>();
+
+        GameObject body = GameObject.Find("Body_Scrollbar");
+        Scrollbar b = body.GetComponent<Scrollbar>();
+
+        cost = (int)(s.value * 10) + (int)(b.value * 10);
+
+
+        //衛星の種類によるコスト
+        GameObject g1 = GameObject.Find("GPS_Toggle");
+        Toggle t1 = g1.transform.GetComponent<Toggle>();
+        GameObject g2 = GameObject.Find("Weather_Toggle");
+        Toggle t2 = g2.GetComponent<Toggle>();
+
+        if (t1.isOn)
+        {
+            cost += 2;
+        }
+        else if (t2.isOn)
+        {
+            cost += 3;
+        }
+
+        GameObject Cost = GameObject.Find("Cost");
+        Text c = Cost.GetComponent<Text>();
+        c.text = cost.ToString();
+    }
+
 }
