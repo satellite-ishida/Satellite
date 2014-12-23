@@ -69,5 +69,15 @@ public class Cell_Data
 
     }
 
+    private bool info = false;
+    /// <summary>
+    /// 情報の取得(BS用)
+    /// </summary>
+    public bool Info
+    {
+        get { return info; }
+        set { info = value; }
+    }
+
 }
 

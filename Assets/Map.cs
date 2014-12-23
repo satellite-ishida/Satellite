@@ -150,7 +150,7 @@ public class Map
     /// <summary>
     /// 観測状況のリセット
     /// </summary>
-    public void Reset_Observe() 
+    public void Reset_Observe()
     {
         for (int i = 0; i < 180; i++)
         {
@@ -159,6 +159,22 @@ public class Map
                 this.cd[j, i].Observe = false;
             }
         }
+    }
+
+
+    /// <summary>
+    /// 情報取得状況のリセット
+    /// </summary>
+    public void Reset_Mapinfo()
+    {
+        for (int i = 0; i < 180; i++)
+        {
+            for (int j = 0; j < 360; j++)
+            {
+                this.cd[j, i].Info = false;
+            }
+        }
+    
     }
 
     /// <summary>
