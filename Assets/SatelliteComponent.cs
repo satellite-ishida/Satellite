@@ -381,7 +381,7 @@ public class SatelliteComponent : MonoBehaviour {
         GameObject sensor = gameObject.transform.FindChild("Sensor").gameObject;
         SpriteRenderer sr = sensor.GetComponent<SpriteRenderer>();
 
-        print(sr.color);
+                                                                                                                                                                                                                                                                                                                                                     print(sr.color);
 
         Color c;
         if (sensorOn)
