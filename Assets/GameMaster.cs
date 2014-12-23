@@ -20,16 +20,19 @@ public class GameMaster : MonoBehaviour
     }
     //スコア（仮）
     private static int Score = 0;
+    private static int saveday = 0;
     public static void AddScore(int add_num)
     {
         Score += add_num;
 
-        if (Global_Time.Hour == 0 )
+        if (Global_Time.Day - saveday > 0  )
         {
             //スコアの表示
             GameObject date = GameObject.Find("ScoreText");
             Text t = date.GetComponent<Text>();
             t.text = Score.ToString();
+
+            saveday = Global_Time.Day;
         }
     }
     public static int Get_Score()
