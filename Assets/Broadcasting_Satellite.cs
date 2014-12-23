@@ -1,10 +1,16 @@
-﻿using UnityEngine;
+﻿using System;
+using System.Collections.Generic;
+using System.Linq;
+using System.Text;
+using UnityEngine;
 using System.Collections;
+using UnityEngine.UI;
 
 /*
  *　とりあえずの放送衛星の仕様 
  *　・放送局(基地局)から情報をもらう
- *　・もらった情報
+ *　・もらった情報を地上に送信(同じ情報は一度のみ)
+ *　・一日ごとに放送局からもらう情報が更新される
  */
 
 /// <summary>
