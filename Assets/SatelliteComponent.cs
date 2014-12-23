@@ -50,6 +50,11 @@ public class SatelliteComponent : MonoBehaviour {
 
 
     /// <summary>
+    /// 衛星のID
+    /// </summary>
+    public int ID;
+
+    /// <summary>
     /// 元期
     /// </summary>
     public double double_et;
@@ -87,22 +92,7 @@ public class SatelliteComponent : MonoBehaviour {
     /// </summary>
     private float locate_y;
 
-    /// <summary>
-    /// ID
-    /// </summary>
-    private int id = 0;
 
-    /// <summary>
-    /// IDのプロパティ
-    /// </summary>
-    public int ID
-    {
-        get { return id;  }
-        set{
-            id = value;
-            //rnd = new System.Random(id * Environment.TickCount);
-        }
-    }
 
     /// <summary>
     /// 現在時刻
@@ -327,7 +317,7 @@ public class SatelliteComponent : MonoBehaviour {
         while (true)
         {
             update_locate(observe_time);
-            observe_time = observe_time.AddMinutes(5);
+            observe_time = observe_time.AddMinutes(15);
 
              transform.position = new Vector3(locate_x, locate_y, 0);
           //  GameManager.CalcScore(gameObject);
@@ -357,7 +347,6 @@ public class SatelliteComponent : MonoBehaviour {
     public virtual void Update()
     {
         //スパンの値でタイムスケールの調整
-
         Time.timeScale = 1.0f * GameMaster.SpanValue;
 
         if (observe_time.Year > 1900)
@@ -380,9 +369,9 @@ public class SatelliteComponent : MonoBehaviour {
 
     }
 
-    Boolean sensorOn = false;
+    public Boolean sensorOn = false;
 
-    void OnMouseDown()
+    public void Sensor_Switch()
     {
         GameObject sensor = gameObject.transform.FindChild("Sensor").gameObject;
         SpriteRenderer sr = sensor.GetComponent<SpriteRenderer>();

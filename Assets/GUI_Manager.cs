@@ -6,6 +6,7 @@ using System.Collections.Generic;
 
 public class GUI_Manager : MonoBehaviour
 {
+    static public int SensorON_ID = 0; 
 
     //スライダーの値が変更されたとき
     public void Set_Slider_Event()
@@ -48,18 +49,13 @@ public class GUI_Manager : MonoBehaviour
         g.transform.SetAsLastSibling();
     }
 
-    private int target_ID = 0;
-    public void Click_Sat_Node()
-    {
-        print(gameObject.name);
-    }
-
     //Sat_Listにノード追加
     static public void Add_Sat_Node(SatelliteComponent sc)
     {
         GameObject prefab = (GameObject)Resources.Load("Prefabs/Sat_Node");
+        //GameObject node = Instantiate(prefab) as GameObject;
         var item = GameObject.Instantiate(prefab.transform) as RectTransform;
-        Sat_Info si = prefab.GetComponent<Sat_Info>();
+        Node_Info si = item.GetComponent<Node_Info>();
         si.set_Info(sc);
 
 
@@ -76,7 +72,7 @@ public class GUI_Manager : MonoBehaviour
         var item = g.transform as RectTransform;
         foreach (RectTransform child in item)
         {
-            if (child.GetComponent<Sat_Info>().ID == ID) Destroy(child.gameObject);
+            if (child.GetComponent<Node_Info>().ID == ID) Destroy(child.gameObject);
             break;
         }     
     }

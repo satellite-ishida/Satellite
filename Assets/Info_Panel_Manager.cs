@@ -4,6 +4,7 @@ using UnityEngine.UI;
 
 public class Info_Panel_Manager : MonoBehaviour {
 
+
     static private int target_ID = 0;
     private static GameObject target_Sat = null;
     public static void target_Change(int ID)
@@ -51,7 +52,8 @@ public class Info_Panel_Manager : MonoBehaviour {
         if (target_Sat != null)
         {
             SatelliteComponent sc = target_Sat.GetComponent<SatelliteComponent>();
-            Text t = g.GetComponent<Text>();
+            //Text t = g.GetComponent<Text>();
+            Text t = g.GetComponentInChildren<Text>();
             t.text = sc.X.ToString()+" , "+sc.Y.ToString();
         }
     }
