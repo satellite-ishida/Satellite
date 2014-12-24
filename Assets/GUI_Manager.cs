@@ -60,6 +60,19 @@ public class GUI_Manager : MonoBehaviour
         GameObject g = GameObject.Find("Sat_List_Panel");
         g.transform.SetAsLastSibling();
     }
+    //CreateSatを前面に
+    public void Set_CreateSat()
+    {
+        GameObject g = GameObject.Find("CreateSat");
+        g.transform.SetAsLastSibling();
+    }
+    //CreateBaseを前面に
+    public void Set_CreateBase()
+    {
+        print("createBase");
+        GameObject g = GameObject.Find("CreateBase");
+        g.transform.SetAsLastSibling();
+    }
 
     //Sat_Listにノード追加
     static public void Add_Sat_Node(SatelliteComponent sc)
