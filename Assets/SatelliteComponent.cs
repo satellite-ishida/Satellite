@@ -327,7 +327,7 @@ public class SatelliteComponent : MonoBehaviour {
         while (true)
         {
             update_locate(observe_time);
-            observe_time = observe_time.AddMinutes(5);
+            observe_time = observe_time.AddMinutes(15);
 
              transform.position = new Vector3(locate_x, locate_y, 0);
           //  GameManager.CalcScore(gameObject);
@@ -357,7 +357,6 @@ public class SatelliteComponent : MonoBehaviour {
     public virtual void Update()
     {
         //スパンの値でタイムスケールの調整
-
         Time.timeScale = 1.0f * GameMaster.SpanValue;
 
         if (observe_time.Year > 1900)

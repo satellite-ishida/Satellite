@@ -152,6 +152,8 @@ public class Input_Easy_Sat_Component : MonoBehaviour {
         Toggle t1 = g1.transform.GetComponent<Toggle>();
         GameObject g2 = GameObject.Find("Weather_Toggle");
         Toggle t2 = g2.GetComponent<Toggle>();
+        GameObject g3 = GameObject.Find("BS_Toggle");
+        Toggle t3 = g3.GetComponent<Toggle>();
 
         if (t1.isOn)
         {
@@ -160,6 +162,10 @@ public class Input_Easy_Sat_Component : MonoBehaviour {
         else if (t2.isOn)
         {
             cost += 3;
+        }
+        else if (t3.isOn) 
+        {
+            cost += 1;
         }
 
         GameObject Cost = GameObject.Find("Cost");
