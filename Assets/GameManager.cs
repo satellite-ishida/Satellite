@@ -21,6 +21,7 @@ class GameManager : MonoBehaviour
     {
         GameMaster.Map = new Map();
 
+        GameMaster.POPUP("すたーと");
 
         /////////////////////↓デバック用
         // キャラクターを取得する
@@ -193,7 +194,7 @@ class GameManager : MonoBehaviour
             
 
             // 故障している衛星を削除
-            //GameMaster.RemoveFailSatelliteList();
+            GameMaster.RemoveFailSatelliteList();
 
             yield return new WaitForSeconds(0.03f);//0.03fで30fpsぐらい
         }
@@ -336,7 +337,7 @@ class GameManager : MonoBehaviour
         }
 
         GameMaster.AddSatelliteList(satellite);
-
+       // satellite.transform.SetAsFirstSibling();
       //  component.ID = GameMaster.Get_Satellite_ID();
         component.i = latitude;
         component.e = Math.Abs((0.0746703 / 40.5968) * latitude);

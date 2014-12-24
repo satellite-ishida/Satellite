@@ -30,6 +30,9 @@ public class GPS_Satellite : SatelliteComponent
         //     StartCoroutine("SatObject");
     }
 
+    public Sprite StanbySprite;
+    public Sprite SatelliteSprite;
+
     protected override void LaunchSat()
     {
 
@@ -38,7 +41,9 @@ public class GPS_Satellite : SatelliteComponent
             launch = true;
             SpriteRenderer MainSpriteRenderer = gameObject.GetComponent<SpriteRenderer>();
             MainSpriteRenderer.color = Color.red;
-
+            gameObject.transform.localScale = new Vector3(30,30,1);
+            MainSpriteRenderer.sprite = SatelliteSprite;
+            start = 1;
             GameObject g = GameObject.Find("Sat_List");
             var item = g.transform as RectTransform;
 

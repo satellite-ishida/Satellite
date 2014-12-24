@@ -53,6 +53,8 @@ public class GUI_Manager : MonoBehaviour
     {
         GameObject g = GameObject.Find("Event_Panel");
         g.transform.SetAsLastSibling();
+
+        GameMaster.POPUP("test");
     }
     //Sat_Listパネルを前面に
     public void Set_Sat_List_Panel()
