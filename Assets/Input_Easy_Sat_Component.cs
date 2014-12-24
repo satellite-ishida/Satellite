@@ -158,6 +158,28 @@ public class Input_Easy_Sat_Component : MonoBehaviour {
                 //ペグマンをデストロイ
                 Destroy(Pegman);
             }
+
+            
+        }
+
+        // 基地局の追加
+        if ((Pegman = GameObject.Find("BaseStation(Clone)")) != null)
+        {
+
+            Vector3 vec = new Vector3(Pegman.transform.position.x, Pegman.transform.position.y, 0);
+
+            if (GameMaster.Map[vec.x, vec.y].Land && !GameMaster.Map[vec.x, vec.y].GS)
+            {
+                GameObject prefab = (GameObject)Resources.Load("Prefabs/ground_station");
+                GameObject Base = Instantiate(prefab) as GameObject;
+                GameMaster.Map[vec.x, vec.y].GS = true;
+                GameObject ground = GameObject.Find("GroundStation");
+                Base.transform.parent = ground.transform;
+                Base.transform.position = vec;
+            }
+
+            //ペグマンをデストロイ
+            Destroy(Pegman);
         }
     }
 
