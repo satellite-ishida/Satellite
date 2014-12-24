@@ -316,7 +316,7 @@ public class SatelliteComponent : MonoBehaviour {
         rnd = new System.Random(ID + Environment.TickCount);
 
         SpriteRenderer MainSpriteRenderer = gameObject.GetComponent<SpriteRenderer>();
-        MainSpriteRenderer.color = Color.black;
+        //MainSpriteRenderer.color = Color.black;
         createtime = GameMaster.GlobalTime;
 
         update_locate(observe_time);

@@ -189,7 +189,7 @@ class GameManager : MonoBehaviour
             Citydict["東京"].GetComponent<CityComponent>().SatelliteNum();
 
             // 故障している衛星を削除
-            //GameMaster.RemoveFailSatelliteList();
+            GameMaster.RemoveFailSatelliteList();
 
             yield return new WaitForSeconds(0.03f);//0.03fで30fpsぐらい
         }
@@ -332,7 +332,7 @@ class GameManager : MonoBehaviour
         }
 
         GameMaster.AddSatelliteList(satellite);
-
+       // satellite.transform.SetAsFirstSibling();
       //  component.ID = GameMaster.Get_Satellite_ID();
         component.i = latitude;
         component.e = Math.Abs((0.0746703 / 40.5968) * latitude);
