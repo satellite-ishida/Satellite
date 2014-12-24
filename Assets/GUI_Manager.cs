@@ -48,6 +48,18 @@ public class GUI_Manager : MonoBehaviour
         GameObject g = GameObject.Find("Main_GUI_Panel");
         g.transform.SetAsLastSibling();
     }
+    //Eventパネルを前面に
+    public void Set_Event_Panel()
+    {
+        GameObject g = GameObject.Find("Event_Panel");
+        g.transform.SetAsLastSibling();
+    }
+    //Sat_Listパネルを前面に
+    public void Set_Sat_List_Panel()
+    {
+        GameObject g = GameObject.Find("Sat_List_Panel");
+        g.transform.SetAsLastSibling();
+    }
 
     //Sat_Listにノード追加
     static public void Add_Sat_Node(SatelliteComponent sc)
@@ -86,6 +98,20 @@ public class GUI_Manager : MonoBehaviour
             if (child.GetComponent<SatelliteComponent>().Fail) Destroy(child.gameObject);
             break;
         }
+    }
+
+    public static void Set_Log(String s)
+    {
+        GameMaster.Add_Log(s);
+        Queue<String> qs = GameMaster.Get_Log();
+        GameObject g = GameObject.Find("Log_Text");
+        Text t = g.GetComponent<Text>();
+        String sb = "";
+        foreach (String log in qs)
+        {
+            sb = sb + log + "\n";
+        }
+        t.text = sb;
     }
 }
     

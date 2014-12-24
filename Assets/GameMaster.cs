@@ -84,6 +84,7 @@ public class GameMaster : MonoBehaviour
     //衛星の追加
     public static void AddSatelliteList(GameObject g)
     {
+        GUI_Manager.Set_Log(Global_Time.ToString() + " : " + "衛星追加");
         SatelliteList.Add(g);
         GUI_Manager.Add_Sat_Node(g.GetComponent<SatelliteComponent>()); //GUI
     }
@@ -120,6 +121,21 @@ public class GameMaster : MonoBehaviour
         set { Global_Time = value; }
     }
 
+    //テキストのログ
+    private static Queue<String> Log_Queue = new Queue<string>();
+    public static int Queue_Size = 8;
+    public static void Add_Log(String log)
+    {
+        Log_Queue.Enqueue(log);
+        if (Log_Queue.Count > 8)
+        {
+            Log_Queue.Dequeue();
+        }
+    }
+    public static Queue<String> Get_Log()
+    {
+        return Log_Queue;
+    }
 
     /*
     public static void SetSpanValue(float f)
