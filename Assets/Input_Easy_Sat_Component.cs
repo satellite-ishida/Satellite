@@ -5,6 +5,13 @@ using UnityEngine.UI;
 
 public class Input_Easy_Sat_Component : MonoBehaviour {
 
+    enum SatelliteCost
+    {
+        GPS = 2,
+        Weather = 3,
+        BS = 0
+    }
+
     void Start() 
     {
 
@@ -18,6 +25,15 @@ public class Input_Easy_Sat_Component : MonoBehaviour {
         {
             GameObject prefab = (GameObject)Resources.Load("Prefabs/Pegman");
             GameObject Pegman = Instantiate(prefab) as GameObject;
+
+            GameObject sensor = Pegman.transform.FindChild("Pegman_Sensor").gameObject;
+            SpriteRenderer sr = sensor.GetComponent<SpriteRenderer>();
+
+            print(sr.color);
+
+            Color c = new Color(1f, 1f, 0f, 0.2f);
+            sr.color = c;
+
         }
     }
 
@@ -129,6 +145,15 @@ public class Input_Easy_Sat_Component : MonoBehaviour {
         Text v = value.GetComponent<Text>();
         v.text = (s.value*10).ToString();
 
+        
+        GameObject Pegman;
+        if ((Pegman = GameObject.Find("Pegman(Clone)")) != null)
+        {
+            GameObject sensor = Pegman.transform.FindChild("Pegman_Sensor").gameObject;
+            // スケール比
+            float rate = 30 / 5;
+            sensor.transform.localScale = new Vector3(s.value * 10 * rate, s.value * 10 * rate, 1);
+        }
     }
 
     public void Set_Body_Strength() 

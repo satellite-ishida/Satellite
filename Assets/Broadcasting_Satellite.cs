@@ -1,10 +1,7 @@
 ﻿using UnityEngine;
 using System.Collections;
 using System;
-<<<<<<< HEAD
-=======
 
->>>>>>> origin/ikeno
 
 /*
  *　とりあえずの放送衛星の仕様 

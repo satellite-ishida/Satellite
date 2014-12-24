@@ -152,7 +152,7 @@ class GameManager : MonoBehaviour
         while (true)
         {
             //グローバルタイムの更新と表示
-            GameMaster.GlobalTime = GameMaster.GlobalTime.AddSeconds(Math.Floor(GameMaster.SpanValue * 60));
+            GameMaster.GlobalTime = GameMaster.GlobalTime.AddMinutes(15);
             //time = time.AddSeconds(10 * s.value);
             GameObject date = GameObject.Find("DateText");
             Text t = date.GetComponent<Text>();
@@ -179,7 +179,7 @@ class GameManager : MonoBehaviour
     void Update()
     {
 
-
+        Time.timeScale = 1.0f * GameMaster.SpanValue;
 
         GameMaster.Map.Satellite_Update();
 
