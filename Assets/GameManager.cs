@@ -184,7 +184,7 @@ class GameManager : MonoBehaviour
             }
 
             // 故障している衛星を削除
-            //GameMaster.RemoveFailSatelliteList();
+            GameMaster.RemoveFailSatelliteList();
 
 
             Citydict["東京"].GetComponent<CityComponent>().SatelliteNum();
