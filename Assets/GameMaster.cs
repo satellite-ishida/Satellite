@@ -11,9 +11,9 @@ public class GameMaster : MonoBehaviour
 {
     public enum SatelliteCost
     {
-        GPS = 100,
-        Weather = 30000,
-        BS = 2000
+        GPS = 4000,
+        Weather = 500000,
+        BS = 20000
     }
 
     //衛星のID(生成された順番)
@@ -25,7 +25,7 @@ public class GameMaster : MonoBehaviour
         return Satellite_ID - 1;
     }
     //スコア（仮）
-    private static int Score = 100;
+    private static int Score = 1000000000;
 
     public static void AddScore(int add_num)
     {

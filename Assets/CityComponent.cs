@@ -1,8 +1,18 @@
-﻿using UnityEngine;
+﻿using System;
+using System.Collections.Generic;
+using System.Linq;
+using System.Text;
+using UnityEngine;
 using System.Collections;
+using UnityEngine.UI;
 
 public class CityComponent : MonoBehaviour
 {
+
+    private String countryname;
+    public String CountryName {
+        set { countryname = value; }
+    }
 
     /// <summary>
     /// 都市から近くの衛星の数を数える
@@ -30,14 +40,30 @@ public class CityComponent : MonoBehaviour
                     num++;
                 }
             }
+        }
+        int score = 0;
 
-
+        if (num == 1) 
+        {
+            score = 1;
+        }
+        else if (num == 2)
+        {
+            score = 4;
+        }
+        else if(num > 2)
+        {
+            score = 9;
         }
 
-        GameMaster.AddScore(num);
+        if (countryname.Equals("日本")) 
+        {
+            score = (int)(score * 2);
+        }
+        GameMaster.AddScore(score);
         return num;
     }
-
+    
     // Use this for initialization
     void Start()
     {

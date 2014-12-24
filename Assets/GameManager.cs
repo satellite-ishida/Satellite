@@ -81,6 +81,8 @@ class GameManager : MonoBehaviour
             //component.i = latitude;
             //component.e = Math.Abs((0.0746703 / 40.5968) * latitude);
 
+            saveday = GameMaster.GlobalTime;
+
         }
 
 
@@ -101,6 +103,7 @@ class GameManager : MonoBehaviour
                     if (!Citydict.ContainsKey(GameMaster.Map[i, j].City))
                     {
                         Citydict.Add(GameMaster.Map[i, j].City, point);
+                        Citydict[GameMaster.Map[i, j].City].GetComponent<CityComponent>().CountryName = GameMaster.Map[i, j].Country;
                     }
                 }
             }
@@ -146,7 +149,7 @@ class GameManager : MonoBehaviour
         StartCoroutine("ManagerCoroutines");
     }
 
-    private int saveday = 0;
+    private DateTime saveday;
 
     //コルーチン
     private IEnumerator ManagerCoroutines()
@@ -169,24 +172,25 @@ class GameManager : MonoBehaviour
 
             GameMaster.Map.Reset_Observe();
 
-            if (GameMaster.GlobalTime.Day - saveday > 0) 
+            if ((GameMaster.GlobalTime - saveday).TotalDays > 1) 
             {
                 GameMaster.Map.Reset_Mapinfo();
                 foreach (GameObject g in GameMaster.Satellitelist)
                 {
-                    Broadcasting_Satellite c;
-                    if (c = g.GetComponent<Broadcasting_Satellite>()) 
+                    if (g.GetComponent<Broadcasting_Satellite>()) 
                     {
-                        c.Reset_info();
+                        g.GetComponent<Broadcasting_Satellite>().Reset_info();
                     }
                 }
-                saveday = GameMaster.GlobalTime.Day;
+                saveday = GameMaster.GlobalTime;
             }
 
 
-
-
-            Citydict["東京"].GetComponent<CityComponent>().SatelliteNum();
+            foreach (GameObject g in Citydict.Values)
+            {
+                g.GetComponent<CityComponent>().SatelliteNum();
+            }
+            
 
             // 故障している衛星を削除
             //GameMaster.RemoveFailSatelliteList();

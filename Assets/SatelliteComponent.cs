@@ -376,7 +376,7 @@ public class SatelliteComponent : MonoBehaviour {
 
 
 
-    protected int necessary_time = 5;
+    protected int necessary_time = 1;
     // Update is called once per frame
     public virtual void Update()
     {

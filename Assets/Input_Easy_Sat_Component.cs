@@ -5,13 +5,6 @@ using UnityEngine.UI;
 
 public class Input_Easy_Sat_Component : MonoBehaviour {
 
-    enum SatelliteCost
-    {
-        GPS = 2,
-        Weather = 3,
-        BS = 0
-    }
-
     void Start() 
     {
 
@@ -228,26 +221,33 @@ public class Input_Easy_Sat_Component : MonoBehaviour {
         // 基地局の追加
         if ((Pegman = GameObject.Find("BaseStation(Clone)")) != null)
         {
-            Vector3 vec = new Vector3(Pegman.transform.position.x, Pegman.transform.position.y, 0);
-
-            if (GameMaster.Map[vec.x, vec.y].Land && !GameMaster.Map[vec.x, vec.y].GS)
+            GameObject Cost = GameObject.Find("Cost");
+            Text c = Cost.GetComponent<Text>();
+            int cost = int.Parse(c.text);
+            if (GameMaster.SubScore(cost))
             {
-                GameObject prefab = (GameObject)Resources.Load("Prefabs/ground_station");
-                GameObject Base = Instantiate(prefab) as GameObject;
-                GameMaster.Map[vec.x, vec.y].GS = true;
-                GameObject ground = GameObject.Find("GroundStation");
-                Base.transform.parent = ground.transform;
-                Base.transform.position = vec;
-            }
 
-            //ペグマンをデストロイ
-            Destroy(Pegman);
+                Vector3 vec = new Vector3(Pegman.transform.position.x, Pegman.transform.position.y, 0);
+
+                if (GameMaster.Map[vec.x, vec.y].Land && !GameMaster.Map[vec.x, vec.y].GS)
+                {
+                    GameObject prefab = (GameObject)Resources.Load("Prefabs/ground_station");
+                    GameObject Base = Instantiate(prefab) as GameObject;
+                    GameMaster.Map[vec.x, vec.y].GS = true;
+                    GameObject ground = GameObject.Find("GroundStation");
+                    Base.transform.parent = ground.transform;
+                    Base.transform.position = vec;
+                }
+
+                //ペグマンをデストロイ
+                Destroy(Pegman);
+            }
         }
     }
 
     public void Calc_Cost() 
     {
-        int cost = 0;
+        double cost = 0;
 
         //衛星のパラメータのコスト
         GameObject sensor = GameObject.Find("Sensor_Scrollbar");
@@ -256,7 +256,7 @@ public class Input_Easy_Sat_Component : MonoBehaviour {
         GameObject body = GameObject.Find("Body_Scrollbar");
         Scrollbar b = body.GetComponent<Scrollbar>();
 
-        cost = (int)(s.value * 100) + (int)(b.value * 100);
+      //  cost = (int)(s.value * 10) + (int)(b.value * 10);
 
 
         //衛星の種類によるコスト
@@ -269,20 +269,23 @@ public class Input_Easy_Sat_Component : MonoBehaviour {
 
         if (t1.isOn)
         {
-            cost += 100;
+            cost += (int)GameMaster.SatelliteCost.GPS;
         }
         else if (t2.isOn)
         {
-            cost += 30000;
+            cost += (int)GameMaster.SatelliteCost.Weather;
         }
         else if (t3.isOn)
         {
-            cost += 2000;
+            cost += (int)GameMaster.SatelliteCost.BS;
         }
+
+        cost *= 1 + (0.25 * (s.value * 10));
+        cost *= 1 + (0.25 * (b.value * 10));
 
         GameObject Cost = GameObject.Find("Cost_Label");
         Text c = Cost.GetComponent<Text>();
-        c.text = cost.ToString();
+        c.text = ((int)cost).ToString();
     }
 
 }
