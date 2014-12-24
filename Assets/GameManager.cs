@@ -21,6 +21,7 @@ class GameManager : MonoBehaviour
     {
         GameMaster.Map = new Map();
 
+        GameMaster.POPUP("すたーと");
 
         /////////////////////↓デバック用
         // キャラクターを取得する

@@ -148,6 +148,17 @@ public class GameMaster : MonoBehaviour
         return Log_Queue;
     }
 
+    public static void POPUP(String s)
+    {
+        GameObject top_p = GameObject.Find("TOP_Panel");
+        GameObject prefab = (GameObject)Resources.Load("Prefabs/Popup_Panel");
+        var item = GameObject.Instantiate(prefab.transform) as RectTransform;
+        Popup_Manager pm = item.GetComponent<Popup_Manager>();
+
+        item.SetParent(top_p.transform, false);
+
+        pm.UP(s);
+    }
     /*
     public static void SetSpanValue(float f)
     {
