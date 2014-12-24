@@ -184,6 +184,8 @@ class GameManager : MonoBehaviour
             }
 
 
+
+            Citydict["東京"].GetComponent<CityComponent>().SatelliteNum();
             yield return new WaitForSeconds(0.03f);//0.03fで30fpsぐらい
         }
     }
@@ -201,8 +203,6 @@ class GameManager : MonoBehaviour
         Time.timeScale = 1.0f * GameMaster.SpanValue;
 
      //   GameMaster.Map.Satellite_Update();
-
-        Citydict["東京"].GetComponent<CityComponent>().SatelliteNum();
 
 
     }

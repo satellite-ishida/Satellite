@@ -13,7 +13,7 @@ public class CityComponent : MonoBehaviour {
 
         foreach (GameObject g in GameMaster.Satellitelist)
         {
-            if (g.GetComponent<GPS_Satellite>())
+            if (g.GetComponent<GPS_Satellite>() && g.GetComponent<SatelliteComponent>().Launch)
             {
 
                 GameObject sensor = g.transform.FindChild("Sensor").gameObject;

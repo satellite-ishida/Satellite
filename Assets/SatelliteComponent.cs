@@ -306,6 +306,9 @@ public class SatelliteComponent : MonoBehaviour {
 
     protected DateTime createtime;
     protected Boolean launch = false;
+    public Boolean Launch {
+        get { return launch; }
+    }
 
     //コルーチンのスタートとIDの取得
     public virtual void Start()
