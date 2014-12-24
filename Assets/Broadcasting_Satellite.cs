@@ -99,6 +99,9 @@ public class Broadcasting_Satellite : SatelliteComponent{
         GameMaster.AddScore((int)(num * ratio));
     }
 
+    public Sprite StanbySprite;
+    public Sprite SatelliteSprite;
+
     protected override void LaunchSat()
     {
 
@@ -107,7 +110,9 @@ public class Broadcasting_Satellite : SatelliteComponent{
             launch = true;
             SpriteRenderer MainSpriteRenderer = gameObject.GetComponent<SpriteRenderer>();
             MainSpriteRenderer.color = Color.yellow;
-
+            gameObject.transform.localScale = new Vector3(30, 30, 1);
+            MainSpriteRenderer.sprite = SatelliteSprite;
+            start = 1;
             GameObject g = GameObject.Find("Sat_List");
             var item = g.transform as RectTransform;
 
