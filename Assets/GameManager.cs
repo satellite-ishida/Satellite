@@ -146,6 +146,8 @@ class GameManager : MonoBehaviour
         StartCoroutine("ManagerCoroutines");
     }
 
+    private int saveday = 0;
+
     //コルーチン
     private IEnumerator ManagerCoroutines()
     {
@@ -163,9 +165,23 @@ class GameManager : MonoBehaviour
             String Hour = GameMaster.GlobalTime.Hour.ToString() + "時";
             String Minute = GameMaster.GlobalTime.Minute.ToString() + "分";
 
-            t.text = year + Month + Day + Hour + Minute;
+            t.text = year + Month + Day + Hour;
 
             GameMaster.Map.Reset_Observe();
+
+            if (GameMaster.GlobalTime.Day - saveday > 0) 
+            {
+                GameMaster.Map.Reset_Mapinfo();
+                foreach (GameObject g in GameMaster.Satellitelist)
+                {
+                    Broadcasting_Satellite c;
+                    if (c = g.GetComponent<Broadcasting_Satellite>()) 
+                    {
+                        c.Reset_info();
+                    }
+                }
+                saveday = GameMaster.GlobalTime.Day;
+            }
 
 
             yield return new WaitForSeconds(0.03f);//0.03fで30fpsぐらい
@@ -178,7 +194,6 @@ class GameManager : MonoBehaviour
     // Update is called once per frame
     void Update()
     {
-
         //スパンの値でタイムスケールの調整
         Time.timeScale = 1.0f * GameMaster.SpanValue;
 

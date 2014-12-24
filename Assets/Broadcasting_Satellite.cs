@@ -27,14 +27,45 @@ public class Broadcasting_Satellite : SatelliteComponent{
         base.Start();
     }
 
+    private Boolean info = false;
 
+    public void Reset_info() 
+    {
+        info = false;
+    }
+
+    private void Get_info() 
+    {
+        GameObject sensor = transform.FindChild("Sensor").gameObject;
+
+        int x = (int)transform.position.x;
+        int y = (int)transform.position.y;
+        int a = (int)((sensor.transform.lossyScale.x) * 0.09);
+        int b = (int)((sensor.transform.lossyScale.y) * 0.09);
+
+
+        for (int i = x - a; i <= x + a; i++)
+        {
+            for (int j = y - b; j < y + b; j++)
+            {
+                if (((i - x) * (i - x)) * (b * b) + ((j - y) * (j - y)) * (a * a) <= a * a * b * b)
+                {
+                    if (GameMaster.Map[i, j].GS)
+                    {
+                        info = true;
+                    }
+                }
+            }
+        }
+    
+    }
 
     /// <summary>
     /// スコア計算関数
     /// </summary>
     protected override void CalcScore()
     {
-
+        Get_info();
         GameObject sensor = transform.FindChild("Sensor").gameObject;
 
         int num = 0;
@@ -51,10 +82,10 @@ public class Broadcasting_Satellite : SatelliteComponent{
             {
                 if (((i - x) * (i - x)) * (b * b) + ((j - y) * (j - y)) * (a * a) <= a * a * b * b)
                 {
-                    if (!GameMaster.Map[i, j].Observe)
+                    if (GameMaster.Map[i,j].Land && !GameMaster.Map[i, j].Info && info)
                     {
                         num++;
-                        GameMaster.Map[i, j].Observe = true;
+                        GameMaster.Map[i, j].Info = true;
                     }
                 }
             }
