@@ -69,16 +69,16 @@ public class Sprite_Mouse_Controller : MonoBehaviour {
         //オブジェクトの位置を変更する
         g.transform.localPosition = currentPosition/rate;
 
-        //オブジェクトの移動をGUIに知らせる
-        if (currentPosition.x > 180 || currentPosition.x < -180 || currentPosition.y > 90 || currentPosition.y < -90) { }
-        else
-        {
-            GameObject text_lat = GameObject.Find("Put_lattitude");
-            GameObject text_log = GameObject.Find("Put_longitude");
-            Text t1 = text_lat.GetComponent<Text>();
-            t1.text = transform.position.y.ToString();
-            Text t2 = text_log.GetComponent<Text>();
-            t2.text = transform.position.x.ToString();
-        }
+        ////オブジェクトの移動をGUIに知らせる
+        //if (currentPosition.x > 180 || currentPosition.x < -180 || currentPosition.y > 90 || currentPosition.y < -90) { }
+        //else
+        //{
+        //    GameObject text_lat = GameObject.Find("Put_lattitude");
+        //    GameObject text_log = GameObject.Find("Put_longitude");
+        //    Text t1 = text_lat.GetComponent<Text>();
+        //    t1.text = transform.position.y.ToString();
+        //    Text t2 = text_log.GetComponent<Text>();
+        //    t2.text = transform.position.x.ToString();
+        //}
     }
 }

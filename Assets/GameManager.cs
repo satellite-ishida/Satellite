@@ -194,9 +194,6 @@ class GameManager : MonoBehaviour
     // Update is called once per frame
     void Update()
     {
-
-
-
         //スパンの値でタイムスケールの調整
         Time.timeScale = 1.0f * GameMaster.SpanValue;
 
