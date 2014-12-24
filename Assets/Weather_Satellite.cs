@@ -35,7 +35,6 @@ public class Weather_Satellite : SatelliteComponent
     /// </summary>
     protected override void CalcScore()
     {
-
         GameObject sensor = transform.FindChild("Sensor").gameObject;
 
         int num = 0;

@@ -9,7 +9,7 @@ using System;
 /// </summary>
 public class GameMaster : MonoBehaviour
 {
-    public static enum SatelliteCost
+    public enum SatelliteCost
     {
         GPS = 100,
         Weather = 30000,
