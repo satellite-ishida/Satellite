@@ -23,14 +23,24 @@ public class Node_Info : MonoBehaviour {
 
         if (GUI_Manager.SensorON_ID != ID)
         {
-            SatelliteComponent sc_old = GameMaster.GetSatelliteByID(GUI_Manager.SensorON_ID).GetComponent<SatelliteComponent>();
-
-            if (sc_old.sensorOn)
+            GameObject g_old = GameMaster.GetSatelliteByID(GUI_Manager.SensorON_ID);
+            SatelliteComponent sc_old = null;
+            //g_oldがデストロイされているか判断
+            if (g_old != null)
             {
-                sc_old.Sensor_Switch();
-                sc_new.Sensor_Switch();
+                sc_old = g_old.GetComponent<SatelliteComponent>();
+
+                if (sc_old.sensorOn)
+                {
+                    sc_old.Sensor_Switch();
+                    sc_new.Sensor_Switch();
+                }
+                else if (!sc_old.sensorOn)
+                {
+                    sc_new.Sensor_Switch();
+                }
             }
-            else if (!sc_old.sensorOn)
+            else
             {
                 sc_new.Sensor_Switch();
             }
