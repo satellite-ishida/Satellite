@@ -69,7 +69,7 @@ public class Input_Easy_Sat_Component : MonoBehaviour {
             Destroy(Pegman);
         }
 
-        GameObject Cost = GameObject.Find("Cost_Label");
+        GameObject Cost = GameObject.Find("Cost");
         Text c = Cost.GetComponent<Text>();
         c.text = "100000";
     }
