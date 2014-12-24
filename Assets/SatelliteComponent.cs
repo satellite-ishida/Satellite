@@ -358,7 +358,6 @@ public class SatelliteComponent : MonoBehaviour {
     public virtual void Update()
     {
         //スパンの値でタイムスケールの調整
-
         Time.timeScale = 1.0f * GameMaster.SpanValue;
 
         if (observe_time.Year > 1900)
