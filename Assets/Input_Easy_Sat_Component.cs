@@ -121,6 +121,8 @@ public class Input_Easy_Sat_Component : MonoBehaviour {
                 Toggle t4 = g4.GetComponent<Toggle>();
                 GameObject g5 = GameObject.Find("MOS_Toggle");
                 Toggle t5 = g5.GetComponent<Toggle>();
+                GameObject g6 = GameObject.Find("GOS_Toggle");
+                Toggle t6 = g6.GetComponent<Toggle>();
 
                 // 経度
                 double longitude = Pegman.transform.localPosition.x;
@@ -139,7 +141,10 @@ public class Input_Easy_Sat_Component : MonoBehaviour {
                 {
                     GameManager.CreateMOS(type, longitude, latitude);
                 }
-
+                else if (t6.isOn)
+                {
+                    GameManager.CreateQZS(type, longitude, 0);
+                }
                 //GameManager.CreateNewSat(M0, M1, 0, e, i, s_omg0, L_omg0, ET ,type,param);
 
                 //// ボタンを非表示にしたい
