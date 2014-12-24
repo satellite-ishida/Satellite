@@ -9,6 +9,12 @@ using System;
 /// </summary>
 public class GameMaster : MonoBehaviour
 {
+    public static enum SatelliteCost
+    {
+        GPS = 100,
+        Weather = 30000,
+        BS = 2000
+    }
 
     //衛星のID(生成された順番)
     private static int Satellite_ID = 0;
