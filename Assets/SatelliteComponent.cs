@@ -150,7 +150,7 @@ public class SatelliteComponent : MonoBehaviour {
         get {
             if (rnd.Next(0, 1000) < fail * 1000)
             {
-                Destroy(gameObject);
+                //Destroy(gameObject);
                 return true;
             }
             else
