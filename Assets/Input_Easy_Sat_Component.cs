@@ -43,6 +43,16 @@ public class Input_Easy_Sat_Component : MonoBehaviour {
 
         }
     }
+    //基地局(地上局)を置く
+    public void Put_BaseStation()
+    {
+        if (GameObject.Find("BaseStation(Clone)") == null)
+        {
+            GameObject prefab = (GameObject)Resources.Load("Prefabs/BaseStation");
+            GameObject Pegman = Instantiate(prefab) as GameObject;
+
+        }
+    }
 
     public void Submit()
     {

@@ -8,7 +8,7 @@ public class Sprite_Mouse_Controller : MonoBehaviour {
 
     private Vector3 screenPoint;
     private Vector3 offset;
-    private GameObject g;
+    //private GameObject g;
 
     /// <summary>
     /// 親オブジェクトと子オブジェクトのスケール比
@@ -20,22 +20,22 @@ public class Sprite_Mouse_Controller : MonoBehaviour {
     {
         Vector3 mousePoint = Camera.main.ScreenToWorldPoint(Input.mousePosition);
 
-        // マウスクリックした場所の全てのコライダ取得
-        Collider2D[]  col = Physics2D.OverlapPointAll(mousePoint);
+        //// マウスクリックした場所の全てのコライダ取得
+        //Collider2D[]  col = Physics2D.OverlapPointAll(mousePoint);
 
-        // PegmanとSensorの判定
-        foreach (Collider2D c in col)
-        {
-            if (c.transform.gameObject.name.Equals("Pegman(Clone)"))
-            {
-               g = c.transform.gameObject;
-               break;
-            }
-            else if (c.transform.gameObject.name.Equals("Pegman_Sensor"))
-            {
-                g = c.transform.gameObject;
-            }
-        }
+        //// PegmanとSensorの判定
+        //foreach (Collider2D c in col)
+        //{
+        //    if (c.transform.gameObject.name.Equals("Pegman(Clone)"))
+        //    {
+        //       g = c.transform.gameObject;
+        //       break;
+        //    }
+        //    else if (c.transform.gameObject.name.Equals("Pegman_Sensor"))
+        //    {
+        //        g = c.transform.gameObject;
+        //    }
+        //}
 
 
         
@@ -46,12 +46,15 @@ public class Sprite_Mouse_Controller : MonoBehaviour {
         float _x = Input.mousePosition.x;
         float _y = Input.mousePosition.y;
 
-        rate = g.transform.lossyScale.x / g.transform.localScale.x;
+        //rate = g.transform.lossyScale.x / g.transform.localScale.x;
 
         //オブジェクトの座標からマウス位置(つまりクリックした位置)を引いている。
         //これでオブジェクトの位置とマウスクリックの位置の差が取得できる。
         //ドラッグで移動したときのずれを補正するための計算だと考えれば分かりやすい
-        offset = g.transform.localPosition * rate - Camera.main.ScreenToWorldPoint(new Vector3(_x, _y, screenPoint.z));
+    
+        //offset = g.transform.localPosition * rate - Camera.main.ScreenToWorldPoint(new Vector3(_x, _y, screenPoint.z));
+
+        offset = transform.localPosition - Camera.main.ScreenToWorldPoint(new Vector3(_x, _y, screenPoint.z));
     }
 
     void OnMouseDrag()
@@ -67,7 +70,8 @@ public class Sprite_Mouse_Controller : MonoBehaviour {
         Vector3 currentPosition = Camera.main.ScreenToWorldPoint(currentScreenPoint) + offset;
 
         //オブジェクトの位置を変更する
-        g.transform.localPosition = currentPosition/rate;
+        //g.transform.localPosition = currentPosition/rate;
+        transform.localPosition = currentPosition;
 
         ////オブジェクトの移動をGUIに知らせる
         //if (currentPosition.x > 180 || currentPosition.x < -180 || currentPosition.y > 90 || currentPosition.y < -90) { }
