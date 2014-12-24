@@ -46,7 +46,7 @@ public class SatelliteComponent : MonoBehaviour {
     /// <summary>
     /// 現在時刻
     /// </summary>
-    protected DateTime observe_time = new DateTime(1800,1,1,0,0,0);
+    protected DateTime observe_time = new DateTime(2000,1,1,0,0,0);
 
 
     /// <summary>
@@ -68,7 +68,7 @@ public class SatelliteComponent : MonoBehaviour {
             date_et = new DateTime(year+2000, 1, 1);
             double diff_day = (double)(double_et - year * 1000) - 1;
             date_et = date_et.AddDays(diff_day);
-            observe_time = date_et;
+            //observe_time = date_et;
         }
     }
 
@@ -333,6 +333,7 @@ public class SatelliteComponent : MonoBehaviour {
             sr.transform.localScale = new Vector3(xscale * sensor_performance, sensor_performance, 1);
             
             CalcScore();
+            print(observe_time);
             yield return new WaitForSeconds(0.03f);//0.03fで30fpsぐらい
         }
     }
@@ -376,7 +377,7 @@ public class SatelliteComponent : MonoBehaviour {
         GameObject sensor = gameObject.transform.FindChild("Sensor").gameObject;
         SpriteRenderer sr = sensor.GetComponent<SpriteRenderer>();
 
-        print(sr.color);
+                                                                                                                                                                                                                                                                                                                                                     print(sr.color);
 
         Color c;
         if (sensorOn)

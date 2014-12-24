@@ -19,7 +19,8 @@ public class GameMaster : MonoBehaviour
         return Satellite_ID - 1;
     }
     //スコア（仮）
-    private static int Score = 0;
+    private static int Score = 100;
+
     public static void AddScore(int add_num)
     {
         Score += add_num;
@@ -32,6 +33,28 @@ public class GameMaster : MonoBehaviour
 
 
     }
+
+    /// <summary>
+    /// スコアの使用
+    /// </summary>
+    /// <param name="sub_num"></param>
+    /// <returns>
+    /// スコアが足りていたらtrue
+    /// 足りていなかったらfalse
+    /// </returns>
+    public static Boolean SubScore(int sub_num)
+    {
+        if (Score >= sub_num)
+        {
+            Score -= sub_num;
+            return true;
+        }
+        else
+        {
+            return false;
+        }
+    }
+
     public static int Get_Score()
     {
         return (Score);
