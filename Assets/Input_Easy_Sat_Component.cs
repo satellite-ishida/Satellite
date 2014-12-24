@@ -29,6 +29,13 @@ public class Input_Easy_Sat_Component : MonoBehaviour {
             GameObject sensor = Pegman.transform.FindChild("Pegman_Sensor").gameObject;
             SpriteRenderer sr = sensor.GetComponent<SpriteRenderer>();
 
+
+            GameObject sensorbar = GameObject.Find("Sensor_Scrollbar");
+            Scrollbar s = sensorbar.GetComponent<Scrollbar>();
+            // スケール比
+            float rate = 30 / 5;
+            sensor.transform.localScale = new Vector3((s.value * 10 + 5) * rate, (s.value * 10 + 5) * rate, 1);
+
             print(sr.color);
 
             Color c = new Color(1f, 1f, 0f, 0.2f);
@@ -96,7 +103,7 @@ public class Input_Easy_Sat_Component : MonoBehaviour {
                 //センサ
                 GameObject sensor = GameObject.Find("Sensor_Scrollbar");
                 Scrollbar s = sensor.GetComponent<Scrollbar>();
-                param[0] = (int)(s.value * 10);
+                param[0] = (int)(s.value * 10 + 5);
 
                 GameObject g3 = GameObject.Find("QZS_Toggle");
                 Toggle t3 = g3.transform.GetComponent<Toggle>();
@@ -152,7 +159,7 @@ public class Input_Easy_Sat_Component : MonoBehaviour {
             GameObject sensor = Pegman.transform.FindChild("Pegman_Sensor").gameObject;
             // スケール比
             float rate = 30 / 5;
-            sensor.transform.localScale = new Vector3(s.value * 10 * rate, s.value * 10 * rate, 1);
+            sensor.transform.localScale = new Vector3((s.value * 10 + 5) * rate, (s.value * 10 + 5) * rate, 1);
         }
     }
 

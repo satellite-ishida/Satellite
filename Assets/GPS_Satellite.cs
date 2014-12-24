@@ -26,7 +26,53 @@ public class GPS_Satellite : SatelliteComponent
     public override void Start()
     {
         base.Start();
+
         //     StartCoroutine("SatObject");
+    }
+
+    protected override void LaunchSat()
+    {
+
+        if ((GameMaster.GlobalTime - createtime).Days > necessary_time)
+        {
+            launch = true;
+            SpriteRenderer MainSpriteRenderer = gameObject.GetComponent<SpriteRenderer>();
+            MainSpriteRenderer.color = Color.red;
+
+            GameObject g = GameObject.Find("Sat_List");
+            var item = g.transform as RectTransform;
+
+            foreach (RectTransform child in item)
+            {
+                if (child.GetComponent<Node_Info>().ID == ID)
+                {
+                    var text = child.GetComponentInChildren<Text>();
+                    text.text = "ID:" + ID.ToString();
+                    break;
+                }
+
+            }
+        }
+        else
+        {
+            GameObject g = GameObject.Find("Sat_List");
+            var item = g.transform as RectTransform;
+
+            int time_remaining = necessary_time - (GameMaster.GlobalTime - createtime).Days;
+
+            foreach (RectTransform child in item)
+            {
+                if (child.GetComponent<Node_Info>().ID == ID)
+                {
+                    var text = child.GetComponentInChildren<Text>();
+                    text.text = "ID:" + ID.ToString() + ":" + time_remaining.ToString() + "日";
+                    break;
+                }
+
+            }
+
+        }
+
     }
 
 //    /// <summary>
