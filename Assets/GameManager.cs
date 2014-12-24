@@ -183,6 +183,8 @@ class GameManager : MonoBehaviour
                 saveday = GameMaster.GlobalTime.Day;
             }
 
+            // 故障している衛星を削除
+            //GameMaster.RemoveFailSatelliteList();
 
             yield return new WaitForSeconds(0.03f);//0.03fで30fpsぐらい
         }
@@ -302,7 +304,7 @@ class GameManager : MonoBehaviour
     /// </summary>
     /// <param name="longitude">経度</param>
     /// <param name="latitude">緯度</param>
-    public static void CreateQZS(String type, double longitude, double latitude)
+    public static void CreateQZS(String type, double longitude, double latitude, int sensor, double body)
     {
         GameObject prefab = null;
         GameObject satellite = null;
@@ -337,6 +339,10 @@ class GameManager : MonoBehaviour
         component.M2 = 0;
         component.ET = 14343.49492826;
         component.L_omg0 = 165 + longitude;
+        component.Sensor_Performance = sensor;
+
+        // body=0で一か月、body=1で三か月で5割故障
+        component.fail = 0.00024 - 0.00016 * body;
     }
 
     /// <summary>
@@ -344,7 +350,7 @@ class GameManager : MonoBehaviour
     /// </summary>
     /// <param name="longitude">経度</param>
     /// <param name="latitude">緯度</param>
-    public static void CreatePOS(String type, double longitude, double latitude)
+    public static void CreatePOS(String type, double longitude, double latitude, int sensor, double body)
     {
         GameObject prefab = null;
         GameObject satellite = null;
@@ -385,6 +391,10 @@ class GameManager : MonoBehaviour
         component.ET = 97320.90946019;
         //component.L_omg0 = 272.6745;
         component.L_omg0 = longitude - 60;
+        component.Sensor_Performance = sensor;
+
+        // body=0で一か月、body=1で三か月で5割故障
+        component.fail = 0.00024 - 0.00016 * body;
     }
 
     /// <summary>
@@ -392,7 +402,7 @@ class GameManager : MonoBehaviour
     /// </summary>
     /// <param name="longitude">経度</param>
     /// <param name="latitude">緯度</param>
-    public static void CreateMOS(String type, double longitude, double latitude)
+    public static void CreateMOS(String type, double longitude, double latitude, int sensor, double body)
     {
         GameObject prefab = null;
         GameObject satellite = null;
@@ -430,6 +440,10 @@ class GameManager : MonoBehaviour
         //component.L_omg0 = 153.0958;
         component.L_omg0 = longitude - 15;
         //component.i = 62.9125;
+        component.Sensor_Performance = sensor;
+
+        // body=0で一か月、body=1で三か月で5割故障
+        component.fail = 0.00024 - 0.00016 * body;
     }
     //void OnMouseDown()
     //{

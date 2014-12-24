@@ -140,7 +140,7 @@ public class SatelliteComponent : MonoBehaviour {
     /// <summary>
     /// 故障率
     /// </summary>
-    private double fail = 0;
+    public double fail = 1 - 0.99920;
 
     /// <summary>
     /// 故障判定
@@ -148,15 +148,15 @@ public class SatelliteComponent : MonoBehaviour {
     public Boolean Fail
     {
         get {
-        //    if (rnd.Next(0, 1000) < fail * 1000)
-        //    {
-        //        Destroy(gameObject);
-        //        return true;
-        //    }
-        //    else
-        //    {
+            if (rnd.Next(0, 1000) < fail * 1000)
+            {
+                Destroy(gameObject);
+                return true;
+            }
+            else
+            {
                 return false;
-        //    }
+            }
         }
     }
 
@@ -310,6 +310,8 @@ public class SatelliteComponent : MonoBehaviour {
     //コルーチンのスタートとIDの取得
     public virtual void Start()
     {
+        rnd = new System.Random(ID + Environment.TickCount);
+
         SpriteRenderer MainSpriteRenderer = gameObject.GetComponent<SpriteRenderer>();
         MainSpriteRenderer.color = Color.black;
         createtime = GameMaster.GlobalTime;
@@ -317,7 +319,18 @@ public class SatelliteComponent : MonoBehaviour {
         update_locate(observe_time);
         observe_time = observe_time.AddMinutes(15);
         transform.position = new Vector3(locate_x, locate_y, 0);
-       StartCoroutine("SatObject");
+
+        //正距円筒による歪みを考慮
+        GameObject sensor = gameObject.transform.FindChild("Sensor").gameObject;
+        SpriteRenderer sr = sensor.GetComponent<SpriteRenderer>();
+        float a = sr.transform.lossyScale.x;
+
+        double h = Math.Cos(locate_y * (2 * (Math.PI / 360)));
+        //0割り回避
+        float xscale = (h < 0.001) ? 360 : (float)(1.0 / h);
+        sr.transform.localScale = new Vector3(xscale * sensor_performance, sensor_performance, 1);
+       
+        StartCoroutine("SatObject");
     }
 
 

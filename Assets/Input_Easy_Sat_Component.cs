@@ -36,7 +36,7 @@ public class Input_Easy_Sat_Component : MonoBehaviour {
             float rate = 30 / 5;
             sensor.transform.localScale = new Vector3((s.value * 10 + 5) * rate, (s.value * 10 + 5) * rate, 1);
 
-            print(sr.color);
+            //print(sr.color);
 
             Color c = new Color(1f, 1f, 0f, 0.2f);
             sr.color = c;
@@ -129,21 +129,25 @@ public class Input_Easy_Sat_Component : MonoBehaviour {
                 // 緯度
                 double latitude = Pegman.transform.localPosition.y;
 
+                GameObject body = GameObject.Find("Body_Scrollbar");
+                Scrollbar b = body.GetComponent<Scrollbar>();
+
+
                 if (t3.isOn)
                 {
-                    GameManager.CreateQZS(type, longitude, latitude);
+                    GameManager.CreateQZS(type, longitude, latitude, (int)(s.value * 10 + 5), b.value);
                 }
                 else if (t4.isOn)
                 {
-                    GameManager.CreatePOS(type, longitude, latitude);
+                    GameManager.CreatePOS(type, longitude, latitude, (int)(s.value * 10 + 5), b.value);
                 }
                 else if (t5.isOn)
                 {
-                    GameManager.CreateMOS(type, longitude, latitude);
+                    GameManager.CreateMOS(type, longitude, latitude, (int)(s.value * 10 + 5), b.value);
                 }
                 else if (t6.isOn)
                 {
-                    GameManager.CreateQZS(type, longitude, 0);
+                    GameManager.CreateQZS(type, longitude, 0, (int)(s.value * 10 + 5), b.value);
                 }
                 //GameManager.CreateNewSat(M0, M1, 0, e, i, s_omg0, L_omg0, ET ,type,param);
 
