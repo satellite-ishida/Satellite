@@ -184,7 +184,7 @@ class GameManager : MonoBehaviour
             }
 
             // 故障している衛星を削除
-            //GameMaster.RemoveFailSatelliteList();
+            GameMaster.RemoveFailSatelliteList();
 
             yield return new WaitForSeconds(0.03f);//0.03fで30fpsぐらい
         }
