@@ -21,10 +21,13 @@ public class Input_Easy_Sat_Component : MonoBehaviour {
     //ペグマンを置く
     public void Put_Locate()
     {
+        GameObject Pegman;
+
+
         if (GameObject.Find("Pegman(Clone)") == null)
         {
             GameObject prefab = (GameObject)Resources.Load("Prefabs/Pegman");
-            GameObject Pegman = Instantiate(prefab) as GameObject;
+            Pegman = Instantiate(prefab) as GameObject;
 
             GameObject sensor = Pegman.transform.FindChild("Pegman_Sensor").gameObject;
             SpriteRenderer sr = sensor.GetComponent<SpriteRenderer>();
@@ -42,15 +45,28 @@ public class Input_Easy_Sat_Component : MonoBehaviour {
             sr.color = c;
 
         }
+
+        if ((Pegman = GameObject.Find("BaseStation(Clone)")) != null)
+        {
+            Destroy(Pegman);
+        }
     }
+
+
     //基地局(地上局)を置く
     public void Put_BaseStation()
     {
+        GameObject Pegman;
         if (GameObject.Find("BaseStation(Clone)") == null)
         {
             GameObject prefab = (GameObject)Resources.Load("Prefabs/BaseStation");
-            GameObject Pegman = Instantiate(prefab) as GameObject;
+            Pegman = Instantiate(prefab) as GameObject;
 
+        }
+
+        if ((Pegman = GameObject.Find("Pegman(Clone)")) != null)
+        {
+            Destroy(Pegman);
         }
     }
 
