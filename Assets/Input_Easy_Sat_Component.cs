@@ -5,12 +5,6 @@ using UnityEngine.UI;
 
 public class Input_Easy_Sat_Component : MonoBehaviour {
 
-    enum SatelliteCost
-    {
-        GPS = 2,
-        Weather = 3,
-        BS = 0
-    }
 
     void Start() 
     {

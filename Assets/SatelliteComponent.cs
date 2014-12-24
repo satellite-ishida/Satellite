@@ -136,6 +136,7 @@ public class SatelliteComponent : MonoBehaviour {
     /// </summary>
     private System.Random rnd;
 
+    public int start = 0;
     
     /// <summary>
     /// 故障率
@@ -148,7 +149,7 @@ public class SatelliteComponent : MonoBehaviour {
     public Boolean Fail
     {
         get {
-            if (rnd.Next(0, 1000) < fail * 1000)
+            if (rnd.Next(0, 10000) < fail * start * 10000)
             {
                 //Destroy(gameObject);
                 return true;

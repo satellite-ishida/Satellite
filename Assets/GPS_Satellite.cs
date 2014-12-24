@@ -43,7 +43,7 @@ public class GPS_Satellite : SatelliteComponent
             MainSpriteRenderer.color = Color.red;
             gameObject.transform.localScale = new Vector3(30,30,1);
             MainSpriteRenderer.sprite = SatelliteSprite;
-
+            start = 1;
             GameObject g = GameObject.Find("Sat_List");
             var item = g.transform as RectTransform;
 
