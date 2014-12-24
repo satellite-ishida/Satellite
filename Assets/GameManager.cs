@@ -431,20 +431,20 @@ class GameManager : MonoBehaviour
         component.L_omg0 = longitude - 15;
         //component.i = 62.9125;
     }
-    void OnMouseDown()
-    {
-        Vector3 vec =  Camera.main.ScreenToWorldPoint(Input.mousePosition);
-        vec.z = 0;
+    //void OnMouseDown()
+    //{
+    //    Vector3 vec =  Camera.main.ScreenToWorldPoint(Input.mousePosition);
+    //    vec.z = 0;
 
-        if (GameMaster.Map[vec.x, vec.y].Land && !GameMaster.Map[vec.x,vec.y].GS)
-        {
-            GameObject prefab = (GameObject)Resources.Load("Prefabs/ground_station");
-            GameObject Base = Instantiate(prefab) as GameObject;
-            GameMaster.Map[vec.x, vec.y].GS = true;
-            GameObject ground = GameObject.Find("GroundStation");
-            Base.transform.parent = ground.transform;
-            Base.transform.position = vec;
-        }
+    //    if (GameMaster.Map[vec.x, vec.y].Land && !GameMaster.Map[vec.x,vec.y].GS)
+    //    {
+    //        GameObject prefab = (GameObject)Resources.Load("Prefabs/ground_station");
+    //        GameObject Base = Instantiate(prefab) as GameObject;
+    //        GameMaster.Map[vec.x, vec.y].GS = true;
+    //        GameObject ground = GameObject.Find("GroundStation");
+    //        Base.transform.parent = ground.transform;
+    //        Base.transform.position = vec;
+    //    }
 
-    }
+    //}
 }
