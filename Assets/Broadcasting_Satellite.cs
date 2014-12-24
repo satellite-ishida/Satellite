@@ -29,12 +29,7 @@ public class Broadcasting_Satellite : SatelliteComponent{
         base.Start();
     }
 
-    private Boolean info = false;
-
-    public void Reset_info() 
-    {
-        info = false;
-    }
+    private DateTime info = GameMaster.GlobalTime;
 
     private void Get_info() 
     {
@@ -54,7 +49,7 @@ public class Broadcasting_Satellite : SatelliteComponent{
                 {
                     if (GameMaster.Map[i, j].GS)
                     {
-                        info = true;
+                        info = GameMaster.GlobalTime;
                     }
                 }
             }
@@ -84,10 +79,11 @@ public class Broadcasting_Satellite : SatelliteComponent{
             {
                 if (((i - x) * (i - x)) * (b * b) + ((j - y) * (j - y)) * (a * a) <= a * a * b * b)
                 {
-                    if (GameMaster.Map[i,j].Land && !GameMaster.Map[i, j].Info && info)
+                    if (GameMaster.Map[i,j].Land && (info - GameMaster.Map[i, j].Info).TotalDays > 1 )
                     {
+                        if (!String.IsNullOrEmpty(GameMaster.Map[i, j].City)) { num++; }
                         num++;
-                        GameMaster.Map[i, j].Info = true;
+                        GameMaster.Map[i, j].Info = GameMaster.GlobalTime;
                     }
                 }
             }

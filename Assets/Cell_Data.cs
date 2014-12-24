@@ -69,11 +69,11 @@ public class Cell_Data
 
     }
 
-    private bool info = false;
+    private DateTime info = GameMaster.GlobalTime;
     /// <summary>
     /// 情報の取得(BS用)
     /// </summary>
-    public bool Info
+    public DateTime Info
     {
         get { return info; }
         set { info = value; }
