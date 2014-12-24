@@ -68,7 +68,7 @@ public class SatelliteComponent : MonoBehaviour {
             date_et = new DateTime(year+2000, 1, 1);
             double diff_day = (double)(double_et - year * 1000) - 1;
             date_et = date_et.AddDays(diff_day);
-            //observe_time = date_et;
+            observe_time = date_et;
         }
     }
 
