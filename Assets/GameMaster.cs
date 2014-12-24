@@ -97,8 +97,13 @@ public class GameMaster : MonoBehaviour
     //Failがtrueの衛星をリストから削除
     public static void RemoveFailSatelliteList()
     {
-        GUI_Manager.Destroy_Sat_Node(SatelliteList.FindAll(x => x.GetComponent<SatelliteComponent>().Fail)); //GUI
-        SatelliteList.RemoveAll(x => x.GetComponent<SatelliteComponent>().Fail);
+        GameObject g = SatelliteList.Find(x => x.GetComponent<SatelliteComponent>().Fail);
+        if (g != null)
+        {
+            GUI_Manager.Destroy_Sat_Node(g); //GUI
+            SatelliteList.Remove(g);
+            Destroy(g);
+        }
     }
 
     //スライダー(タイムスパン)の値

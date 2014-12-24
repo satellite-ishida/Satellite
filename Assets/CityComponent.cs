@@ -1,19 +1,22 @@
 ﻿using UnityEngine;
 using System.Collections;
 
-public class CityComponent : MonoBehaviour {
+public class CityComponent : MonoBehaviour
+{
 
     /// <summary>
     /// 都市から近くの衛星の数を数える
     /// </summary>
-    public int SatelliteNum() 
+    public int SatelliteNum()
     {
 
         int num = 0;
 
         foreach (GameObject g in GameMaster.Satellitelist)
         {
-            if (g.GetComponent<GPS_Satellite>() && g.GetComponent<SatelliteComponent>().Launch)
+
+            if (g.GetComponent<GPS_Satellite>()
+                && g.GetComponent<SatelliteComponent>().Launch)
             {
 
                 GameObject sensor = g.transform.FindChild("Sensor").gameObject;
@@ -27,6 +30,8 @@ public class CityComponent : MonoBehaviour {
                     num++;
                 }
             }
+
+
         }
 
         GameMaster.AddScore(num);

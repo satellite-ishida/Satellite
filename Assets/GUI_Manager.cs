@@ -88,17 +88,42 @@ public class GUI_Manager : MonoBehaviour
             break;
         }     
     }
-    //Sat_Listの衛星ノードを削除（GameObjevtで判別）
+    //Sat_Listの衛星ノードを削除（List<GameObjevt>で判別）
     public static void Destroy_Sat_Node(List<GameObject> gl)
     {
         GameObject g = GameObject.Find("Sat_List");
         var item = g.transform as RectTransform;
-        foreach (GameObject child in gl)
+
+
+        foreach (GameObject gl_node in gl) 
         {
-            if (child.GetComponent<SatelliteComponent>().Fail) Destroy(child.gameObject);
-            break;
-        }
+            foreach (RectTransform item_node in item)
+            {
+                if (gl_node.GetComponent<SatelliteComponent>().ID
+                    == item_node.GetComponent<Node_Info>().ID)
+                {
+                    Destroy(item_node.gameObject);
+                    break;
+                }
+            }
+
+        }     
     }
+    //Sat_Listの衛星ノードを削除（GameObjevtで判別）
+    public static void Destroy_Sat_Node(GameObject gl)
+    {
+        GameObject g = GameObject.Find("Sat_List");
+        var item = g.transform as RectTransform;
+
+        int ID = gl.GetComponent<SatelliteComponent>().ID;
+
+        foreach (RectTransform child in item)
+        {
+            if (child.GetComponent<Node_Info>().ID == ID) Destroy(child.gameObject);
+            break;
+        }    
+    }
+
 
     public static void Set_Log(String s)
     {
