@@ -80,7 +80,7 @@ public class Map
             csvファイルから地図にデータを埋め込む
          */
         //文字コードはUTF-8じゃないと文字化けする
-        TextAsset citydata = Resources.Load("csv/city") as TextAsset;
+        TextAsset citydata = Resources.Load("csv/city2") as TextAsset;
         StringReader reader = new StringReader(citydata.text);
 
         while (reader.Peek() > -1)

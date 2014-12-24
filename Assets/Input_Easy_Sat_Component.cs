@@ -68,6 +68,10 @@ public class Input_Easy_Sat_Component : MonoBehaviour {
         {
             Destroy(Pegman);
         }
+
+        GameObject Cost = GameObject.Find("Cost_Label");
+        Text c = Cost.GetComponent<Text>();
+        c.text = "100000";
     }
 
     public void Submit()
@@ -100,7 +104,7 @@ public class Input_Easy_Sat_Component : MonoBehaviour {
 
         if ((Pegman = GameObject.Find("Pegman(Clone)")) != null)
         {
-            GameObject Cost = GameObject.Find("Cost");
+            GameObject Cost = GameObject.Find("Cost_Label");
             Text c = Cost.GetComponent<Text>();
             int cost = int.Parse(c.text);
             if (GameMaster.SubScore(cost))
@@ -244,7 +248,7 @@ public class Input_Easy_Sat_Component : MonoBehaviour {
         GameObject body = GameObject.Find("Body_Scrollbar");
         Scrollbar b = body.GetComponent<Scrollbar>();
 
-        cost = (int)(s.value * 10) + (int)(b.value * 10);
+        cost = (int)(s.value * 100) + (int)(b.value * 100);
 
 
         //衛星の種類によるコスト
@@ -257,18 +261,18 @@ public class Input_Easy_Sat_Component : MonoBehaviour {
 
         if (t1.isOn)
         {
-            cost += 2;
+            cost += 100;
         }
         else if (t2.isOn)
         {
-            cost += 3;
+            cost += 30000;
         }
-        else if (t3.isOn) 
+        else if (t3.isOn)
         {
-            cost += 1;
+            cost += 2000;
         }
 
-        GameObject Cost = GameObject.Find("Cost");
+        GameObject Cost = GameObject.Find("Cost_Label");
         Text c = Cost.GetComponent<Text>();
         c.text = cost.ToString();
     }
