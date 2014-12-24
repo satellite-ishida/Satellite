@@ -200,7 +200,7 @@ class GameManager : MonoBehaviour
         //スパンの値でタイムスケールの調整
         Time.timeScale = 1.0f * GameMaster.SpanValue;
 
-        GameMaster.Map.Satellite_Update();
+     //   GameMaster.Map.Satellite_Update();
 
         Citydict["東京"].GetComponent<CityComponent>().SatelliteNum();
 

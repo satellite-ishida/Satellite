@@ -303,11 +303,23 @@ public class SatelliteComponent : MonoBehaviour {
     {
         ID = GameMaster.Get_Satellite_ID();
     }
+
+    protected DateTime createtime;
+    protected Boolean launch = false;
+
     //コルーチンのスタートとIDの取得
     public virtual void Start()
     {
+        SpriteRenderer MainSpriteRenderer = gameObject.GetComponent<SpriteRenderer>();
+        MainSpriteRenderer.color = Color.black;
+        createtime = GameMaster.GlobalTime;
+
+        update_locate(observe_time);
+        observe_time = observe_time.AddMinutes(15);
+        transform.position = new Vector3(locate_x, locate_y, 0);
        StartCoroutine("SatObject");
     }
+
 
 
 
@@ -316,25 +328,28 @@ public class SatelliteComponent : MonoBehaviour {
     {
         while (true)
         {
-            update_locate(observe_time);
-            observe_time = observe_time.AddMinutes(15);
+            if (launch)
+            {
+                update_locate(observe_time);
+                observe_time = observe_time.AddMinutes(15);
 
-             transform.position = new Vector3(locate_x, locate_y, 0);
-          //  GameManager.CalcScore(gameObject);
+                transform.position = new Vector3(locate_x, locate_y, 0);
+                //  GameManager.CalcScore(gameObject);
 
-            //正距円筒による歪みを考慮
-            GameObject sensor = gameObject.transform.FindChild("Sensor").gameObject;
-            SpriteRenderer sr = sensor.GetComponent<SpriteRenderer>();
-            float a = sr.transform.lossyScale.x;
+                //正距円筒による歪みを考慮
+                GameObject sensor = gameObject.transform.FindChild("Sensor").gameObject;
+                SpriteRenderer sr = sensor.GetComponent<SpriteRenderer>();
+                float a = sr.transform.lossyScale.x;
 
-            double h =  Math.Cos(locate_y * (2 * (Math.PI / 360)));
-            //0割り回避
-            float xscale = (h < 0.001) ? 360 : (float)(1.0 / h);
-            sr.transform.localScale = new Vector3(xscale * sensor_performance, sensor_performance, 1);
-            
-            CalcScore();
-            print(observe_time);
+                double h = Math.Cos(locate_y * (2 * (Math.PI / 360)));
+                //0割り回避
+                float xscale = (h < 0.001) ? 360 : (float)(1.0 / h);
+                sr.transform.localScale = new Vector3(xscale * sensor_performance, sensor_performance, 1);
+
+                CalcScore();
+            }
             yield return new WaitForSeconds(0.03f);//0.03fで30fpsぐらい
+            
         }
     }
 
@@ -344,11 +359,18 @@ public class SatelliteComponent : MonoBehaviour {
     protected virtual void CalcScore() { }
 
 
+
+    protected int necessary_time = 5;
     // Update is called once per frame
     public virtual void Update()
     {
         //スパンの値でタイムスケールの調整
         Time.timeScale = 1.0f * GameMaster.SpanValue;
+
+        if (!launch) 
+        {
+            LaunchSat();      
+        }
 
         if (observe_time.Year > 1900)
         {
@@ -369,6 +391,8 @@ public class SatelliteComponent : MonoBehaviour {
         }
 
     }
+
+    protected virtual void LaunchSat() { }
 
     public Boolean sensorOn = false;
 
