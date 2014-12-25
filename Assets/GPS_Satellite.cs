@@ -47,7 +47,9 @@ public class GPS_Satellite : SatelliteComponent
             GameObject g = GameObject.Find("Sat_List");
             var item = g.transform as RectTransform;
 
-            GameMaster.POPUP("GPS衛星が打ち上げられました");
+            String POP = "ID:" + ID.ToString() + "のGPS衛星が打ち上げられました";
+
+            GameMaster.POPUP(POP);
 
             foreach (RectTransform child in item)
             {

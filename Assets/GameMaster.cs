@@ -109,6 +109,8 @@ public class GameMaster : MonoBehaviour
             GUI_Manager.Destroy_Sat_Node(g); //GUI
             SatelliteList.Remove(g);
             Destroy(g);
+            string POP = "ID:" + g.GetComponent<SatelliteComponent>().ID.ToString() + "が壊れました";
+            GameMaster.POPUP(POP);
         }
     }
 

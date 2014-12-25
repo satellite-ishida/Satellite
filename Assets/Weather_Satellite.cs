@@ -85,7 +85,9 @@ public class Weather_Satellite : SatelliteComponent
             GameObject g = GameObject.Find("Sat_List");
             var item = g.transform as RectTransform;
 
-            GameMaster.POPUP("気象衛星が打ち上げられました");
+            String POP = "ID:" + ID.ToString() + "の気象衛星が打ち上げられました";
+
+            GameMaster.POPUP(POP);
 
             foreach (RectTransform child in item)
             {
