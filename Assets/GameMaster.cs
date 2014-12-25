@@ -12,7 +12,7 @@ public class GameMaster : MonoBehaviour
     public enum SatelliteCost
     {
         GPS = 3000,
-        Weather = 200000,
+        Weather = 500000,
         BS = 20000
     }
 

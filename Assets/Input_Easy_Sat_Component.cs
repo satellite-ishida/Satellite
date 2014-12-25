@@ -281,8 +281,7 @@ public class Input_Easy_Sat_Component : MonoBehaviour {
             cost += (int)GameMaster.SatelliteCost.BS;
         }
 
-        cost *= 1 + (0.25 * s.value * 10);
-        cost *= 1 + (0.25 * b.value * 10);
+        cost *= 1 + (0.25 * (s.value + b.value) * 10);
 
         GameObject Cost = GameObject.Find("Cost_Label");
         Text c = Cost.GetComponent<Text>();
