@@ -1,6 +1,7 @@
 ﻿using UnityEngine;
 using System.Collections;
 using System;
+using UnityEngine.UI;
 
 public class Node_Info : MonoBehaviour {
 
@@ -17,6 +18,7 @@ public class Node_Info : MonoBehaviour {
     //リスト中のノードをクリックしたとき
     public void Click_Sat_Node()
     {
+        //クリックした衛星を光らせる
         Node_Info si = gameObject.GetComponent<Node_Info>();
         Info_Panel_Manager.target_Change(si.ID);
         SatelliteComponent sc_new = GameMaster.GetSatelliteByID(ID).GetComponent<SatelliteComponent>();
@@ -51,5 +53,29 @@ public class Node_Info : MonoBehaviour {
         }
 
         GUI_Manager.SensorON_ID = ID;
+
+        //Infoパネルに情報表示
+        GameObject info = GameObject.Find("Sat_Info");
+        Text type = GameObject.Find("Sat_type").GetComponent<Text>();
+        Text launch = GameObject.Find("launch_time").GetComponent<Text>();
+        Text body = GameObject.Find("Body_param").GetComponent<Text>();
+        Text sensor = GameObject.Find("Sensor_range").GetComponent<Text>();
+
+        if(GameMaster.GetSatelliteByID(ID).GetComponent<GPS_Satellite>())
+        {
+            type.text = "type : GPS";
+        }
+        else if(GameMaster.GetSatelliteByID(ID).GetComponent<Weather_Satellite>())
+        {
+            type.text = "type : Weather";
+        }
+        else if(GameMaster.GetSatelliteByID(ID).GetComponent<Broadcasting_Satellite>())
+        {
+            type.text = "type : BS";
+        }
+
+        launch.text = "launch : "+sc_new.date_et.ToString();
+        body.text = "body : "+sc_new.Body_Performance.ToString();
+        sensor.text = "sensor : "+sc_new.Sensor_Performance.ToString();
     }
 }
