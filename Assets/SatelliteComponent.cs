@@ -58,7 +58,7 @@ public class SatelliteComponent : MonoBehaviour {
     /// 元期
     /// </summary>
     public double double_et;
-    private DateTime date_et;
+    public  DateTime date_et;
     public double ET
     {
         get { return double_et; }
@@ -168,9 +168,20 @@ public class SatelliteComponent : MonoBehaviour {
 
     public int Sensor_Performance 
     {
+        get { return sensor_performance;  }
         set { sensor_performance = value; }
     }
- 
+
+    /// <summary>
+    /// Bodyの性能
+    /// </summary>
+    private double body_performance = 0;
+
+    public double Body_Performance
+    {
+        get { return body_performance; }
+        set { body_performance = value; }
+    }
 
     /// <summary>
     /// 衛星軌道の計算
