@@ -73,7 +73,7 @@ public class Weather_Satellite : SatelliteComponent
     protected override void LaunchSat()
     {
 
-        if ((GameMaster.GlobalTime - createtime).Days > necessary_time)
+        if ((GameMaster.GlobalTime - createtime).TotalDays > necessary_time)
         {
             launch = true;
             SpriteRenderer MainSpriteRenderer = gameObject.GetComponent<SpriteRenderer>();
@@ -84,6 +84,8 @@ public class Weather_Satellite : SatelliteComponent
 
             GameObject g = GameObject.Find("Sat_List");
             var item = g.transform as RectTransform;
+
+            GameMaster.POPUP("気象衛星が打ち上げられました");
 
             foreach (RectTransform child in item)
             {
