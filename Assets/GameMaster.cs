@@ -25,7 +25,7 @@ public class GameMaster : MonoBehaviour
         return Satellite_ID - 1;
     }
     //スコア（仮）
-    private static int Score = 1000000000;
+    private static int Score = 30000;
 
     public static void AddScore(int add_num)
     {
