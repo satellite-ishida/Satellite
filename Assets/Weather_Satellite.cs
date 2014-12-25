@@ -44,21 +44,22 @@ public class Weather_Satellite : SatelliteComponent
         int a = (int)((sensor.transform.lossyScale.x) * 0.09);
         int b = (int)((sensor.transform.lossyScale.y) * 0.09);
 
-        
-        for (int i = x - a; i <= x + a; i++)
-        {
-            for (int j = y - b; j < y + b; j++)
+
+            for (int i = x - a; i <= x + a; i++)
             {
-                if (((i - x) * (i - x)) * (b * b) + ((j - y) * (j - y)) * (a * a) <= a * a * b * b)
+                for (int j = y - b; j < y + b; j++)
                 {
-                    if (!GameMaster.Map[i, j].Observe)
+                    if (((i - x) * (i - x)) * (b * b) + ((j - y) * (j - y)) * (a * a) <= a * a * b * b)
                     {
-                        num++;
-                        GameMaster.Map[i, j].Observe = true;
+                        if ((GameMaster.GlobalTime - GameMaster.Map[i, j].Observe).TotalDays > 0.5)
+                        {
+                            num++;
+                            GameMaster.Map[i, j].Observe = GameMaster.GlobalTime;
+                        }
                     }
                 }
             }
-        }
+
          
         //楕円の面積による得点補正(少し誤差がある)
         double ratio = (Math.PI * b * b) / (Math.PI * a * b);

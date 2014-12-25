@@ -58,11 +58,11 @@ public class Cell_Data
 
     }
 
-    private bool observe = false;
+    private DateTime observe = GameMaster.GlobalTime;
     /// <summary>
     /// 観測判定
     /// </summary>
-    public bool Observe
+    public DateTime Observe
     {
         get { return observe; }
         set { observe = value; }

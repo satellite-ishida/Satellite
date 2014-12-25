@@ -81,7 +81,7 @@ public class Broadcasting_Satellite : SatelliteComponent{
                 {
                     if (GameMaster.Map[i,j].Land && (info - GameMaster.Map[i, j].Info).TotalDays > 1 )
                     {
-                        if (!String.IsNullOrEmpty(GameMaster.Map[i, j].City)) { num++; }
+                        if (!String.IsNullOrEmpty(GameMaster.Map[i, j].City)) { num += 20; }
                         num++;
                         GameMaster.Map[i, j].Info = GameMaster.GlobalTime;
                     }
