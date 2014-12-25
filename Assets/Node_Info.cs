@@ -74,7 +74,7 @@ public class Node_Info : MonoBehaviour {
             type.text = "type : BS";
         }
 
-        launch.text = "launch : "+sc_new.date_et.ToString();
+        launch.text = "launch : "+sc_new.CreateTime.ToString();
         body.text = "body : "+sc_new.Body_Performance.ToString();
         sensor.text = "sensor : "+sc_new.Sensor_Performance.ToString();
     }

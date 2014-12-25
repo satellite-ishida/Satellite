@@ -11,7 +11,7 @@ public class GameMaster : MonoBehaviour
 {
     public enum SatelliteCost
     {
-        GPS = 4000,
+        GPS = 3000,
         Weather = 200000,
         BS = 20000
     }
@@ -109,7 +109,7 @@ public class GameMaster : MonoBehaviour
             GUI_Manager.Destroy_Sat_Node(g); //GUI
             SatelliteList.Remove(g);
             Destroy(g);
-            string POP = "ID:" + g.GetComponent<SatelliteComponent>().ID.ToString() + "が壊れました";
+            string POP = "ID:" + g.GetComponent<SatelliteComponent>().ID.ToString() + "の衛星が壊れました";
             GameMaster.POPUP(POP);
         }
     }

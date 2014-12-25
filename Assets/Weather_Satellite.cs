@@ -53,7 +53,7 @@ public class Weather_Satellite : SatelliteComponent
                     {
                         if ((GameMaster.GlobalTime - GameMaster.Map[i, j].Observe).TotalDays > 0.5)
                         {
-                            num++;
+                            num += 3;
                             GameMaster.Map[i, j].Observe = GameMaster.GlobalTime;
                         }
                     }
@@ -67,6 +67,16 @@ public class Weather_Satellite : SatelliteComponent
         GameMaster.AddScore((int)(num*ratio));
     }
 
+
+
+    private double necessary_time = 1;
+
+    /*
+    protected override void CalcNecessaryTime() 
+    {
+        necessary_time = 5 + (base.Sensor_Performance-5) * 0.5 + base.Body_Performance * 5;
+    }
+    */
     public Sprite StanbySprite;
     public Sprite SatelliteSprite;
 
@@ -105,7 +115,7 @@ public class Weather_Satellite : SatelliteComponent
             GameObject g = GameObject.Find("Sat_List");
             var item = g.transform as RectTransform;
 
-            int time_remaining = necessary_time - (GameMaster.GlobalTime - createtime).Days;
+            int time_remaining = (int)(necessary_time - (GameMaster.GlobalTime - createtime).TotalDays);
 
             foreach (RectTransform child in item)
             {

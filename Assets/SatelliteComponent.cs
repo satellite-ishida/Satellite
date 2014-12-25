@@ -183,6 +183,7 @@ public class SatelliteComponent : MonoBehaviour {
         set { body_performance = value; }
     }
 
+
     /// <summary>
     /// 衛星軌道の計算
     /// </summary>
@@ -316,7 +317,10 @@ public class SatelliteComponent : MonoBehaviour {
         ID = GameMaster.Get_Satellite_ID();
     }
 
-    protected DateTime createtime;
+    protected DateTime createtime = GameMaster.GlobalTime;
+    public DateTime CreateTime {
+        get { return createtime; }
+    }
     protected Boolean launch = false;
     public Boolean Launch {
         get { return launch; }
@@ -329,7 +333,6 @@ public class SatelliteComponent : MonoBehaviour {
 
         SpriteRenderer MainSpriteRenderer = gameObject.GetComponent<SpriteRenderer>();
         //MainSpriteRenderer.color = Color.black;
-        createtime = GameMaster.GlobalTime;
 
         update_locate(observe_time);
         observe_time = observe_time.AddMinutes(15);
@@ -344,7 +347,7 @@ public class SatelliteComponent : MonoBehaviour {
         //0割り回避
         float xscale = (h < 0.001) ? 360 : (float)(1.0 / h);
         sr.transform.localScale = new Vector3(xscale * sensor_performance, sensor_performance, 1);
-       
+
         StartCoroutine("SatObject");
     }
 
@@ -354,6 +357,8 @@ public class SatelliteComponent : MonoBehaviour {
     //コルーチン
     private IEnumerator SatObject()
     {
+
+        CalcNecessaryTime();
         while (true)
         {
             if (launch)
@@ -387,8 +392,6 @@ public class SatelliteComponent : MonoBehaviour {
     protected virtual void CalcScore() { }
 
 
-
-    protected int necessary_time = 1;
     // Update is called once per frame
     public virtual void Update()
     {
@@ -420,6 +423,7 @@ public class SatelliteComponent : MonoBehaviour {
 
     }
 
+    protected virtual void CalcNecessaryTime() { }
     protected virtual void LaunchSat() { }
 
     public Boolean sensorOn = false;

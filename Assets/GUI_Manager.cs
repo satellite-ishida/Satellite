@@ -131,9 +131,12 @@ public class GUI_Manager : MonoBehaviour
 
         foreach (RectTransform child in item)
         {
-            if (child.GetComponent<Node_Info>().ID == ID) Destroy(child.gameObject);
-            break;
-        }    
+            if (child.GetComponent<Node_Info>().ID == ID)
+            {
+                Destroy(child.gameObject);
+                break;
+            }
+        }   
     }
 
 
