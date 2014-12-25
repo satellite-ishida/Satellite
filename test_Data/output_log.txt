@@ -12,8 +12,8 @@ Platform assembly: C:\Users\morita\Documents\GitHub\Satellite\test_Data\Managed\
 Loading C:\Users\morita\Documents\GitHub\Satellite\test_Data\Managed\Assembly-CSharp.dll into Unity Child Domain
 Platform assembly: C:\Users\morita\Documents\GitHub\Satellite\test_Data\Managed\UnityEngine.UI.dll (this message is harmless)
 Loading C:\Users\morita\Documents\GitHub\Satellite\test_Data\Managed\UnityEngine.UI.dll into Unity Child Domain
-- Completed reload, in  0.152 seconds
-desktop: 1600x900 60Hz; virtual: 1600x900 at 0,0
+- Completed reload, in  0.106 seconds
+desktop: 1920x1080 60Hz; virtual: 1920x1080 at 0,0
 <RI> Initializing input.
 XInput1_3.dll not found.
 <RI> Input initialized.
