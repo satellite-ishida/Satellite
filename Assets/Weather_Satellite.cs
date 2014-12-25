@@ -44,21 +44,22 @@ public class Weather_Satellite : SatelliteComponent
         int a = (int)((sensor.transform.lossyScale.x) * 0.09);
         int b = (int)((sensor.transform.lossyScale.y) * 0.09);
 
-        
-        for (int i = x - a; i <= x + a; i++)
-        {
-            for (int j = y - b; j < y + b; j++)
+
+            for (int i = x - a; i <= x + a; i++)
             {
-                if (((i - x) * (i - x)) * (b * b) + ((j - y) * (j - y)) * (a * a) <= a * a * b * b)
+                for (int j = y - b; j < y + b; j++)
                 {
-                    if (!GameMaster.Map[i, j].Observe)
+                    if (((i - x) * (i - x)) * (b * b) + ((j - y) * (j - y)) * (a * a) <= a * a * b * b)
                     {
-                        num++;
-                        GameMaster.Map[i, j].Observe = true;
+                        if ((GameMaster.GlobalTime - GameMaster.Map[i, j].Observe).TotalDays > 0.5)
+                        {
+                            num++;
+                            GameMaster.Map[i, j].Observe = GameMaster.GlobalTime;
+                        }
                     }
                 }
             }
-        }
+
          
         //楕円の面積による得点補正(少し誤差がある)
         double ratio = (Math.PI * b * b) / (Math.PI * a * b);
@@ -66,6 +67,8 @@ public class Weather_Satellite : SatelliteComponent
         GameMaster.AddScore((int)(num*ratio));
     }
 
+    public Sprite StanbySprite;
+    public Sprite SatelliteSprite;
 
     protected override void LaunchSat()
     {
@@ -75,6 +78,9 @@ public class Weather_Satellite : SatelliteComponent
             launch = true;
             SpriteRenderer MainSpriteRenderer = gameObject.GetComponent<SpriteRenderer>();
             MainSpriteRenderer.color = Color.blue;
+            gameObject.transform.localScale = new Vector3(30, 30, 1);
+            MainSpriteRenderer.sprite = SatelliteSprite;
+            start = 1;
 
             GameObject g = GameObject.Find("Sat_List");
             var item = g.transform as RectTransform;

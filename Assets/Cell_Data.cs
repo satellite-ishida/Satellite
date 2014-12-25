@@ -58,22 +58,22 @@ public class Cell_Data
 
     }
 
-    private bool observe = false;
+    private DateTime observe = GameMaster.GlobalTime;
     /// <summary>
     /// 観測判定
     /// </summary>
-    public bool Observe
+    public DateTime Observe
     {
         get { return observe; }
         set { observe = value; }
 
     }
 
-    private bool info = false;
+    private DateTime info = GameMaster.GlobalTime;
     /// <summary>
     /// 情報の取得(BS用)
     /// </summary>
-    public bool Info
+    public DateTime Info
     {
         get { return info; }
         set { info = value; }

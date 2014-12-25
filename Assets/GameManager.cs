@@ -84,22 +84,6 @@ class GameManager : MonoBehaviour
 
             t.text = year + Month + Day + Hour;
 
-            GameMaster.Map.Reset_Observe();
-
-            if ((GameMaster.GlobalTime - saveday).TotalDays > 1) 
-            {
-                GameMaster.Map.Reset_Mapinfo();
-                foreach (GameObject g in GameMaster.Satellitelist)
-                {
-                    if (g.GetComponent<Broadcasting_Satellite>()) 
-                    {
-                        g.GetComponent<Broadcasting_Satellite>().Reset_info();
-                    }
-                }
-                saveday = GameMaster.GlobalTime;
-            }
-
-
             foreach (GameObject g in Citydict.Values)
             {
                 g.GetComponent<CityComponent>().SatelliteNum();
